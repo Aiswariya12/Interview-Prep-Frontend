@@ -1,0 +1,120 @@
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import { authApi } from '../services/api';
+
+const AuthContext = createContext(null);
+
+export const AuthProvider = ({ children }) => {
+  const [user, setUser] = useState(() => {
+    const saved = localStorage.getItem('interviewprep_user');
+    return saved ? JSON.parse(saved) : null;
+  });
+  const [token, setToken] = useState(() => localStorage.getItem('interviewprep_token'));
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    // If token exists, optionally verify with /api/auth/me
+    if (token && !user) {
+      authApi.getCurrentUser()
+        .then((res) => {
+          if (res.data && res.data.data) {
+            setUser(res.data.data);
+            localStorage.setItem('interviewprep_user', JSON.stringify(res.data.data));
+          }
+        })
+        .catch(() => {
+          logout();
+        });
+    }
+  }, [token]);
+
+  const login = async (email, password) => {
+    setLoading(true);
+    try {
+      const response = await authApi.login({ email, password });
+      const data = response.data.data;
+      const authToken = data.token;
+      const userInfo = {
+        id: data.id,
+        name: data.name,
+        email: data.email,
+        role: data.role,
+        college: data.college,
+      };
+
+      setToken(authToken);
+      setUser(userInfo);
+      localStorage.setItem('interviewprep_token', authToken);
+      localStorage.setItem('interviewprep_user', JSON.stringify(userInfo));
+      return { success: true, user: userInfo };
+    } catch (err) {
+      const msg = err.response?.data?.message || 'Login failed. Please check your credentials.';
+      return { success: false, error: msg };
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const register = async (userData) => {
+    setLoading(true);
+    try {
+      const response = await authApi.register(userData);
+      const data = response.data.data;
+      const authToken = data.token;
+      const userInfo = {
+        id: data.id,
+        name: data.name,
+        email: data.email,
+        role: data.role,
+        college: data.college,
+      };
+
+      setToken(authToken);
+      setUser(userInfo);
+      localStorage.setItem('interviewprep_token', authToken);
+      localStorage.setItem('interviewprep_user', JSON.stringify(userInfo));
+      return { success: true, user: userInfo };
+    } catch (err) {
+      const msg = err.response?.data?.message || 'Registration failed.';
+      return { success: false, error: msg };
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const logout = () => {
+    setUser(null);
+    setToken(null);
+    localStorage.removeItem('interviewprep_token');
+    localStorage.removeItem('interviewprep_user');
+  };
+
+  const isAuthenticated = !!token && !!user;
+  const isAdmin = user?.role === 'ROLE_ADMIN';
+  const isStudent = user?.role === 'ROLE_STUDENT';
+
+  return (
+    <AuthContext.Provider
+      value={{
+        user,
+        token,
+        loading,
+        login,
+        register,
+        logout,
+        isAuthenticated,
+        isAdmin,
+        isStudent,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
+};
+
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
+};
