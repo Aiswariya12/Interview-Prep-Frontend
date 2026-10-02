@@ -3,10 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { subjectApi } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import {
-  GraduationCap,
   Sparkles,
   ArrowRight,
-  ShieldCheck,
   CheckCircle2,
   Clock,
   BarChart3,
@@ -20,22 +18,11 @@ import {
   Cpu,
   Network,
   Binary,
-  Layers,
-  Flame,
-  Award
 } from 'lucide-react';
+import heroBg from '../assets/Modern Tech Dashboard Hero Illustration.png';
 
 const iconMap = {
-  Coffee: Coffee,
-  Leaf: Leaf,
-  Atom: Atom,
-  Code2: Code2,
-  Database: Database,
-  Binary: Binary,
-  Server: Server,
-  Cpu: Cpu,
-  Network: Network,
-  Brain: Brain,
+  Coffee, Leaf, Atom, Code2, Database, Binary, Server, Cpu, Network, Brain,
 };
 
 const LandingPage = () => {
@@ -46,46 +33,56 @@ const LandingPage = () => {
 
   useEffect(() => {
     subjectApi.getAllActive()
-      .then((res) => {
-        setSubjects(res.data.data || []);
-      })
-      .catch((err) => {
-        console.error('Failed to load subjects:', err);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+      .then((res) => { setSubjects(res.data.data || []); })
+      .catch((err) => { console.error('Failed to load subjects:', err); })
+      .finally(() => { setLoading(false); });
   }, []);
 
   return (
     <div className="bg-slate-50 min-h-screen">
-      {/* Hero Section */}
-      <section className="relative overflow-hidden pt-12 pb-20 lg:pt-20 lg:pb-28 border-b border-slate-200 bg-radial-[at_top_right] from-indigo-100/60 via-slate-50 to-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto space-y-6">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-50 border border-indigo-200 text-indigo-700 text-xs font-semibold shadow-xs">
-              <Sparkles className="w-4 h-4 text-indigo-600" />
+
+      {/* ═══════════════════════════════════════════════
+          HERO SECTION — Modern Tech Dashboard Hero Illustration as Full Background
+      ═══════════════════════════════════════════════ */}
+      <section
+        className="relative min-h-[85vh] lg:min-h-[92vh] flex items-center overflow-hidden border-b border-slate-200 bg-[#edf3ff] bg-cover bg-no-repeat bg-right lg:bg-center"
+        style={{
+          backgroundImage: `url("${heroBg}")`,
+        }}
+      >
+        {/* Soft responsive overlay for smaller screens to keep text legible */}
+        <div className="absolute inset-0 bg-gradient-to-r from-white/95 via-white/85 to-transparent lg:from-white/60 lg:via-white/20 lg:to-transparent pointer-events-none" />
+
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24 w-full z-10">
+          <div className="max-w-xl lg:max-w-2xl space-y-7 text-left">
+
+            {/* Pill Badge */}
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/90 backdrop-blur-sm border border-indigo-200 text-indigo-700 text-xs font-semibold shadow-xs">
+              <Sparkles className="w-3.5 h-3.5 text-indigo-600 shrink-0" />
               <span>Full Stack Mock Assessment &amp; Interview Analytics</span>
             </div>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-tight leading-[1.15]">
+            {/* Main Heading */}
+            <h1 className="text-4xl sm:text-5xl lg:text-[3.4rem] font-extrabold text-slate-900 tracking-tight leading-[1.12]">
               Master Technical Interviews with{' '}
               <span className="bg-gradient-to-r from-indigo-600 to-violet-600 bg-clip-text text-transparent">
                 Data-Driven Precision
               </span>
             </h1>
 
-            <p className="text-base sm:text-lg text-slate-600 leading-relaxed max-w-2xl mx-auto">
+            {/* Subtitle */}
+            <p className="text-base sm:text-lg text-slate-600 leading-relaxed max-w-lg">
               Simulated exam environments for Java, Spring Boot, React, MySQL, DSA &amp; CS Fundamentals.
-              Randomized question generation, instant grading, in-depth concept explanations, and AI-driven weak topic detection.
+              Randomized question generation, instant grading, in-depth explanations, and AI-driven weak
+              topic detection.
             </p>
 
-            {/* CTAs */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row items-center gap-3 pt-1">
               {isAuthenticated ? (
                 <Link
                   to={isAdmin ? '/admin' : '/dashboard'}
-                  className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold shadow-lg shadow-indigo-200 flex items-center justify-center gap-2 transition-all group"
+                  className="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold shadow-lg shadow-indigo-200 flex items-center justify-center gap-2 transition-all group"
                 >
                   Go to {isAdmin ? 'Admin Portal' : 'Student Dashboard'}
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -94,14 +91,14 @@ const LandingPage = () => {
                 <>
                   <Link
                     to="/register"
-                    className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold shadow-lg shadow-indigo-200 flex items-center justify-center gap-2 transition-all group"
+                    className="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold shadow-lg shadow-indigo-200 flex items-center justify-center gap-2 transition-all group"
                   >
                     Start Free Mock Practice
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </Link>
                   <Link
                     to="/login"
-                    className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-white border border-slate-300 hover:bg-slate-50 text-slate-800 font-semibold shadow-xs flex items-center justify-center gap-2 transition-all"
+                    className="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-white border border-slate-300 hover:bg-slate-50 text-slate-800 font-semibold shadow-xs flex items-center justify-center gap-2 transition-all"
                   >
                     Live Demo Login
                   </Link>
@@ -109,30 +106,33 @@ const LandingPage = () => {
               )}
             </div>
 
-            {/* Highlight Metrics */}
-            <div className="pt-10 grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-2xl mx-auto text-left">
-              <div className="p-4 rounded-xl bg-white/80 backdrop-blur-xs border border-slate-200/80 shadow-xs">
+            {/* Metric Stat Cards */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-3 max-w-xl">
+              <div className="p-3.5 rounded-2xl bg-white/85 backdrop-blur-md border border-slate-200/80 shadow-xs text-left">
                 <p className="text-2xl font-bold text-slate-900">10+</p>
                 <p className="text-xs text-slate-500 font-medium">Core Tech Subjects</p>
               </div>
-              <div className="p-4 rounded-xl bg-white/80 backdrop-blur-xs border border-slate-200/80 shadow-xs">
+              <div className="p-3.5 rounded-2xl bg-white/85 backdrop-blur-md border border-slate-200/80 shadow-xs text-left">
                 <p className="text-2xl font-bold text-indigo-600">1,000+</p>
                 <p className="text-xs text-slate-500 font-medium">Vetted Questions</p>
               </div>
-              <div className="p-4 rounded-xl bg-white/80 backdrop-blur-xs border border-slate-200/80 shadow-xs">
+              <div className="p-3.5 rounded-2xl bg-white/85 backdrop-blur-md border border-slate-200/80 shadow-xs text-left">
                 <p className="text-2xl font-bold text-emerald-600">100%</p>
                 <p className="text-xs text-slate-500 font-medium">Detailed Solutions</p>
               </div>
-              <div className="p-4 rounded-xl bg-white/80 backdrop-blur-xs border border-slate-200/80 shadow-xs">
+              <div className="p-3.5 rounded-2xl bg-white/85 backdrop-blur-md border border-slate-200/80 shadow-xs text-left">
                 <p className="text-2xl font-bold text-violet-600">AI Coach</p>
                 <p className="text-xs text-slate-500 font-medium">Weak Area Radar</p>
               </div>
             </div>
+
           </div>
         </div>
       </section>
 
-      {/* Feature Highlights Grid */}
+      {/* ═══════════════════════════════════════════════
+          FEATURE HIGHLIGHTS
+      ═══════════════════════════════════════════════ */}
       <section className="py-16 lg:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-2xl mx-auto mb-16">
           <h2 className="text-xs font-bold uppercase tracking-wider text-indigo-600 mb-2">Platform Capabilities</h2>
@@ -178,7 +178,9 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* Subject Tracks Showcase */}
+      {/* ═══════════════════════════════════════════════
+          SUBJECT TRACKS SHOWCASE
+      ═══════════════════════════════════════════════ */}
       <section className="py-16 bg-slate-100/70 border-t border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-10">
@@ -197,7 +199,7 @@ const LandingPage = () => {
           {loading ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {[...Array(6)].map((_, i) => (
-                <div key={i} className="h-40 bg-white rounded-2xl border border-slate-200 animate-pulse"></div>
+                <div key={i} className="h-40 bg-white rounded-2xl border border-slate-200 animate-pulse" />
               ))}
             </div>
           ) : (
@@ -224,11 +226,8 @@ const LandingPage = () => {
                       <h3 className="text-lg font-bold text-slate-900 mb-1 group-hover:text-indigo-600 transition-colors">
                         {sub.name}
                       </h3>
-                      <p className="text-xs text-slate-500 line-clamp-2 leading-relaxed">
-                        {sub.description}
-                      </p>
+                      <p className="text-xs text-slate-500 line-clamp-2 leading-relaxed">{sub.description}</p>
                     </div>
-
                     <div className="pt-5 mt-5 border-t border-slate-100 flex items-center justify-between">
                       <span className="text-xs font-medium text-slate-400">Randomized Bank</span>
                       <button
@@ -246,7 +245,9 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* Production Architecture Banner */}
+      {/* ═══════════════════════════════════════════════
+          PRODUCTION ARCHITECTURE BANNER
+      ═══════════════════════════════════════════════ */}
       <section className="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="rounded-3xl bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 p-8 sm:p-12 text-white border border-slate-800 shadow-xl">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
@@ -258,8 +259,8 @@ const LandingPage = () => {
                 Built to Impress Technical Recruiters
               </h2>
               <p className="text-sm text-slate-300 leading-relaxed">
-                Featuring decoupled Vite+React frontend, Spring Boot 3 layered REST APIs, BCrypt &amp; JWT stateless security,
-                Spring Data JPA / Hibernate ORM, and MySQL schema design.
+                Featuring decoupled Vite+React frontend, Spring Boot 3 layered REST APIs, BCrypt &amp;
+                JWT stateless security, Spring Data JPA / Hibernate ORM, and MySQL schema design.
               </p>
               <div className="grid grid-cols-2 gap-3 pt-2 text-xs">
                 <div className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-emerald-400" /> Controller-Service-Repo Layers</div>
@@ -271,9 +272,9 @@ const LandingPage = () => {
 
             <div className="bg-slate-800/80 rounded-2xl p-6 border border-slate-700 font-mono text-xs text-slate-300 space-y-2 shadow-inner">
               <div className="flex items-center gap-2 text-slate-400 pb-2 border-b border-slate-700">
-                <div className="w-3 h-3 rounded-full bg-rose-500"></div>
-                <div className="w-3 h-3 rounded-full bg-amber-500"></div>
-                <div className="w-3 h-3 rounded-full bg-emerald-500"></div>
+                <div className="w-3 h-3 rounded-full bg-rose-500" />
+                <div className="w-3 h-3 rounded-full bg-amber-500" />
+                <div className="w-3 h-3 rounded-full bg-emerald-500" />
                 <span className="text-[11px] ml-2">system-architecture.json</span>
               </div>
               <p className="text-indigo-400 font-semibold">// Live Production Flow</p>
@@ -285,6 +286,7 @@ const LandingPage = () => {
           </div>
         </div>
       </section>
+
     </div>
   );
 };
