@@ -17,6 +17,7 @@ import TestHistory from './pages/student/TestHistory';
 import BookmarksPage from './pages/student/BookmarksPage';
 import DailyChallengePage from './pages/student/DailyChallengePage';
 import AdminDashboard from './pages/admin/AdminDashboard';
+import AIChatBot from './components/AIChatBot';
 
 const LayoutWrapper = ({ children }) => {
   const location = useLocation();
@@ -28,6 +29,7 @@ const LayoutWrapper = ({ children }) => {
       {!isLiveSession && <Navbar />}
       <main className="flex-1">{children}</main>
       {!isLiveSession && <Footer />}
+      <AIChatBot />
     </div>
   );
 };
