@@ -160,22 +160,8 @@ ACID guarantees database transaction reliability:
 **⚠️ Common Gotcha in Interviews:** Self-invocation! If method A calls method B annotated with \`@Transactional\` inside the same class, the Spring proxy is bypassed and the transaction will **NOT** trigger.`;
   }
 
-  // General fallback structured technical answer
-  return `### 🎯 Technical Evaluation: "${query}"
-
-Here is the structured interview breakdown for **${query}**:
-
-1. **Definition & Core Philosophy:**
-   - Clearly articulate the fundamental problem this concept or pattern solves in modern software architecture.
-2. **Key Trade-offs:**
-   - **Time Complexity:** Average vs Worst-case scenarios ($O(1)$ vs $O(N)$ or $O(N \\log N)$).
-   - **Space Complexity:** In-memory allocation vs storage overhead.
-3. **Common Pitfalls & Edge Cases:**
-   - Concurrency race conditions, null pointer checks, and boundary conditions.
-4. **Production Recommendation:**
-   - Always state *why* you chose this approach over alternatives during your interview discussion.
-
-*Tip: Feel free to ask for specific code implementations in Java, React, SQL, or Python!*`;
+  // General fallback if backend AI is unreachable
+  return `I'm here to help you prepare for technical interviews and answer your questions. Please ask any coding, interview, or general knowledge question, and I'll give you a detailed answer!`;
 };
 
 export const AIChatBot = () => {
