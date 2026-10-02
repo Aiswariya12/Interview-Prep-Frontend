@@ -99,4 +99,9 @@ export const adminApi = {
   deleteQuestion: (id) => api.delete(`/api/admin/questions/${id}`),
 };
 
+// AI Chatbot API
+export const aiApi = {
+  chat: (prompt) => api.post('/api/ai/chat', { prompt }),
+};
+
 export default api;
