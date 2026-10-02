@@ -42,31 +42,31 @@ const LandingPage = () => {
     <div className="bg-slate-50 min-h-screen">
 
       {/* ═══════════════════════════════════════════════
-          HERO SECTION — Modern Tech Dashboard Hero Illustration as Full Background
+          HERO SECTION — Scaled to Fit 100% in One Screen (Zero Scrolling Needed)
       ═══════════════════════════════════════════════ */}
       <section
-        className="relative min-h-[88vh] lg:min-h-[92vh] flex items-center overflow-hidden border-b border-slate-200 bg-[#edf4fe]"
+        className="relative h-[calc(100vh-4rem)] min-h-[560px] max-h-[900px] flex items-center overflow-hidden border-b border-slate-200 bg-[#edf4fe]"
         style={{
           backgroundImage: `url("${heroBg}")`,
           backgroundPosition: 'right center',
-          backgroundSize: 'cover',
+          backgroundSize: 'contain',
           backgroundRepeat: 'no-repeat',
         }}
       >
         {/* Soft responsive overlay for mobile/tablets so text is always 100% legible */}
         <div className="absolute inset-0 bg-gradient-to-r from-white/95 via-white/80 to-transparent lg:from-white/40 lg:via-transparent lg:to-transparent pointer-events-none" />
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20 w-full z-10">
-          <div className="w-full lg:w-[48%] max-w-lg lg:max-w-[520px] space-y-6 text-left">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 lg:py-6 w-full z-10">
+          <div className="w-full lg:w-[48%] max-w-lg lg:max-w-[500px] space-y-3.5 lg:space-y-4 text-left">
 
             {/* Pill Badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/95 backdrop-blur-sm border border-indigo-100 text-indigo-700 text-xs font-semibold shadow-xs">
-              <Sparkles className="w-3.5 h-3.5 text-indigo-600 shrink-0" />
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/95 backdrop-blur-sm border border-indigo-100 text-indigo-700 text-[11px] font-semibold shadow-xs">
+              <Sparkles className="w-3 h-3 text-indigo-600 shrink-0" />
               <span>Full Stack Mock Assessment &amp; Interview Analytics</span>
             </div>
 
             {/* Main Heading */}
-            <h1 className="text-4xl sm:text-5xl lg:text-[3.25rem] font-extrabold text-slate-900 tracking-tight leading-[1.12]">
+            <h1 className="text-3xl sm:text-4xl lg:text-[2.65rem] xl:text-[2.85rem] font-extrabold text-slate-900 tracking-tight leading-[1.14]">
               Master Technical
               <br />
               Interviews with{' '}
@@ -76,18 +76,18 @@ const LandingPage = () => {
             </h1>
 
             {/* Subtitle */}
-            <p className="text-base sm:text-lg text-slate-600 leading-relaxed max-w-md">
+            <p className="text-sm sm:text-[15px] lg:text-base text-slate-600 leading-relaxed max-w-md">
               Simulated exam environments for Java, Spring Boot, React, MySQL, DSA &amp; CS Fundamentals.
               Randomized question generation, instant grading, in-depth explanations, and AI-driven weak
               topic detection.
             </p>
 
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-1">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-0.5">
               {isAuthenticated ? (
                 <Link
                   to={isAdmin ? '/admin' : '/dashboard'}
-                  className="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white font-semibold shadow-lg shadow-indigo-200/50 flex items-center justify-center gap-2 transition-all group"
+                  className="w-full sm:w-auto px-6 py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white font-semibold shadow-lg shadow-indigo-200/50 flex items-center justify-center gap-2 transition-all text-sm group"
                 >
                   Go to {isAdmin ? 'Admin Portal' : 'Student Dashboard'}
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -96,14 +96,14 @@ const LandingPage = () => {
                 <>
                   <Link
                     to="/register"
-                    className="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white font-semibold shadow-lg shadow-indigo-200/50 flex items-center justify-center gap-2 transition-all group"
+                    className="w-full sm:w-auto px-6 py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white font-semibold shadow-lg shadow-indigo-200/50 flex items-center justify-center gap-2 transition-all text-sm group"
                   >
                     Start Free Mock Practice
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </Link>
                   <Link
                     to="/login"
-                    className="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-white/90 backdrop-blur-sm border border-slate-300 hover:bg-white text-slate-800 font-semibold shadow-xs flex items-center justify-center gap-2 transition-all"
+                    className="w-full sm:w-auto px-6 py-3 rounded-xl bg-white/90 backdrop-blur-sm border border-slate-300 hover:bg-white text-slate-800 font-semibold shadow-xs flex items-center justify-center gap-2 transition-all text-sm"
                   >
                     Live Demo Login
                   </Link>
@@ -112,22 +112,22 @@ const LandingPage = () => {
             </div>
 
             {/* Metric Stat Cards */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-2 max-w-lg">
-              <div className="p-3 rounded-2xl bg-white/90 backdrop-blur-md border border-white/80 shadow-xs text-left">
-                <p className="text-2xl font-extrabold text-slate-900">10+</p>
-                <p className="text-[11px] text-slate-500 font-medium mt-0.5">Core Tech Subjects</p>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1 max-w-lg">
+              <div className="p-2.5 rounded-xl bg-white/90 backdrop-blur-md border border-white/80 shadow-xs text-left">
+                <p className="text-xl lg:text-2xl font-black text-slate-900">10+</p>
+                <p className="text-[10px] text-slate-500 font-medium mt-0.5">Core Tech Subjects</p>
               </div>
-              <div className="p-3 rounded-2xl bg-white/90 backdrop-blur-md border border-white/80 shadow-xs text-left">
-                <p className="text-2xl font-extrabold text-indigo-600">1,000+</p>
-                <p className="text-[11px] text-slate-500 font-medium mt-0.5">Vetted Questions</p>
+              <div className="p-2.5 rounded-xl bg-white/90 backdrop-blur-md border border-white/80 shadow-xs text-left">
+                <p className="text-xl lg:text-2xl font-black text-indigo-600">1,000+</p>
+                <p className="text-[10px] text-slate-500 font-medium mt-0.5">Vetted Questions</p>
               </div>
-              <div className="p-3 rounded-2xl bg-white/90 backdrop-blur-md border border-white/80 shadow-xs text-left">
-                <p className="text-2xl font-extrabold text-emerald-600">100%</p>
-                <p className="text-[11px] text-slate-500 font-medium mt-0.5">Detailed Solutions</p>
+              <div className="p-2.5 rounded-xl bg-white/90 backdrop-blur-md border border-white/80 shadow-xs text-left">
+                <p className="text-xl lg:text-2xl font-black text-emerald-600">100%</p>
+                <p className="text-[10px] text-slate-500 font-medium mt-0.5">Detailed Solutions</p>
               </div>
-              <div className="p-3 rounded-2xl bg-white/90 backdrop-blur-md border border-white/80 shadow-xs text-left">
-                <p className="text-2xl font-extrabold text-violet-600">AI Coach</p>
-                <p className="text-[11px] text-slate-500 font-medium mt-0.5">Weak Area Radar</p>
+              <div className="p-2.5 rounded-xl bg-white/90 backdrop-blur-md border border-white/80 shadow-xs text-left">
+                <p className="text-xl lg:text-2xl font-black text-violet-600">AI Coach</p>
+                <p className="text-[10px] text-slate-500 font-medium mt-0.5">Weak Area Radar</p>
               </div>
             </div>
 
