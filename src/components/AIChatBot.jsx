@@ -329,23 +329,48 @@ export const AIChatBot = () => {
     setInputValue('');
     setIsLoading(true);
 
-    // 1. Instant conversational response for greetings & platform queries
+    // 1. Personalized Greeting (e.g. "hii" -> "Hello Aiswariya! How can I help you today?")
     const qLower = query.toLowerCase();
     if (['hi', 'hii', 'hiii', 'hello', 'hey', 'heyy', 'hola'].includes(qLower) || qLower.startsWith('hi ') || qLower.startsWith('hello ')) {
+      const firstName = user?.name ? user.name.split(' ')[0] : 'there';
       setTimeout(() => {
         const botMessage = {
           id: Date.now() + 1,
           role: 'assistant',
-          text: getExpertAnswer(query),
+          text: `Hello ${firstName}! How can I help you today?`,
           timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         };
         setMessages((prev) => [...prev, botMessage]);
         setIsLoading(false);
-      }, 400);
+      }, 150);
       return;
     }
 
-    // 2. Try Backend AI Proxy first (No CORS / No Turnstile token issues)
+    // 2. Simple Math evaluation (e.g. "1+2" -> "3", "25 * 4" -> "100")
+    const mathMatch = query.match(/^(?:what\s+is\s+)?(\d+(?:\.\d+)?\s*[\+\-\*\/%^]\s*\d+(?:\.\d+)?(?:\s*[\+\-\*\/%^]\s*\d+(?:\.\d+)?)*)\s*\??$/i);
+    if (mathMatch) {
+      try {
+        const expr = mathMatch[1].replace(/\^/g, '**');
+        if (/^[0-9\.\s\+\-\*\/\%]+$/.test(expr)) {
+          const res = Function(`"use strict"; return (${expr})`)();
+          setTimeout(() => {
+            const botMessage = {
+              id: Date.now() + 1,
+              role: 'assistant',
+              text: `${res}`,
+              timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+            };
+            setMessages((prev) => [...prev, botMessage]);
+            setIsLoading(false);
+          }, 100);
+          return;
+        }
+      } catch (e) {
+        // fallback to AI
+      }
+    }
+
+    // 3. Call Backend AI Proxy (ChatGPT/Gemini style answers)
     let aiAnswer = null;
     try {
       const res = await aiApi.chat(query);
@@ -353,25 +378,22 @@ export const AIChatBot = () => {
         aiAnswer = res.data.data.answer;
       }
     } catch (err) {
-      // Backend not reached or offline, fallback to expert knowledge engine
-      console.log('Backend AI proxy unavailable, switching to local knowledge engine');
+      console.log('Backend AI proxy error:', err);
     }
 
-    // 3. Fallback to expert technical knowledge synthesis
+    // 4. Fallback if backend AI is unavailable
     if (!aiAnswer) {
       aiAnswer = getExpertAnswer(query);
     }
 
-    setTimeout(() => {
-      const botMessage = {
-        id: Date.now() + 1,
-        role: 'assistant',
-        text: aiAnswer,
-        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-      };
-      setMessages((prev) => [...prev, botMessage]);
-      setIsLoading(false);
-    }, 500);
+    const botMessage = {
+      id: Date.now() + 1,
+      role: 'assistant',
+      text: aiAnswer,
+      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    };
+    setMessages((prev) => [...prev, botMessage]);
+    setIsLoading(false);
   };
 
   const handleCopy = (id, text) => {
