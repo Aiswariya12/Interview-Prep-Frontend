@@ -607,7 +607,7 @@ const AdminDashboard = () => {
                 <thead className="bg-slate-50 text-slate-500 font-semibold uppercase tracking-wider border-b border-slate-100">
                   <tr>
                     <th className="px-6 py-3.5">Student Name</th>
-                    <th className="px-6 py-3.5">Email</th>
+                    <th className="px-6 py-3.5">Student ID</th>
                     <th className="px-6 py-3.5">College / Institution</th>
                     <th className="px-6 py-3.5">Degree &amp; Branch</th>
                     <th className="px-6 py-3.5">Streak</th>
@@ -618,7 +618,7 @@ const AdminDashboard = () => {
                   {students.map((s) => (
                     <tr key={s.id} className="hover:bg-slate-50/50">
                       <td className="px-6 py-4 font-bold text-slate-900">{s.name}</td>
-                      <td className="px-6 py-4 text-slate-600">{s.email}</td>
+                      <td className="px-6 py-4 text-slate-600 font-mono font-medium">#{String(s.id || '').padStart(4, '0')}</td>
                       <td className="px-6 py-4 text-slate-700 font-medium">{s.college || 'N/A'}</td>
                       <td className="px-6 py-4 text-slate-500">
                         {s.degree} {s.branch ? `(${s.branch})` : ''} • {s.graduationYear || ''}

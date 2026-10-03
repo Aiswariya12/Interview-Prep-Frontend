@@ -18,12 +18,15 @@ const Login = () => {
     e.preventDefault();
     setError('');
 
-    if (!email || !password) {
+    const cleanEmail = email ? email.trim() : '';
+    const cleanPassword = password ? password.trim() : '';
+
+    if (!cleanEmail || !cleanPassword) {
       setError('Please provide both email and password.');
       return;
     }
 
-    const res = await login(email, password);
+    const res = await login(cleanEmail, cleanPassword);
     if (res.success) {
       if (res.user.role === 'ROLE_ADMIN') {
         navigate('/admin');
@@ -39,9 +42,6 @@ const Login = () => {
     if (role === 'student') {
       setEmail('student@interviewprep.com');
       setPassword('Student@123');
-    } else if (role === 'admin') {
-      setEmail('admin@interviewprep.com');
-      setPassword('Admin@123');
     }
   };
 
@@ -60,29 +60,21 @@ const Login = () => {
           </p>
         </div>
 
-        {/* 1-Click Demo Buttons for Fast Evaluation */}
-        <div className="p-3.5 rounded-2xl bg-indigo-50/70 border border-indigo-100 space-y-2">
-          <p className="text-[11px] font-bold uppercase tracking-wider text-indigo-900 flex items-center gap-1.5">
-            <UserCheck className="w-3.5 h-3.5 text-indigo-600" /> Quick Demo Credentials
-          </p>
-          <div className="grid grid-cols-2 gap-2">
-            <button
-              type="button"
-              onClick={() => fillDemo('student')}
-              className="py-1.5 px-2.5 rounded-lg bg-white border border-indigo-200 hover:border-indigo-400 text-xs font-semibold text-indigo-700 shadow-xs transition-colors text-left"
-            >
-              <span className="block text-[10px] text-slate-400 font-normal">Student Role</span>
-              Demo Student
-            </button>
-            <button
-              type="button"
-              onClick={() => fillDemo('admin')}
-              className="py-1.5 px-2.5 rounded-lg bg-white border border-indigo-200 hover:border-indigo-400 text-xs font-semibold text-slate-800 shadow-xs transition-colors text-left"
-            >
-              <span className="block text-[10px] text-slate-400 font-normal">Admin Role</span>
-              Demo Admin
-            </button>
+        {/* 1-Click Demo for Student Testing */}
+        <div className="p-3 rounded-2xl bg-indigo-50/60 border border-indigo-100 flex items-center justify-between gap-3">
+          <div>
+            <p className="text-xs font-semibold text-indigo-950 flex items-center gap-1.5">
+              <UserCheck className="w-3.5 h-3.5 text-indigo-600" /> Student Demo Access
+            </p>
+            <p className="text-[11px] text-slate-500">1-click login for student mock practice</p>
           </div>
+          <button
+            type="button"
+            onClick={() => fillDemo('student')}
+            className="py-1.5 px-3 rounded-lg bg-white border border-indigo-200 hover:border-indigo-400 hover:bg-indigo-50 text-xs font-semibold text-indigo-700 shadow-xs transition-all shrink-0"
+          >
+            Autofill Student
+          </button>
         </div>
 
         {error && (

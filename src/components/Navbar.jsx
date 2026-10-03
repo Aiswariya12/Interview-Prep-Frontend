@@ -171,9 +171,9 @@ const Navbar = () => {
                     >
                       <div className="px-4 py-2 border-b border-slate-100">
                         <p className="text-xs font-semibold text-slate-900 truncate">{user?.name}</p>
-                        <p className="text-xs text-slate-500 truncate">{user?.email}</p>
+                        <p className="text-[11px] text-indigo-600 font-medium truncate">{isAdmin ? 'Administrator' : 'Student Account'}</p>
                         {user?.college && (
-                          <p className="text-[11px] text-indigo-600 mt-1 truncate">{user.college}</p>
+                          <p className="text-[11px] text-slate-500 mt-0.5 truncate">{user.college}</p>
                         )}
                       </div>
 
@@ -247,7 +247,7 @@ const Navbar = () => {
             <>
               <div className="pb-3 border-b border-slate-100 mb-2">
                 <p className="font-semibold text-slate-900 text-sm">{user?.name}</p>
-                <p className="text-xs text-slate-500">{user?.email}</p>
+                <p className="text-xs text-indigo-600 font-medium">{isAdmin ? 'Administrator' : 'Student Account'}</p>
               </div>
 
               {isStudent && (

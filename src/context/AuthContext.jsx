@@ -47,7 +47,14 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem('interviewprep_user', JSON.stringify(userInfo));
       return { success: true, user: userInfo };
     } catch (err) {
-      const msg = err.response?.data?.message || 'Login failed. Please check your credentials.';
+      let msg = err.response?.data?.message;
+      if (!msg) {
+        if (err.message && (err.message.includes('Network') || err.code === 'ERR_NETWORK')) {
+          msg = 'Cannot connect to backend server. Make sure the Spring Boot backend is running on port 8082.';
+        } else {
+          msg = 'Invalid email or password. Please try again.';
+        }
+      }
       return { success: false, error: msg };
     } finally {
       setLoading(false);
