@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { adminApi, subjectApi, questionApi } from '../../services/api';
 import {
   ShieldAlert,
@@ -20,8 +20,29 @@ import {
   Calendar,
   Filter,
   ExternalLink,
-  GraduationCap
+  GraduationCap,
+  BarChart3,
+  PieChart as PieChartIcon,
+  Activity,
+  ArrowUpRight,
+  Zap,
+  Target
 } from 'lucide-react';
+import {
+  ResponsiveContainer,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  AreaChart,
+  Area,
+  PieChart,
+  Pie,
+  Cell
+} from 'recharts';
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState('interviews'); // 'interviews', 'students', 'questions', 'subjects'
@@ -124,6 +145,107 @@ const AdminDashboard = () => {
       console.error(err);
     }
   };
+
+  // 1. Subject-wise performance and interview count for graphs
+  const subjectChartData = useMemo(() => {
+    if (!interviews || interviews.length === 0) {
+      return subjects.map(s => ({
+        subject: s.name,
+        interviews: 0,
+        avgScore: 0,
+        topScore: 0
+      }));
+    }
+    const map = {};
+    interviews.forEach(test => {
+      const sub = test.subjectName || 'General';
+      if (!map[sub]) {
+        map[sub] = { subject: sub, interviews: 0, totalScore: 0, topScore: 0 };
+      }
+      map[sub].interviews += 1;
+      const pct = Number(test.percentage || 0);
+      map[sub].totalScore += pct;
+      if (pct > map[sub].topScore) map[sub].topScore = pct;
+    });
+
+    return Object.values(map).map(item => ({
+      subject: item.subject,
+      interviews: item.interviews,
+      avgScore: Math.round((item.totalScore / item.interviews) * 10) / 10,
+      topScore: Math.round(item.topScore * 10) / 10
+    })).sort((a, b) => b.interviews - a.interviews);
+  }, [interviews, subjects]);
+
+  // 2. Score Performance Tiers (Donut Chart)
+  const scoreTierData = useMemo(() => {
+    if (!interviews || interviews.length === 0) return [];
+    let distinction = 0;
+    let proficient = 0;
+    let average = 0;
+    let needsPractice = 0;
+
+    interviews.forEach(t => {
+      const p = Number(t.percentage || 0);
+      if (p >= 85) distinction++;
+      else if (p >= 70) proficient++;
+      else if (p >= 50) average++;
+      else needsPractice++;
+    });
+
+    return [
+      { name: 'Distinction (85-100%)', count: distinction, color: '#10b981' },
+      { name: 'Proficient (70-84%)', count: proficient, color: '#6366f1' },
+      { name: 'Average (50-69%)', count: average, color: '#f59e0b' },
+      { name: 'Needs Practice (<50%)', count: needsPractice, color: '#f43f5e' },
+    ].filter(item => item.count > 0);
+  }, [interviews]);
+
+  // 3. Chronological Interview Trend Data (Area Chart)
+  const trendChartData = useMemo(() => {
+    if (!interviews || interviews.length === 0) return [];
+    const list = [...interviews].reverse();
+    return list.map((test, index) => ({
+      id: `#${index + 1}`,
+      student: test.studentName || 'Student',
+      subject: test.subjectName || 'General',
+      score: Math.round(Number(test.percentage || 0)),
+      accuracy: Math.round(Number(test.accuracy || test.percentage || 0))
+    }));
+  }, [interviews]);
+
+  // 4. Difficulty Breakdown Data
+  const difficultyData = useMemo(() => {
+    if (!interviews || interviews.length === 0) return [];
+    const diffs = {
+      EASY: { count: 0, total: 0, color: 'bg-emerald-500' },
+      MEDIUM: { count: 0, total: 0, color: 'bg-indigo-500' },
+      HARD: { count: 0, total: 0, color: 'bg-rose-500' }
+    };
+    interviews.forEach(t => {
+      const d = (t.difficulty || 'MEDIUM').toUpperCase();
+      if (!diffs[d]) diffs[d] = { count: 0, total: 0, color: 'bg-slate-500' };
+      diffs[d].count++;
+      diffs[d].total += Number(t.percentage || 0);
+    });
+
+    return Object.keys(diffs).map(key => ({
+      difficulty: key,
+      attempts: diffs[key].count,
+      avgScore: diffs[key].count > 0 ? Math.round((diffs[key].total / diffs[key].count) * 10) / 10 : 0,
+      color: diffs[key].color
+    }));
+  }, [interviews]);
+
+  // Top Subject and Top Interview
+  const topSubject = useMemo(() => {
+    if (!subjectChartData || subjectChartData.length === 0) return 'N/A';
+    return [...subjectChartData].sort((a, b) => b.avgScore - a.avgScore)[0]?.subject || 'N/A';
+  }, [subjectChartData]);
+
+  const topInterview = useMemo(() => {
+    if (!interviews || interviews.length === 0) return null;
+    return [...interviews].sort((a, b) => Number(b.percentage || 0) - Number(a.percentage || 0))[0];
+  }, [interviews]);
 
   // Load topics when question form subject changes
   useEffect(() => {
@@ -290,64 +412,81 @@ const AdminDashboard = () => {
         <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
           <div
             onClick={() => setActiveTab('students')}
-            className="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs cursor-pointer hover:border-indigo-400 hover:shadow-sm transition-all"
+            className="p-4 rounded-2xl bg-white border border-slate-200/90 shadow-xs cursor-pointer hover:border-indigo-400 hover:shadow-md card-hover transition-all group"
           >
             <div className="flex items-center justify-between text-slate-400 mb-1.5">
-              <span className="text-xs font-semibold text-slate-500">Total Students</span>
-              <Users className="w-4 h-4 text-indigo-600" />
+              <span className="text-xs font-semibold text-slate-500 group-hover:text-indigo-600 transition-colors">Total Students</span>
+              <Users className="w-4 h-4 text-indigo-600 group-hover:scale-110 transition-transform" />
             </div>
             <p className="text-2xl font-extrabold text-slate-900">{stats?.totalStudents || students.length || 0}</p>
           </div>
 
           <div
             onClick={() => setActiveTab('questions')}
-            className="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs cursor-pointer hover:border-emerald-400 hover:shadow-sm transition-all"
+            className="p-4 rounded-2xl bg-white border border-slate-200/90 shadow-xs cursor-pointer hover:border-emerald-400 hover:shadow-md card-hover transition-all group"
           >
             <div className="flex items-center justify-between text-slate-400 mb-1.5">
-              <span className="text-xs font-semibold text-slate-500">Total Questions</span>
-              <HelpCircle className="w-4 h-4 text-emerald-600" />
+              <span className="text-xs font-semibold text-slate-500 group-hover:text-emerald-600 transition-colors">Total Questions</span>
+              <HelpCircle className="w-4 h-4 text-emerald-600 group-hover:scale-110 transition-transform" />
             </div>
             <p className="text-2xl font-extrabold text-emerald-600">{stats?.totalQuestions || questions.length || 0}</p>
           </div>
 
           <div
             onClick={() => { setActiveTab('interviews'); setInterviewStudentFilter(''); }}
-            className="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs cursor-pointer hover:border-violet-400 hover:shadow-sm transition-all"
+            className="p-4 rounded-2xl bg-white border border-slate-200/90 shadow-xs cursor-pointer hover:border-violet-400 hover:shadow-md card-hover transition-all group"
           >
             <div className="flex items-center justify-between text-slate-400 mb-1.5">
-              <span className="text-xs font-semibold text-slate-500">Completed Interviews</span>
-              <BookOpen className="w-4 h-4 text-violet-600" />
+              <span className="text-xs font-semibold text-slate-500 group-hover:text-violet-600 transition-colors">Completed Interviews</span>
+              <BookOpen className="w-4 h-4 text-violet-600 group-hover:scale-110 transition-transform" />
             </div>
             <p className="text-2xl font-extrabold text-violet-600">{interviews.length || stats?.totalMockTests || 0}</p>
           </div>
 
           <div
             onClick={() => setActiveTab('subjects')}
-            className="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs cursor-pointer hover:border-sky-400 hover:shadow-sm transition-all"
+            className="p-4 rounded-2xl bg-white border border-slate-200/90 shadow-xs cursor-pointer hover:border-sky-400 hover:shadow-md card-hover transition-all group"
           >
             <div className="flex items-center justify-between text-slate-400 mb-1.5">
-              <span className="text-xs font-semibold text-slate-500">Active Tracks</span>
-              <Layers className="w-4 h-4 text-sky-600" />
+              <span className="text-xs font-semibold text-slate-500 group-hover:text-sky-600 transition-colors">Active Tracks</span>
+              <Layers className="w-4 h-4 text-sky-600 group-hover:scale-110 transition-transform" />
             </div>
             <p className="text-2xl font-extrabold text-slate-900">{stats?.totalSubjects || subjects.length || 0}</p>
           </div>
 
-          <div className="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs col-span-2 sm:col-span-1">
+          <div
+            onClick={() => setActiveTab('analytics')}
+            className="p-4 rounded-2xl bg-white border border-slate-200/90 shadow-xs col-span-2 sm:col-span-1 cursor-pointer hover:border-amber-400 hover:shadow-md card-hover transition-all group"
+          >
             <div className="flex items-center justify-between text-slate-400 mb-1.5">
-              <span className="text-xs font-semibold text-slate-500">Platform Avg</span>
-              <TrendingUp className="w-4 h-4 text-amber-500" />
+              <span className="text-xs font-semibold text-slate-500 group-hover:text-amber-600 transition-colors">Platform Avg</span>
+              <TrendingUp className="w-4 h-4 text-amber-500 group-hover:scale-110 transition-transform" />
             </div>
             <p className="text-2xl font-extrabold text-amber-600">{stats?.averagePlatformScore || 0}%</p>
+            <p className="text-[10px] text-indigo-600 font-semibold mt-0.5 flex items-center gap-0.5 group-hover:underline">
+              View Visual Graphs <ArrowUpRight className="w-3 h-3" />
+            </p>
           </div>
         </div>
 
         {/* Navigation Tabs */}
         <div className="flex flex-wrap items-center gap-2 border-b border-slate-200 pb-3">
           <button
+            onClick={() => setActiveTab('analytics')}
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+              activeTab === 'analytics'
+                ? 'bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-sm shadow-indigo-300 scale-[1.02]'
+                : 'text-slate-600 hover:bg-slate-200/70'
+            }`}
+          >
+            <BarChart3 className="w-3.5 h-3.5" />
+            Performance Analytics &amp; Graphs
+          </button>
+          <button
             onClick={() => { setActiveTab('interviews'); setInterviewStudentFilter(''); }}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
               activeTab === 'interviews'
-                ? 'bg-indigo-600 text-white shadow-sm shadow-indigo-200'
+                ? 'bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-sm shadow-indigo-300 scale-[1.02]'
                 : 'text-slate-600 hover:bg-slate-200/70'
             }`}
           >
@@ -356,9 +495,9 @@ const AdminDashboard = () => {
           </button>
           <button
             onClick={() => setActiveTab('students')}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
               activeTab === 'students'
-                ? 'bg-slate-900 text-white shadow-xs'
+                ? 'bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-sm shadow-indigo-300 scale-[1.02]'
                 : 'text-slate-600 hover:bg-slate-200/70'
             }`}
           >
@@ -367,9 +506,9 @@ const AdminDashboard = () => {
           </button>
           <button
             onClick={() => setActiveTab('questions')}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
               activeTab === 'questions'
-                ? 'bg-slate-900 text-white shadow-xs'
+                ? 'bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-sm shadow-indigo-300 scale-[1.02]'
                 : 'text-slate-600 hover:bg-slate-200/70'
             }`}
           >
@@ -378,9 +517,9 @@ const AdminDashboard = () => {
           </button>
           <button
             onClick={() => setActiveTab('subjects')}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
               activeTab === 'subjects'
-                ? 'bg-slate-900 text-white shadow-xs'
+                ? 'bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-sm shadow-indigo-300 scale-[1.02]'
                 : 'text-slate-600 hover:bg-slate-200/70'
             }`}
           >
@@ -388,6 +527,239 @@ const AdminDashboard = () => {
             Subjects &amp; Topics
           </button>
         </div>
+
+        {/* TAB 0: PERFORMANCE ANALYTICS & GRAPHS */}
+        {activeTab === 'analytics' && (
+          <div className="space-y-6 animate-fade-in-up">
+            {/* Analytics Hero / Insight Banner */}
+            <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-indigo-900 via-slate-900 to-indigo-950 text-white border border-indigo-500/20 shadow-xl relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
+              <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+                <div>
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/20 border border-indigo-400/30 text-indigo-300 text-xs font-bold mb-3">
+                    <Activity className="w-3.5 h-3.5 text-indigo-400 animate-pulse" />
+                    <span>Live Intelligence &amp; Performance Visualizer</span>
+                  </div>
+                  <h2 className="text-xl sm:text-2xl font-black tracking-tight">
+                    Assessment Analytics &amp; Visual Distributions
+                  </h2>
+                  <p className="text-xs sm:text-sm text-slate-300 max-w-2xl mt-1">
+                    Accurate graphical representations of student mock scores, subject proficiency, score tiers, and progression timelines.
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3 shrink-0">
+                  <div className="p-3.5 rounded-2xl bg-white/10 backdrop-blur-md border border-white/10">
+                    <p className="text-[11px] text-slate-300 font-medium">Top Subject</p>
+                    <p className="text-base font-extrabold text-white mt-0.5">{topSubject}</p>
+                  </div>
+                  <div className="p-3.5 rounded-2xl bg-white/10 backdrop-blur-md border border-white/10">
+                    <p className="text-[11px] text-slate-300 font-medium">Peak Mock Score</p>
+                    <p className="text-base font-extrabold text-emerald-400 mt-0.5">
+                      {topInterview ? `${topInterview.percentage}%` : 'N/A'}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Graphs Grid: 2 Columns */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {/* GRAPH 1: Subject-wise Performance & Attempts */}
+              <div className="p-6 rounded-3xl bg-white border border-slate-200/80 shadow-xs space-y-4 card-hover">
+                <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+                  <div>
+                    <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+                      <BarChart3 className="w-4 h-4 text-indigo-600" />
+                      Subject Performance &amp; Test Volume
+                    </h3>
+                    <p className="text-xs text-slate-500">Average score (%) vs total student interviews per track</p>
+                  </div>
+                  <span className="text-[11px] font-semibold px-2.5 py-1 rounded-full bg-indigo-50 text-indigo-700">
+                    {subjectChartData.length} Subjects
+                  </span>
+                </div>
+
+                <div className="h-72 w-full pt-2">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart data={subjectChartData} margin={{ top: 10, right: 10, left: -20, bottom: 20 }}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
+                      <XAxis dataKey="subject" tick={{ fontSize: 10, fill: '#64748b' }} interval={0} angle={-20} textAnchor="end" />
+                      <YAxis tick={{ fontSize: 10, fill: '#64748b' }} domain={[0, 100]} />
+                      <Tooltip
+                        contentStyle={{
+                          backgroundColor: '#0f172a',
+                          borderColor: '#334155',
+                          borderRadius: '12px',
+                          color: '#fff',
+                          fontSize: '11px',
+                          boxShadow: '0 10px 25px -5px rgba(0,0,0,0.3)'
+                        }}
+                        formatter={(val, name) => [
+                          name === 'Avg Score (%)' ? `${val}%` : `${val} Tests`,
+                          name
+                        ]}
+                      />
+                      <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '10px' }} />
+                      <Bar dataKey="avgScore" name="Avg Score (%)" fill="#6366f1" radius={[6, 6, 0, 0]} maxBarSize={32} />
+                      <Bar dataKey="interviews" name="Interviews Taken" fill="#06b6d4" radius={[6, 6, 0, 0]} maxBarSize={32} />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
+
+              {/* GRAPH 2: Score Tier Distribution */}
+              <div className="p-6 rounded-3xl bg-white border border-slate-200/80 shadow-xs space-y-4 card-hover">
+                <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+                  <div>
+                    <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+                      <PieChartIcon className="w-4 h-4 text-violet-600" />
+                      Candidate Score Tier Distribution
+                    </h3>
+                    <p className="text-xs text-slate-500">Breakdown of student performance across score brackets</p>
+                  </div>
+                  <span className="text-[11px] font-semibold px-2.5 py-1 rounded-full bg-violet-50 text-violet-700">
+                    {interviews.length} Tests
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 items-center gap-4 pt-2">
+                  <div className="h-64 w-full">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <PieChart>
+                        <Pie
+                          data={scoreTierData}
+                          innerRadius={55}
+                          outerRadius={80}
+                          paddingAngle={4}
+                          dataKey="count"
+                        >
+                          {scoreTierData.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={entry.color} />
+                          ))}
+                        </Pie>
+                        <Tooltip
+                          contentStyle={{
+                            backgroundColor: '#0f172a',
+                            borderColor: '#334155',
+                            borderRadius: '12px',
+                            color: '#fff',
+                            fontSize: '11px',
+                          }}
+                          formatter={(value, name) => [`${value} Interviews`, name]}
+                        />
+                      </PieChart>
+                    </ResponsiveContainer>
+                  </div>
+
+                  {/* Tier Legend */}
+                  <div className="space-y-2.5 pr-2">
+                    {scoreTierData.map((item, idx) => (
+                      <div key={idx} className="flex items-center justify-between text-xs p-2.5 rounded-xl bg-slate-50 border border-slate-100">
+                        <div className="flex items-center gap-2">
+                          <span className="w-3 h-3 rounded-full shrink-0" style={{ backgroundColor: item.color }} />
+                          <span className="font-semibold text-slate-700">{item.name}</span>
+                        </div>
+                        <span className="font-bold text-slate-900">
+                          {item.count} ({interviews.length > 0 ? Math.round((item.count / interviews.length) * 100) : 0}%)
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* GRAPH 3: Chronological Score Progression Trend */}
+              <div className="p-6 rounded-3xl bg-white border border-slate-200/80 shadow-xs space-y-4 card-hover lg:col-span-2">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2 border-b border-slate-100">
+                  <div>
+                    <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+                      <TrendingUp className="w-4 h-4 text-emerald-600" />
+                      Mock Interview Progression Trend
+                    </h3>
+                    <p className="text-xs text-slate-500">Sequential score trajectory across all completed student assessments</p>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className="text-xs font-semibold text-slate-500">
+                      Platform Mean: <strong className="text-amber-600">{stats?.averagePlatformScore || 0}%</strong>
+                    </span>
+                  </div>
+                </div>
+
+                <div className="h-64 w-full pt-2">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <AreaChart data={trendChartData} margin={{ top: 10, right: 20, left: -20, bottom: 0 }}>
+                      <defs>
+                        <linearGradient id="scoreTrendGrad" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor="#6366f1" stopOpacity={0.4} />
+                          <stop offset="95%" stopColor="#6366f1" stopOpacity={0.0} />
+                        </linearGradient>
+                      </defs>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
+                      <XAxis dataKey="id" tick={{ fontSize: 11, fill: '#64748b' }} />
+                      <YAxis domain={[0, 100]} tick={{ fontSize: 11, fill: '#64748b' }} unit="%" />
+                      <Tooltip
+                        contentStyle={{
+                          backgroundColor: '#0f172a',
+                          borderColor: '#334155',
+                          borderRadius: '12px',
+                          color: '#fff',
+                          fontSize: '11px',
+                          boxShadow: '0 10px 25px -5px rgba(0,0,0,0.3)'
+                        }}
+                        formatter={(val, name, item) => [
+                          `${val}% (${item.payload.student} - ${item.payload.subject})`,
+                          'Score'
+                        ]}
+                      />
+                      <Area
+                        type="monotone"
+                        dataKey="score"
+                        stroke="#4f46e5"
+                        strokeWidth={2.5}
+                        fill="url(#scoreTrendGrad)"
+                      />
+                    </AreaChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
+
+              {/* CARD 4: Difficulty Matrix & Benchmarks */}
+              <div className="p-6 rounded-3xl bg-white border border-slate-200/80 shadow-xs space-y-4 card-hover lg:col-span-2">
+                <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+                  <div>
+                    <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+                      <Target className="w-4 h-4 text-indigo-600" />
+                      Assessment Difficulty Breakdown &amp; Benchmark Metrics
+                    </h3>
+                    <p className="text-xs text-slate-500">Evaluation difficulty tiers and candidate performance averages</p>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-1">
+                  {difficultyData.map((d, i) => (
+                    <div key={i} className="p-4 rounded-2xl bg-slate-50 border border-slate-200/70 space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-bold text-slate-800 tracking-wide">{d.difficulty} TIER</span>
+                        <span className="text-[11px] font-semibold text-slate-500">{d.attempts} Mocks</span>
+                      </div>
+                      <div className="flex items-baseline justify-between">
+                        <span className="text-xs text-slate-500 font-medium">Avg Score:</span>
+                        <span className="text-xl font-extrabold text-slate-900">{d.avgScore}%</span>
+                      </div>
+                      <div className="w-full h-2 rounded-full bg-slate-200 overflow-hidden">
+                        <div
+                          className={`h-full rounded-full ${d.color} transition-all duration-500`}
+                          style={{ width: `${Math.min(d.avgScore, 100)}%` }}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* TAB 1: QUESTION BANK MANAGEMENT */}
         {activeTab === 'questions' && (

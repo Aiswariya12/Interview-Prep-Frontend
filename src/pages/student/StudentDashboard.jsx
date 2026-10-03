@@ -72,15 +72,19 @@ const StudentDashboard = () => {
   return (
     <div className="min-h-screen bg-slate-50/60 pb-16">
       {/* Top Banner / Student Welcome */}
-      <div className="bg-white border-b border-slate-200 py-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="bg-gradient-to-r from-white via-indigo-50/30 to-white border-b border-slate-200/80 py-8 relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
-              <div className="flex items-center gap-2 mb-1">
-                <span className="text-xs font-bold uppercase tracking-wider text-indigo-600 bg-indigo-50 px-2.5 py-0.5 rounded-full border border-indigo-100">
-                  Student Dashboard
+              <div className="flex items-center gap-2 mb-1.5">
+                <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-indigo-700 bg-indigo-50/90 px-3 py-1 rounded-full border border-indigo-200/80 shadow-xs">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                  </span>
+                  Candidate Workspace
                 </span>
-                <span className="text-xs text-slate-400 font-medium">• {user?.college || 'Computer Science'}</span>
+                <span className="text-xs text-slate-500 font-medium">• {user?.college || 'Computer Science'}</span>
               </div>
               <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
                 Welcome back, {user?.name || 'Candidate'}!
@@ -93,15 +97,15 @@ const StudentDashboard = () => {
             <div className="flex items-center gap-3">
               <button
                 onClick={() => setAiCoachOpen(true)}
-                className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white text-xs font-semibold shadow-md shadow-indigo-200 flex items-center gap-2 transition-all hover:scale-[1.02]"
+                className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white text-xs font-bold shadow-md shadow-indigo-200 hover:shadow-indigo-300 flex items-center gap-2 transition-all hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
               >
-                <Sparkles className="w-4 h-4 text-amber-300" />
+                <Sparkles className="w-4 h-4 text-amber-300 animate-spin" style={{ animationDuration: '6s' }} />
                 AI Interview Coach
               </button>
 
               <Link
                 to="/mock/new"
-                className="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold shadow-md shadow-indigo-200 flex items-center gap-2 transition-all hover:scale-[1.02]"
+                className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white text-xs font-bold shadow-md shadow-indigo-200 hover:shadow-indigo-300 flex items-center gap-2 transition-all hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
               >
                 <BookOpen className="w-4 h-4" />
                 Start Mock Test
@@ -111,58 +115,58 @@ const StudentDashboard = () => {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 space-y-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 space-y-8 animate-fade-in-up">
         {/* Metric Cards Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-          <div className="p-4 rounded-2xl bg-white border border-slate-200/80 shadow-xs">
+          <div className="p-4 rounded-2xl bg-white border border-slate-200/90 shadow-xs card-hover group hover:border-indigo-400">
             <div className="flex items-center justify-between text-slate-400 mb-2">
-              <span className="text-xs font-semibold text-slate-500">Total Tests</span>
-              <BookOpen className="w-4 h-4 text-indigo-500" />
+              <span className="text-xs font-semibold text-slate-500 group-hover:text-indigo-600 transition-colors">Total Tests</span>
+              <BookOpen className="w-4 h-4 text-indigo-500 group-hover:scale-110 transition-transform" />
             </div>
             <p className="text-2xl font-extrabold text-slate-900">{dashboard?.totalTests || 0}</p>
             <p className="text-[11px] text-slate-400 mt-1">Completed Mocks</p>
           </div>
 
-          <div className="p-4 rounded-2xl bg-white border border-slate-200/80 shadow-xs">
+          <div className="p-4 rounded-2xl bg-white border border-slate-200/90 shadow-xs card-hover group hover:border-emerald-400">
             <div className="flex items-center justify-between text-slate-400 mb-2">
-              <span className="text-xs font-semibold text-slate-500">Average Score</span>
-              <TrendingUp className="w-4 h-4 text-emerald-500" />
+              <span className="text-xs font-semibold text-slate-500 group-hover:text-emerald-600 transition-colors">Average Score</span>
+              <TrendingUp className="w-4 h-4 text-emerald-500 group-hover:scale-110 transition-transform" />
             </div>
             <p className="text-2xl font-extrabold text-emerald-600">{dashboard?.averageScore || 0}%</p>
             <p className="text-[11px] text-slate-400 mt-1">Overall Mean</p>
           </div>
 
-          <div className="p-4 rounded-2xl bg-white border border-slate-200/80 shadow-xs">
+          <div className="p-4 rounded-2xl bg-white border border-slate-200/90 shadow-xs card-hover group hover:border-sky-400">
             <div className="flex items-center justify-between text-slate-400 mb-2">
-              <span className="text-xs font-semibold text-slate-500">Accuracy</span>
-              <CheckCircle2 className="w-4 h-4 text-sky-500" />
+              <span className="text-xs font-semibold text-slate-500 group-hover:text-sky-600 transition-colors">Accuracy</span>
+              <CheckCircle2 className="w-4 h-4 text-sky-500 group-hover:scale-110 transition-transform" />
             </div>
             <p className="text-2xl font-extrabold text-sky-600">{dashboard?.accuracy || 0}%</p>
             <p className="text-[11px] text-slate-400 mt-1">Correct / Attempted</p>
           </div>
 
-          <div className="p-4 rounded-2xl bg-white border border-slate-200/80 shadow-xs">
+          <div className="p-4 rounded-2xl bg-white border border-slate-200/90 shadow-xs card-hover group hover:border-violet-400">
             <div className="flex items-center justify-between text-slate-400 mb-2">
-              <span className="text-xs font-semibold text-slate-500">Questions</span>
-              <BarChart3 className="w-4 h-4 text-violet-500" />
+              <span className="text-xs font-semibold text-slate-500 group-hover:text-violet-600 transition-colors">Questions</span>
+              <BarChart3 className="w-4 h-4 text-violet-500 group-hover:scale-110 transition-transform" />
             </div>
             <p className="text-2xl font-extrabold text-slate-900">{dashboard?.questionsSolved || 0}</p>
             <p className="text-[11px] text-slate-400 mt-1">Attempted in Tests</p>
           </div>
 
-          <div className="p-4 rounded-2xl bg-white border border-slate-200/80 shadow-xs">
+          <div className="p-4 rounded-2xl bg-white border border-slate-200/90 shadow-xs card-hover group hover:border-amber-400">
             <div className="flex items-center justify-between text-slate-400 mb-2">
-              <span className="text-xs font-semibold text-slate-500">Best Score</span>
-              <Trophy className="w-4 h-4 text-amber-500" />
+              <span className="text-xs font-semibold text-slate-500 group-hover:text-amber-600 transition-colors">Best Score</span>
+              <Trophy className="w-4 h-4 text-amber-500 group-hover:scale-110 transition-transform" />
             </div>
             <p className="text-2xl font-extrabold text-amber-600">{dashboard?.bestScore || 0}%</p>
             <p className="text-[11px] text-slate-400 mt-1">Personal Record</p>
           </div>
 
-          <div className="p-4 rounded-2xl bg-white border border-slate-200/80 shadow-xs">
+          <div className="p-4 rounded-2xl bg-white border border-slate-200/90 shadow-xs card-hover group hover:border-rose-400">
             <div className="flex items-center justify-between text-slate-400 mb-2">
-              <span className="text-xs font-semibold text-slate-500">Active Streak</span>
-              <Flame className="w-4 h-4 text-rose-500 fill-rose-500" />
+              <span className="text-xs font-semibold text-slate-500 group-hover:text-rose-600 transition-colors">Active Streak</span>
+              <Flame className="w-4 h-4 text-rose-500 fill-rose-500 group-hover:scale-110 transition-transform" />
             </div>
             <p className="text-2xl font-extrabold text-rose-600">{dashboard?.streakDays || 1} Days</p>
             <p className="text-[11px] text-slate-400 mt-1">Continuous Practice</p>
