@@ -15,15 +15,27 @@ import {
   Code,
   Sparkles,
   Layers,
-  AlertCircle
+  AlertCircle,
+  Award,
+  Calendar,
+  Filter,
+  ExternalLink,
+  GraduationCap
 } from 'lucide-react';
 
 const AdminDashboard = () => {
-  const [activeTab, setActiveTab] = useState('questions'); // 'questions', 'subjects', 'students'
+  const [activeTab, setActiveTab] = useState('interviews'); // 'interviews', 'students', 'questions', 'subjects'
   const [stats, setStats] = useState(null);
   const [subjects, setSubjects] = useState([]);
   const [questions, setQuestions] = useState([]);
   const [students, setStudents] = useState([]);
+  const [interviews, setInterviews] = useState([]);
+
+  // Interview Filters
+  const [interviewStudentFilter, setInterviewStudentFilter] = useState('');
+  const [interviewSubjectFilter, setInterviewSubjectFilter] = useState('');
+  const [interviewDifficultyFilter, setInterviewDifficultyFilter] = useState('');
+  const [interviewSearch, setInterviewSearch] = useState('');
 
   // Question Filter & Pagination
   const [filterSubjectId, setFilterSubjectId] = useState('');
@@ -72,10 +84,11 @@ const AdminDashboard = () => {
   const loadInitialAdminData = async () => {
     setLoading(true);
     try {
-      const [dashRes, subRes, stuRes] = await Promise.allSettled([
+      const [dashRes, subRes, stuRes, intRes] = await Promise.allSettled([
         adminApi.getDashboard(),
         subjectApi.getAllActive(),
         adminApi.getStudents(),
+        adminApi.getInterviews(),
       ]);
 
       if (dashRes.status === 'fulfilled') setStats(dashRes.value.data.data);
@@ -85,6 +98,7 @@ const AdminDashboard = () => {
         if (sList.length > 0) setSelectedSubForTopic(sList[0].id);
       }
       if (stuRes.status === 'fulfilled') setStudents(stuRes.value.data.data || []);
+      if (intRes.status === 'fulfilled') setInterviews(intRes.value.data.data || []);
     } catch (err) {
       console.error(err);
     } finally {
@@ -274,36 +288,48 @@ const AdminDashboard = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 space-y-8">
         {/* Platform Overview Stats */}
         <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
-          <div className="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs">
+          <div
+            onClick={() => setActiveTab('students')}
+            className="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs cursor-pointer hover:border-indigo-400 hover:shadow-sm transition-all"
+          >
             <div className="flex items-center justify-between text-slate-400 mb-1.5">
               <span className="text-xs font-semibold text-slate-500">Total Students</span>
               <Users className="w-4 h-4 text-indigo-600" />
             </div>
-            <p className="text-2xl font-extrabold text-slate-900">{stats?.totalStudents || 0}</p>
+            <p className="text-2xl font-extrabold text-slate-900">{stats?.totalStudents || students.length || 0}</p>
           </div>
 
-          <div className="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs">
+          <div
+            onClick={() => setActiveTab('questions')}
+            className="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs cursor-pointer hover:border-emerald-400 hover:shadow-sm transition-all"
+          >
             <div className="flex items-center justify-between text-slate-400 mb-1.5">
               <span className="text-xs font-semibold text-slate-500">Total Questions</span>
               <HelpCircle className="w-4 h-4 text-emerald-600" />
             </div>
-            <p className="text-2xl font-extrabold text-emerald-600">{stats?.totalQuestions || 0}</p>
+            <p className="text-2xl font-extrabold text-emerald-600">{stats?.totalQuestions || questions.length || 0}</p>
           </div>
 
-          <div className="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs">
+          <div
+            onClick={() => { setActiveTab('interviews'); setInterviewStudentFilter(''); }}
+            className="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs cursor-pointer hover:border-violet-400 hover:shadow-sm transition-all"
+          >
             <div className="flex items-center justify-between text-slate-400 mb-1.5">
-              <span className="text-xs font-semibold text-slate-500">Completed Tests</span>
+              <span className="text-xs font-semibold text-slate-500">Completed Interviews</span>
               <BookOpen className="w-4 h-4 text-violet-600" />
             </div>
-            <p className="text-2xl font-extrabold text-slate-900">{stats?.totalMockTests || 0}</p>
+            <p className="text-2xl font-extrabold text-violet-600">{interviews.length || stats?.totalMockTests || 0}</p>
           </div>
 
-          <div className="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs">
+          <div
+            onClick={() => setActiveTab('subjects')}
+            className="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs cursor-pointer hover:border-sky-400 hover:shadow-sm transition-all"
+          >
             <div className="flex items-center justify-between text-slate-400 mb-1.5">
-              <span className="text-xs font-semibold text-slate-500">Active Subjects</span>
+              <span className="text-xs font-semibold text-slate-500">Active Tracks</span>
               <Layers className="w-4 h-4 text-sky-600" />
             </div>
-            <p className="text-2xl font-extrabold text-slate-900">{stats?.totalSubjects || 0}</p>
+            <p className="text-2xl font-extrabold text-slate-900">{stats?.totalSubjects || subjects.length || 0}</p>
           </div>
 
           <div className="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs col-span-2 sm:col-span-1">
@@ -316,36 +342,50 @@ const AdminDashboard = () => {
         </div>
 
         {/* Navigation Tabs */}
-        <div className="flex items-center gap-2 border-b border-slate-200 pb-3">
+        <div className="flex flex-wrap items-center gap-2 border-b border-slate-200 pb-3">
           <button
-            onClick={() => setActiveTab('questions')}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
-              activeTab === 'questions'
-                ? 'bg-slate-900 text-white shadow-xs'
+            onClick={() => { setActiveTab('interviews'); setInterviewStudentFilter(''); }}
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+              activeTab === 'interviews'
+                ? 'bg-indigo-600 text-white shadow-sm shadow-indigo-200'
                 : 'text-slate-600 hover:bg-slate-200/70'
             }`}
           >
-            Question Bank Management
-          </button>
-          <button
-            onClick={() => setActiveTab('subjects')}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
-              activeTab === 'subjects'
-                ? 'bg-slate-900 text-white shadow-xs'
-                : 'text-slate-600 hover:bg-slate-200/70'
-            }`}
-          >
-            Subjects &amp; Topics
+            <BookOpen className="w-3.5 h-3.5" />
+            Student Interviews ({interviews.length})
           </button>
           <button
             onClick={() => setActiveTab('students')}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
               activeTab === 'students'
                 ? 'bg-slate-900 text-white shadow-xs'
                 : 'text-slate-600 hover:bg-slate-200/70'
             }`}
           >
+            <Users className="w-3.5 h-3.5" />
             Registered Students ({students.length})
+          </button>
+          <button
+            onClick={() => setActiveTab('questions')}
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+              activeTab === 'questions'
+                ? 'bg-slate-900 text-white shadow-xs'
+                : 'text-slate-600 hover:bg-slate-200/70'
+            }`}
+          >
+            <HelpCircle className="w-3.5 h-3.5" />
+            Question Bank
+          </button>
+          <button
+            onClick={() => setActiveTab('subjects')}
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+              activeTab === 'subjects'
+                ? 'bg-slate-900 text-white shadow-xs'
+                : 'text-slate-600 hover:bg-slate-200/70'
+            }`}
+          >
+            <Layers className="w-3.5 h-3.5" />
+            Subjects &amp; Topics
           </button>
         </div>
 
@@ -596,11 +636,21 @@ const AdminDashboard = () => {
           </div>
         )}
 
-        {/* TAB 3: REGISTERED STUDENTS */}
+        {/* TAB: REGISTERED STUDENTS */}
         {activeTab === 'students' && (
           <div className="bg-white rounded-3xl border border-slate-200/80 shadow-xs overflow-hidden">
-            <div className="p-6 pb-4 border-b border-slate-100">
-              <h3 className="text-base font-bold text-slate-900">Registered Student Directory</h3>
+            <div className="p-6 pb-4 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div>
+                <h3 className="text-base font-bold text-slate-900">Registered Student Directory</h3>
+                <p className="text-xs text-slate-500">Track candidates, college backgrounds, practice streaks, and interview activity</p>
+              </div>
+              <button
+                onClick={() => { setActiveTab('interviews'); setInterviewStudentFilter(''); }}
+                className="px-3 py-1.5 rounded-xl bg-indigo-50 text-indigo-700 hover:bg-indigo-100 font-semibold text-xs transition-colors flex items-center gap-1.5 self-start sm:self-auto"
+              >
+                <BookOpen className="w-3.5 h-3.5" />
+                View All Interviews ({interviews.length})
+              </button>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
@@ -611,28 +661,257 @@ const AdminDashboard = () => {
                     <th className="px-6 py-3.5">College / Institution</th>
                     <th className="px-6 py-3.5">Degree &amp; Branch</th>
                     <th className="px-6 py-3.5">Streak</th>
-                    <th className="px-6 py-3.5">Joined</th>
+                    <th className="px-6 py-3.5 text-center">Interviews</th>
+                    <th className="px-6 py-3.5 text-center">Avg Score</th>
+                    <th className="px-6 py-3.5 text-right">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
                   {students.map((s) => (
                     <tr key={s.id} className="hover:bg-slate-50/50">
-                      <td className="px-6 py-4 font-bold text-slate-900">{s.name}</td>
+                      <td className="px-6 py-4">
+                        <div className="flex items-center gap-2.5">
+                          <div className="w-8 h-8 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold text-xs">
+                            {s.name?.charAt(0) || 'S'}
+                          </div>
+                          <div>
+                            <p className="font-bold text-slate-900">{s.name}</p>
+                            <p className="text-[10px] text-slate-400">Class of {s.graduationYear || '2025'}</p>
+                          </div>
+                        </div>
+                      </td>
                       <td className="px-6 py-4 text-slate-600 font-mono font-medium">#{String(s.id || '').padStart(4, '0')}</td>
                       <td className="px-6 py-4 text-slate-700 font-medium">{s.college || 'N/A'}</td>
                       <td className="px-6 py-4 text-slate-500">
-                        {s.degree} {s.branch ? `(${s.branch})` : ''} • {s.graduationYear || ''}
+                        {s.degree} {s.branch ? `(${s.branch})` : ''}
                       </td>
                       <td className="px-6 py-4">
                         <span className="px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 font-bold">
                           🔥 {s.streakDays || 0}d
                         </span>
                       </td>
-                      <td className="px-6 py-4 text-slate-400">
-                        {s.createdAt ? new Date(s.createdAt).toLocaleDateString() : 'Active'}
+                      <td className="px-6 py-4 text-center">
+                        <span className="px-2.5 py-1 rounded-lg bg-indigo-50 text-indigo-700 font-bold">
+                          {s.totalTests !== undefined && s.totalTests > 0 ? s.totalTests : interviews.filter(i => i.studentId === s.id).length} tests
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 text-center font-bold text-slate-800">
+                        {s.averageScore > 0 ? (
+                          <span className={`px-2 py-0.5 rounded-full ${s.averageScore >= 75 ? 'bg-emerald-50 text-emerald-700' : s.averageScore >= 50 ? 'bg-amber-50 text-amber-700' : 'bg-rose-50 text-rose-700'}`}>
+                            {s.averageScore}%
+                          </span>
+                        ) : '—'}
+                      </td>
+                      <td className="px-6 py-4 text-right">
+                        <button
+                          onClick={() => {
+                            setInterviewStudentFilter(String(s.id));
+                            setActiveTab('interviews');
+                          }}
+                          className="px-3 py-1.5 rounded-lg border border-slate-200 hover:border-indigo-400 hover:text-indigo-600 font-semibold text-slate-700 transition-colors inline-flex items-center gap-1"
+                        >
+                          <span>Interviews</span>
+                          <ExternalLink className="w-3 h-3" />
+                        </button>
                       </td>
                     </tr>
                   ))}
+                  {students.length === 0 && (
+                    <tr>
+                      <td colSpan="8" className="px-6 py-12 text-center text-slate-400">
+                        No students registered yet.
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
+        {/* TAB: STUDENT INTERVIEWS */}
+        {activeTab === 'interviews' && (
+          <div className="bg-white rounded-3xl border border-slate-200/80 shadow-xs overflow-hidden space-y-6 p-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-slate-100">
+              <div>
+                <h3 className="text-base font-bold text-slate-900">Student Mock Assessments &amp; Interviews</h3>
+                <p className="text-xs text-slate-500">Live evaluation records, candidate scores, accuracy, and test completion data</p>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="px-3 py-1 rounded-xl bg-slate-100 text-slate-700 text-xs font-bold">
+                  Total: {interviews.length} Records
+                </span>
+              </div>
+            </div>
+
+            {/* Filter and Search Bar */}
+            <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
+              <div className="sm:col-span-1 relative">
+                <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
+                <input
+                  type="text"
+                  value={interviewSearch}
+                  onChange={(e) => setInterviewSearch(e.target.value)}
+                  placeholder="Search student or topic..."
+                  className="w-full pl-10 pr-4 py-2 rounded-xl border border-slate-200 text-xs focus:border-indigo-600 focus:outline-none"
+                />
+              </div>
+
+              <select
+                value={interviewStudentFilter}
+                onChange={(e) => setInterviewStudentFilter(e.target.value)}
+                className="px-3 py-2 rounded-xl border border-slate-200 text-xs font-medium bg-white"
+              >
+                <option value="">All Students ({students.length})</option>
+                {students.map((s) => (
+                  <option key={s.id} value={s.id}>{s.name} (#{String(s.id).padStart(4, '0')})</option>
+                ))}
+              </select>
+
+              <select
+                value={interviewSubjectFilter}
+                onChange={(e) => setInterviewSubjectFilter(e.target.value)}
+                className="px-3 py-2 rounded-xl border border-slate-200 text-xs font-medium bg-white"
+              >
+                <option value="">All Tracks / Subjects</option>
+                {subjects.map((sub) => (
+                  <option key={sub.id} value={sub.name}>{sub.name}</option>
+                ))}
+              </select>
+
+              <select
+                value={interviewDifficultyFilter}
+                onChange={(e) => setInterviewDifficultyFilter(e.target.value)}
+                className="px-3 py-2 rounded-xl border border-slate-200 text-xs font-medium bg-white"
+              >
+                <option value="">All Difficulties</option>
+                <option value="EASY">Easy</option>
+                <option value="MEDIUM">Medium</option>
+                <option value="HARD">Hard</option>
+              </select>
+            </div>
+
+            {/* Interviews Data Table */}
+            <div className="overflow-x-auto rounded-2xl border border-slate-100">
+              <table className="w-full text-left text-xs">
+                <thead className="bg-slate-50 text-slate-500 font-semibold uppercase tracking-wider border-b border-slate-100">
+                  <tr>
+                    <th className="px-6 py-3.5">Candidate / Student</th>
+                    <th className="px-6 py-3.5">Interview Track</th>
+                    <th className="px-6 py-3.5">Topic &amp; Level</th>
+                    <th className="px-6 py-3.5">Score</th>
+                    <th className="px-6 py-3.5">Percentage</th>
+                    <th className="px-6 py-3.5">Accuracy</th>
+                    <th className="px-6 py-3.5">Breakdown</th>
+                    <th className="px-6 py-3.5">Time</th>
+                    <th className="px-6 py-3.5">Date</th>
+                    <th className="px-6 py-3.5">Status</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100">
+                  {interviews
+                    .filter((item) => {
+                      if (interviewStudentFilter && String(item.studentId) !== String(interviewStudentFilter)) return false;
+                      if (interviewSubjectFilter && item.subjectName !== interviewSubjectFilter) return false;
+                      if (interviewDifficultyFilter && item.difficulty !== interviewDifficultyFilter) return false;
+                      if (interviewSearch) {
+                        const q = interviewSearch.toLowerCase();
+                        const matchName = item.studentName && item.studentName.toLowerCase().includes(q);
+                        const matchSubject = item.subjectName && item.subjectName.toLowerCase().includes(q);
+                        const matchTopic = item.topicName && item.topicName.toLowerCase().includes(q);
+                        if (!matchName && !matchSubject && !matchTopic) return false;
+                      }
+                      return true;
+                    })
+                    .map((item) => {
+                      const pct = Math.round(item.percentage || 0);
+                      const isHigh = pct >= 75;
+                      const isMed = pct >= 50 && pct < 75;
+                      return (
+                        <tr key={item.id} className="hover:bg-slate-50/50">
+                          <td className="px-6 py-4">
+                            <div>
+                              <p className="font-bold text-slate-900">{item.studentName || 'Student Candidate'}</p>
+                              {item.studentCollege && (
+                                <p className="text-[10px] text-slate-400 truncate max-w-[160px]">{item.studentCollege}</p>
+                              )}
+                              <span className="inline-block text-[9px] font-mono text-indigo-600 bg-indigo-50 px-1.5 py-0.5 rounded mt-0.5">
+                                #{String(item.studentId || item.id).padStart(4, '0')}
+                              </span>
+                            </div>
+                          </td>
+                          <td className="px-6 py-4">
+                            <span className="px-2.5 py-1 rounded-lg bg-indigo-50 text-indigo-700 font-bold inline-flex items-center gap-1.5">
+                              {item.subjectName}
+                            </span>
+                          </td>
+                          <td className="px-6 py-4">
+                            <p className="font-semibold text-slate-800">{item.topicName || 'All Topics'}</p>
+                            <span
+                              className={`text-[9px] font-bold px-1.5 py-0.5 rounded uppercase mt-0.5 inline-block ${
+                                item.difficulty === 'EASY'
+                                  ? 'bg-emerald-50 text-emerald-700'
+                                  : item.difficulty === 'HARD'
+                                  ? 'bg-rose-50 text-rose-700'
+                                  : 'bg-amber-50 text-amber-700'
+                              }`}
+                            >
+                              {item.difficulty}
+                            </span>
+                          </td>
+                          <td className="px-6 py-4 font-mono font-bold text-slate-900">
+                            {item.score !== undefined ? item.score : 0} / {item.maxScore || 10}
+                          </td>
+                          <td className="px-6 py-4">
+                            <span
+                              className={`px-2.5 py-1 rounded-full font-bold ${
+                                isHigh
+                                  ? 'bg-emerald-100 text-emerald-800'
+                                  : isMed
+                                  ? 'bg-amber-100 text-amber-800'
+                                  : 'bg-rose-100 text-rose-800'
+                              }`}
+                            >
+                              {pct}%
+                            </span>
+                          </td>
+                          <td className="px-6 py-4 font-bold text-slate-700">
+                            {Math.round(item.accuracy || 0)}%
+                          </td>
+                          <td className="px-6 py-4 text-slate-500 font-medium">
+                            <span className="text-emerald-600 font-bold">✔ {item.correctCount || 0}</span>{' '}
+                            <span className="text-rose-500 font-bold ml-1">✘ {item.wrongCount || 0}</span>{' '}
+                            {item.skippedCount > 0 && (
+                              <span className="text-slate-400 font-bold ml-1">⏭ {item.skippedCount}</span>
+                            )}
+                          </td>
+                          <td className="px-6 py-4 text-slate-500">
+                            {Math.floor((item.timeTakenSeconds || 0) / 60)}m {(item.timeTakenSeconds || 0) % 60}s
+                          </td>
+                          <td className="px-6 py-4 text-slate-400">
+                            {item.completedAt
+                              ? new Date(item.completedAt).toLocaleDateString()
+                              : item.createdAt
+                              ? new Date(item.createdAt).toLocaleDateString()
+                              : 'Recent'}
+                          </td>
+                          <td className="px-6 py-4">
+                            <span className="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 font-semibold text-[10px] inline-flex items-center gap-1">
+                              <CheckCircle2 className="w-3 h-3" /> {item.status || 'COMPLETED'}
+                            </span>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  {interviews.length === 0 && (
+                    <tr>
+                      <td colSpan="10" className="px-6 py-12 text-center text-slate-400">
+                        <BookOpen className="w-8 h-8 text-slate-300 mx-auto mb-2" />
+                        <p className="font-semibold text-slate-600">No mock test interviews recorded yet.</p>
+                        <p className="text-xs text-slate-400 mt-1">Interviews completed by students will appear here automatically.</p>
+                      </td>
+                    </tr>
+                  )}
                 </tbody>
               </table>
             </div>
