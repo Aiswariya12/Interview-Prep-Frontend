@@ -1,22 +1,24 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { GraduationCap, Lock, Mail, ArrowRight, AlertCircle, ShieldAlert, UserCheck } from 'lucide-react';
+import { GraduationCap, Lock, Mail, ArrowRight, AlertCircle, ShieldAlert, UserCheck, CheckCircle2 } from 'lucide-react';
 
 const Login = () => {
   const { login, loading } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState(location.state?.registeredEmail || '');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [successMessage, setSuccessMessage] = useState(location.state?.successMessage || '');
 
   const redirectPath = location.state?.from?.pathname || '/dashboard';
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    setSuccessMessage('');
 
     const cleanEmail = email ? email.trim() : '';
     const cleanPassword = password ? password.trim() : '';
@@ -76,6 +78,13 @@ const Login = () => {
             Autofill Student
           </button>
         </div>
+
+        {successMessage && !error && (
+          <div className="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs flex items-center gap-2">
+            <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-600" />
+            <span>{successMessage}</span>
+          </div>
+        )}
 
         {error && (
           <div className="p-3.5 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs flex items-center gap-2">

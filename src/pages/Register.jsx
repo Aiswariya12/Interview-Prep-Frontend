@@ -29,7 +29,12 @@ const Register = () => {
 
     const res = await register(formData);
     if (res.success) {
-      navigate('/dashboard');
+      navigate('/login', {
+        state: {
+          registeredEmail: formData.email,
+          successMessage: 'Registration successful! Please sign in with your password to access your dashboard.',
+        },
+      });
     } else {
       setError(res.error);
     }
@@ -181,7 +186,7 @@ const Register = () => {
               <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
             ) : (
               <>
-                Register &amp; Launch Dashboard
+                Create Account &amp; Proceed to Login
                 <ArrowRight className="w-4 h-4" />
               </>
             )}

@@ -65,21 +65,12 @@ export const AuthProvider = ({ children }) => {
     setLoading(true);
     try {
       const response = await authApi.register(userData);
-      const data = response.data.data;
-      const authToken = data.token;
-      const userInfo = {
-        id: data.id,
-        name: data.name,
-        email: data.email,
-        role: data.role,
-        college: data.college,
-      };
-
-      setToken(authToken);
-      setUser(userInfo);
-      localStorage.setItem('interviewprep_token', authToken);
-      localStorage.setItem('interviewprep_user', JSON.stringify(userInfo));
-      return { success: true, user: userInfo };
+      setUser(null);
+      setToken(null);
+      localStorage.removeItem('interviewprep_token');
+      localStorage.removeItem('interviewprep_user');
+      const msg = response.data?.message || 'Registration successful! Please login to continue.';
+      return { success: true, message: msg };
     } catch (err) {
       const msg = err.response?.data?.message || 'Registration failed.';
       return { success: false, error: msg };
