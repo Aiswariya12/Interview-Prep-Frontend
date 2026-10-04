@@ -79,6 +79,19 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const changePassword = async (passwordData) => {
+    setLoading(true);
+    try {
+      const response = await authApi.changePassword(passwordData);
+      return { success: true, message: response.data?.message || 'Password changed successfully' };
+    } catch (err) {
+      const msg = err.response?.data?.message || 'Failed to change password. Please check your credentials.';
+      return { success: false, error: msg };
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const logout = () => {
     setUser(null);
     setToken(null);
@@ -98,6 +111,7 @@ export const AuthProvider = ({ children }) => {
         loading,
         login,
         register,
+        changePassword,
         logout,
         isAuthenticated,
         isAdmin,

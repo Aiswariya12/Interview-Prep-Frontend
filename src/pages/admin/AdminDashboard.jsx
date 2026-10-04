@@ -26,8 +26,10 @@ import {
   Activity,
   ArrowUpRight,
   Zap,
-  Target
+  Target,
+  KeyRound
 } from 'lucide-react';
+import ChangePasswordModal from '../../components/ChangePasswordModal';
 import {
   ResponsiveContainer,
   BarChart,
@@ -51,6 +53,7 @@ const AdminDashboard = () => {
   const [questions, setQuestions] = useState([]);
   const [students, setStudents] = useState([]);
   const [interviews, setInterviews] = useState([]);
+  const [changePasswordOpen, setChangePasswordOpen] = useState(false);
 
   // Interview Filters
   const [interviewStudentFilter, setInterviewStudentFilter] = useState('');
@@ -389,13 +392,22 @@ const AdminDashboard = () => {
             </p>
           </div>
 
-          <button
-            onClick={openAddQuestionModal}
-            className="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold shadow-lg shadow-indigo-950/50 flex items-center gap-2 self-start md:self-auto transition-all"
-          >
-            <Plus className="w-4 h-4" />
-            Add New Question
-          </button>
+          <div className="flex items-center gap-2.5 self-start md:self-auto">
+            <button
+              onClick={() => setChangePasswordOpen(true)}
+              className="px-3.5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold border border-slate-700 flex items-center gap-1.5 transition-all cursor-pointer shadow-xs"
+            >
+              <KeyRound className="w-4 h-4 text-indigo-400" />
+              Change Password
+            </button>
+            <button
+              onClick={openAddQuestionModal}
+              className="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold shadow-lg shadow-indigo-950/50 flex items-center gap-2 transition-all cursor-pointer"
+            >
+              <Plus className="w-4 h-4" />
+              Add New Question
+            </button>
+          </div>
         </div>
       </div>
 
@@ -1485,6 +1497,12 @@ const AdminDashboard = () => {
           </div>
         </div>
       )}
+
+      {/* Change Password Modal */}
+      <ChangePasswordModal
+        isOpen={changePasswordOpen}
+        onClose={() => setChangePasswordOpen(false)}
+      />
     </div>
   );
 };

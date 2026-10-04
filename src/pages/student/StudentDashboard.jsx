@@ -17,8 +17,10 @@ import {
   Layers,
   BarChart3,
   Award,
-  ChevronRight
+  ChevronRight,
+  KeyRound
 } from 'lucide-react';
+import ChangePasswordModal from '../../components/ChangePasswordModal';
 
 const StudentDashboard = () => {
   const { user } = useAuth();
@@ -28,6 +30,7 @@ const StudentDashboard = () => {
   const [dailyChallenge, setDailyChallenge] = useState(null);
   const [loading, setLoading] = useState(true);
   const [aiCoachOpen, setAiCoachOpen] = useState(false);
+  const [changePasswordOpen, setChangePasswordOpen] = useState(false);
 
   useEffect(() => {
     fetchDashboardData();
@@ -95,6 +98,14 @@ const StudentDashboard = () => {
             </div>
 
             <div className="flex items-center gap-3">
+              <button
+                onClick={() => setChangePasswordOpen(true)}
+                className="px-3.5 py-2.5 rounded-xl bg-white border border-slate-200 hover:border-indigo-300 hover:bg-indigo-50/50 text-slate-700 text-xs font-semibold shadow-xs flex items-center gap-1.5 transition-all cursor-pointer"
+              >
+                <KeyRound className="w-4 h-4 text-indigo-600" />
+                Change Password
+              </button>
+
               <button
                 onClick={() => setAiCoachOpen(true)}
                 className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white text-xs font-bold shadow-md shadow-indigo-200 hover:shadow-indigo-300 flex items-center gap-2 transition-all hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
@@ -383,6 +394,12 @@ const StudentDashboard = () => {
           score: dashboard?.averageScore,
           percentage: dashboard?.accuracy,
         }}
+      />
+
+      {/* Change Password Modal */}
+      <ChangePasswordModal
+        isOpen={changePasswordOpen}
+        onClose={() => setChangePasswordOpen(false)}
       />
     </div>
   );

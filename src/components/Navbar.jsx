@@ -14,8 +14,10 @@ import {
   User as UserIcon,
   Menu,
   X,
-  Sparkles
+  Sparkles,
+  KeyRound
 } from 'lucide-react';
+import ChangePasswordModal from './ChangePasswordModal';
 
 const Navbar = () => {
   const { user, isAuthenticated, isAdmin, isStudent, logout } = useAuth();
@@ -23,6 +25,7 @@ const Navbar = () => {
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
+  const [changePasswordOpen, setChangePasswordOpen] = useState(false);
 
   const handleLogout = () => {
     logout();
@@ -200,8 +203,19 @@ const Navbar = () => {
                       )}
 
                       <button
+                        onClick={() => {
+                          setUserDropdownOpen(false);
+                          setChangePasswordOpen(true);
+                        }}
+                        className="w-full flex items-center gap-2 px-4 py-2 text-xs text-slate-700 hover:bg-slate-50 text-left transition-colors cursor-pointer"
+                      >
+                        <KeyRound className="w-4 h-4 text-slate-500" />
+                        Change Password
+                      </button>
+
+                      <button
                         onClick={handleLogout}
-                        className="w-full flex items-center gap-2 px-4 py-2 text-xs text-red-600 hover:bg-red-50 text-left transition-colors"
+                        className="w-full flex items-center gap-2 px-4 py-2 text-xs text-red-600 hover:bg-red-50 text-left transition-colors cursor-pointer"
                       >
                         <LogOut className="w-4 h-4" />
                         Sign Out
@@ -302,10 +316,20 @@ const Navbar = () => {
 
               <button
                 onClick={() => {
+                  setMobileMenuOpen(false);
+                  setChangePasswordOpen(true);
+                }}
+                className="w-full flex items-center gap-2 px-3 py-2 text-sm font-medium text-slate-700 rounded-lg hover:bg-slate-50 text-left cursor-pointer"
+              >
+                <KeyRound className="w-4 h-4 text-slate-500" /> Change Password
+              </button>
+
+              <button
+                onClick={() => {
                   handleLogout();
                   setMobileMenuOpen(false);
                 }}
-                className="w-full flex items-center gap-2 px-3 py-2 text-sm font-medium text-red-600 rounded-lg hover:bg-red-50"
+                className="w-full flex items-center gap-2 px-3 py-2 text-sm font-medium text-red-600 rounded-lg hover:bg-red-50 text-left cursor-pointer"
               >
                 <LogOut className="w-4 h-4" /> Sign Out
               </button>
@@ -330,6 +354,12 @@ const Navbar = () => {
           )}
         </div>
       )}
+
+      {/* Change Password Modal */}
+      <ChangePasswordModal
+        isOpen={changePasswordOpen}
+        onClose={() => setChangePasswordOpen(false)}
+      />
     </nav>
   );
 };
