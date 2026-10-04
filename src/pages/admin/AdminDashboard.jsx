@@ -27,7 +27,9 @@ import {
   ArrowUpRight,
   Zap,
   Target,
-  KeyRound
+  KeyRound,
+  FileText,
+  Link2
 } from 'lucide-react';
 import ChangePasswordModal from '../../components/ChangePasswordModal';
 import {
@@ -94,6 +96,11 @@ const AdminDashboard = () => {
   const [selectedSubForTopic, setSelectedSubForTopic] = useState(null);
   const [newTopic, setNewTopic] = useState({ name: '', description: '' });
 
+  // Subject Notes State
+  const [selectedSubForNote, setSelectedSubForNote] = useState(null);
+  const [newNote, setNewNote] = useState({ title: '', url: '', description: '' });
+  const [addingNote, setAddingNote] = useState(false);
+
   const [loading, setLoading] = useState(true);
   const [feedback, setFeedback] = useState('');
 
@@ -119,7 +126,10 @@ const AdminDashboard = () => {
       if (subRes.status === 'fulfilled') {
         const sList = subRes.value.data.data || [];
         setSubjects(sList);
-        if (sList.length > 0) setSelectedSubForTopic(sList[0].id);
+        if (sList.length > 0) {
+          setSelectedSubForTopic(sList[0].id);
+          setSelectedSubForNote(sList[0].id);
+        }
       }
       if (stuRes.status === 'fulfilled') setStudents(stuRes.value.data.data || []);
       if (intRes.status === 'fulfilled') setInterviews(intRes.value.data.data || []);
@@ -366,6 +376,43 @@ const AdminDashboard = () => {
       loadInitialAdminData();
     } catch (err) {
       alert('Failed to create topic');
+    }
+  };
+
+  const handleCreateNote = async (e) => {
+    e.preventDefault();
+    if (!selectedSubForNote || !newNote.title.trim() || !newNote.url.trim()) return;
+    setAddingNote(true);
+    try {
+      await adminApi.createSubjectNote(selectedSubForNote, {
+        title: newNote.title.trim(),
+        url: newNote.url.trim(),
+        description: newNote.description.trim(),
+      });
+      setNewNote({ title: '', url: '', description: '' });
+      showToast('Note link added successfully!');
+      const subRes = await subjectApi.getAllActive();
+      if (subRes.data?.data) {
+        setSubjects(subRes.data.data);
+      }
+    } catch (err) {
+      alert(err.response?.data?.message || 'Failed to add note link');
+    } finally {
+      setAddingNote(false);
+    }
+  };
+
+  const handleDeleteNote = async (noteId) => {
+    if (!window.confirm('Are you sure you want to remove this note link?')) return;
+    try {
+      await adminApi.deleteSubjectNote(noteId);
+      showToast('Note link removed');
+      const subRes = await subjectApi.getAllActive();
+      if (subRes.data?.data) {
+        setSubjects(subRes.data.data);
+      }
+    } catch (err) {
+      alert('Failed to delete note link');
     }
   };
 
@@ -908,7 +955,8 @@ const AdminDashboard = () => {
 
         {/* TAB 2: SUBJECTS & TOPICS */}
         {activeTab === 'subjects' && (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div className="space-y-8 animate-fade-in-up">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Create Subject Form */}
             <div className="bg-white rounded-3xl border border-slate-200/80 p-6 space-y-4">
               <h3 className="text-base font-bold text-slate-900">Add New Subject</h3>
@@ -1018,7 +1066,184 @@ const AdminDashboard = () => {
               </form>
             </div>
           </div>
-        )}
+
+          {/* Subject Notes & Reference Links Manager */}
+          <div className="bg-white rounded-3xl border border-slate-200/80 p-6 sm:p-8 space-y-6 shadow-xs">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+              <div>
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 border border-indigo-200/80 text-indigo-700 text-xs font-bold mb-2">
+                  <FileText className="w-3.5 h-3.5" />
+                  <span>Study Materials &amp; External Notes</span>
+                </div>
+                <h3 className="text-lg font-bold text-slate-900">
+                  Subject Notes &amp; Reference Links Manager
+                </h3>
+                <p className="text-xs text-slate-500">
+                  Add one or more study notes, cheat sheets, or documentation links for each subject. These will immediately appear on the student dashboard.
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <label className="text-xs font-bold text-slate-700 shrink-0">Subject:</label>
+                <select
+                  value={selectedSubForNote || ''}
+                  onChange={(e) => setSelectedSubForNote(e.target.value)}
+                  className="px-3 py-2 rounded-xl border border-slate-300 bg-white text-xs font-semibold text-slate-800"
+                >
+                  {subjects.map((s) => (
+                    <option key={s.id} value={s.id}>
+                      {s.name} ({s.notes?.length || 0} notes)
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+              {/* Form to Add Note Link */}
+              <div className="lg:col-span-5 bg-slate-50/60 rounded-2xl border border-slate-200/90 p-5 space-y-3.5 text-xs">
+                <div className="flex items-center justify-between">
+                  <h4 className="font-bold text-slate-900 flex items-center gap-1.5">
+                    <Plus className="w-4 h-4 text-indigo-600" />
+                    Add Note Link to {subjects.find((s) => String(s.id) === String(selectedSubForNote))?.name || 'Subject'}
+                  </h4>
+                  <span className="text-[11px] text-slate-400 font-medium">Multiple links supported</span>
+                </div>
+
+                <form onSubmit={handleCreateNote} className="space-y-3">
+                  <div>
+                    <label className="block font-semibold text-slate-700 mb-1">
+                      Note Title *
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={newNote.title}
+                      onChange={(e) => setNewNote({ ...newNote, title: e.target.value })}
+                      placeholder="e.g. Concurrency & Multithreading Cheatsheet"
+                      className="w-full px-3.5 py-2 rounded-xl border border-slate-300 bg-white"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block font-semibold text-slate-700 mb-1">
+                      Resource Link URL *
+                    </label>
+                    <input
+                      type="url"
+                      required
+                      value={newNote.url}
+                      onChange={(e) => setNewNote({ ...newNote, url: e.target.value })}
+                      placeholder="https://example.com/notes.pdf or docs"
+                      className="w-full px-3.5 py-2 rounded-xl border border-slate-300 bg-white font-mono text-[11px]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block font-semibold text-slate-700 mb-1">
+                      Brief Description (Optional)
+                    </label>
+                    <textarea
+                      rows={2}
+                      value={newNote.description}
+                      onChange={(e) => setNewNote({ ...newNote, description: e.target.value })}
+                      placeholder="What candidates should review from this link..."
+                      className="w-full px-3.5 py-2 rounded-xl border border-slate-300 bg-white"
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={addingNote}
+                    className="w-full py-2.5 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold transition-all shadow-xs flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60"
+                  >
+                    {addingNote ? (
+                      <span>Adding...</span>
+                    ) : (
+                      <>
+                        <Plus className="w-4 h-4" />
+                        <span>Add Note Link</span>
+                      </>
+                    )}
+                  </button>
+                </form>
+              </div>
+
+              {/* List of Configured Note Links for this Subject */}
+              <div className="lg:col-span-7 space-y-3">
+                <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+                  <h4 className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
+                    <Link2 className="w-4 h-4 text-indigo-600" />
+                    Active Notes for {subjects.find((s) => String(s.id) === String(selectedSubForNote))?.name || 'Selected Subject'}
+                  </h4>
+                  <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700">
+                    {(subjects.find((s) => String(s.id) === String(selectedSubForNote))?.notes || []).length} Links
+                  </span>
+                </div>
+
+                {(() => {
+                  const currentNotes = subjects.find((s) => String(s.id) === String(selectedSubForNote))?.notes || [];
+                  if (currentNotes.length === 0) {
+                    return (
+                      <div className="p-8 rounded-2xl border border-dashed border-slate-300 text-center space-y-2">
+                        <FileText className="w-8 h-8 text-slate-300 mx-auto" />
+                        <p className="text-xs font-bold text-slate-700">No notes links added yet for this subject</p>
+                        <p className="text-[11px] text-slate-400">Use the form on the left to add one or more notes links for students.</p>
+                      </div>
+                    );
+                  }
+                  return (
+                    <div className="space-y-2.5 max-h-[380px] overflow-y-auto pr-1">
+                      {currentNotes.map((note, idx) => (
+                        <div
+                          key={note.id || idx}
+                          className="p-3.5 rounded-2xl bg-white border border-slate-200/80 hover:border-indigo-300 hover:shadow-xs transition-all flex items-start justify-between gap-3 group"
+                        >
+                          <div className="space-y-1 min-w-0 flex-1">
+                            <div className="flex items-center gap-2">
+                              <span className="w-5 h-5 rounded-md bg-indigo-50 text-indigo-700 text-[10px] font-bold flex items-center justify-center shrink-0">
+                                #{idx + 1}
+                              </span>
+                              <h5 className="text-xs font-bold text-slate-900 truncate">
+                                {note.title}
+                              </h5>
+                            </div>
+                            {note.description && (
+                              <p className="text-[11px] text-slate-500 line-clamp-2 pl-7">
+                                {note.description}
+                              </p>
+                            )}
+                            <div className="pl-7 pt-1">
+                              <a
+                                href={note.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-[11px] font-mono text-indigo-600 hover:text-indigo-800 hover:underline inline-flex items-center gap-1 truncate max-w-full"
+                              >
+                                <span className="truncate">{note.url}</span>
+                                <ExternalLink className="w-3 h-3 shrink-0" />
+                              </a>
+                            </div>
+                          </div>
+
+                          <button
+                            type="button"
+                            onClick={() => handleDeleteNote(note.id)}
+                            title="Delete note link"
+                            className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors shrink-0 cursor-pointer"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  );
+                })()}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
         {/* TAB: REGISTERED STUDENTS */}
         {activeTab === 'students' && (

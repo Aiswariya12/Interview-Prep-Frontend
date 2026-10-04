@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { analyticsApi, dailyChallengeApi } from '../../services/api';
+import { analyticsApi, dailyChallengeApi, subjectApi } from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
 import AIStudyCoachModal from '../../components/AIStudyCoachModal';
 import {
@@ -18,7 +18,10 @@ import {
   BarChart3,
   Award,
   ChevronRight,
-  KeyRound
+  KeyRound,
+  FileText,
+  ExternalLink,
+  Link2
 } from 'lucide-react';
 import ChangePasswordModal from '../../components/ChangePasswordModal';
 
@@ -28,6 +31,8 @@ const StudentDashboard = () => {
 
   const [dashboard, setDashboard] = useState(null);
   const [dailyChallenge, setDailyChallenge] = useState(null);
+  const [subjects, setSubjects] = useState([]);
+  const [selectedSubjectNoteFilter, setSelectedSubjectNoteFilter] = useState('ALL');
   const [loading, setLoading] = useState(true);
   const [aiCoachOpen, setAiCoachOpen] = useState(false);
   const [changePasswordOpen, setChangePasswordOpen] = useState(false);
@@ -39,9 +44,10 @@ const StudentDashboard = () => {
   const fetchDashboardData = async () => {
     try {
       setLoading(true);
-      const [dashRes, challengeRes] = await Promise.allSettled([
+      const [dashRes, challengeRes, subRes] = await Promise.allSettled([
         analyticsApi.getStudentDashboard(),
         dailyChallengeApi.getToday(),
+        subjectApi.getAllActive(),
       ]);
 
       if (dashRes.status === 'fulfilled') {
@@ -49,6 +55,9 @@ const StudentDashboard = () => {
       }
       if (challengeRes.status === 'fulfilled') {
         setDailyChallenge(challengeRes.value.data.data);
+      }
+      if (subRes.status === 'fulfilled') {
+        setSubjects(subRes.value.data?.data || []);
       }
     } catch (err) {
       console.error('Error fetching dashboard:', err);
@@ -71,6 +80,26 @@ const StudentDashboard = () => {
   const weakTopics = dashboard?.weakTopics || [];
   const recentTests = dashboard?.recentTests || [];
   const subjectPerformances = dashboard?.subjectPerformances || [];
+
+  // Flatten notes across subjects
+  const allNotes = [];
+  const subjectsWithNotes = subjects.filter((s) => s.notes && s.notes.length > 0);
+  subjects.forEach((s) => {
+    if (s.notes && s.notes.length > 0) {
+      s.notes.forEach((n) => {
+        allNotes.push({
+          ...n,
+          subjectId: s.id,
+          subjectName: s.name,
+          subjectColor: s.color || '#4f46e5',
+        });
+      });
+    }
+  });
+
+  const displayedNotes = selectedSubjectNoteFilter === 'ALL'
+    ? allNotes
+    : allNotes.filter((n) => String(n.subjectId) === String(selectedSubjectNoteFilter));
 
   return (
     <div className="min-h-screen bg-slate-50/60 pb-16">
@@ -259,6 +288,116 @@ const StudentDashboard = () => {
             </Link>
           </div>
         )}
+
+        {/* Subject Notes & Reference Materials Section */}
+        <div className="bg-white rounded-3xl border border-slate-200/80 shadow-xs p-6 sm:p-8 space-y-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+            <div>
+              <div className="flex items-center gap-2 mb-1">
+                <div className="p-2 rounded-xl bg-indigo-50 text-indigo-600">
+                  <FileText className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-base sm:text-lg font-bold text-slate-900">
+                    Subject Notes &amp; Preparation Resources
+                  </h3>
+                  <p className="text-xs text-slate-500">
+                    Handpicked reference notes, cheat sheets, and official documentation curated by administrators.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Subject Filter Pills */}
+            <div className="flex items-center gap-1.5 overflow-x-auto pb-1 max-w-full">
+              <button
+                type="button"
+                onClick={() => setSelectedSubjectNoteFilter('ALL')}
+                className={`px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
+                  selectedSubjectNoteFilter === 'ALL'
+                    ? 'bg-indigo-600 text-white shadow-xs'
+                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                }`}
+              >
+                All Subjects ({allNotes.length})
+              </button>
+              {subjectsWithNotes.map((sub) => (
+                <button
+                  key={sub.id}
+                  type="button"
+                  onClick={() => setSelectedSubjectNoteFilter(String(sub.id))}
+                  className={`px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
+                    selectedSubjectNoteFilter === String(sub.id)
+                      ? 'bg-indigo-600 text-white shadow-xs'
+                      : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                  }`}
+                >
+                  {sub.name} ({sub.notes?.length || 0})
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Notes Grid */}
+          {displayedNotes.length === 0 ? (
+            <div className="text-center py-10 space-y-2">
+              <BookOpen className="w-8 h-8 text-slate-300 mx-auto" />
+              <p className="text-sm font-semibold text-slate-700">No notes links found</p>
+              <p className="text-xs text-slate-400">Notes links added by administrators will appear here.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {displayedNotes.map((note, idx) => (
+                <div
+                  key={note.id || idx}
+                  className="p-4 rounded-2xl border border-slate-200/80 bg-slate-50/50 hover:bg-white hover:border-indigo-300 hover:shadow-md transition-all group flex flex-col justify-between"
+                >
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between gap-2">
+                      <span
+                        className="text-[10px] font-bold px-2.5 py-0.5 rounded-full"
+                        style={{
+                          backgroundColor: `${note.subjectColor}15`,
+                          color: note.subjectColor,
+                        }}
+                      >
+                        {note.subjectName || note.subject?.name || 'Subject'}
+                      </span>
+                      <span className="text-[10px] text-slate-400">
+                        {note.createdAt ? new Date(note.createdAt).toLocaleDateString() : 'Curated'}
+                      </span>
+                    </div>
+
+                    <h4 className="text-sm font-bold text-slate-900 group-hover:text-indigo-600 transition-colors line-clamp-2">
+                      {note.title}
+                    </h4>
+
+                    {note.description && (
+                      <p className="text-xs text-slate-500 line-clamp-2">
+                        {note.description}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="pt-3 mt-3 border-t border-slate-200/60 flex items-center justify-between gap-2">
+                    <span className="text-[11px] font-mono text-slate-400 truncate max-w-[150px]">
+                      {note.url.replace(/^https?:\/\//, '')}
+                    </span>
+                    <a
+                      href={note.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold shadow-xs hover:shadow transition-all shrink-0 cursor-pointer"
+                    >
+                      <span>Open Notes</span>
+                      <ExternalLink className="w-3.5 h-3.5" />
+                    </a>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
 
         {/* Two-Column Section: Subject Accuracy Breakdown + Recent Tests */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

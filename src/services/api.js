@@ -50,6 +50,7 @@ export const subjectApi = {
   getAllActive: () => api.get('/api/subjects'),
   getById: (id) => api.get(`/api/subjects/${id}`),
   getTopics: (subjectId) => api.get(`/api/subjects/${subjectId}/topics`),
+  getNotes: (subjectId) => api.get(`/api/subjects/${subjectId}/notes`),
 };
 
 // Questions
@@ -97,6 +98,8 @@ export const adminApi = {
   deleteSubject: (id) => api.delete(`/api/admin/subjects/${id}`),
   createTopic: (subjectId, data) => api.post(`/api/admin/subjects/${subjectId}/topics`, data),
   deleteTopic: (topicId) => api.delete(`/api/admin/topics/${topicId}`),
+  createSubjectNote: (subjectId, data) => api.post(`/api/admin/subjects/${subjectId}/notes`, data),
+  deleteSubjectNote: (noteId) => api.delete(`/api/admin/subjects/notes/${noteId}`),
   createQuestion: (data) => api.post('/api/admin/questions', data),
   updateQuestion: (id, data) => api.put(`/api/admin/questions/${id}`, data),
   deleteQuestion: (id) => api.delete(`/api/admin/questions/${id}`),
