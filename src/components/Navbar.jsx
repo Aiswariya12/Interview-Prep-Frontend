@@ -254,105 +254,155 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile Drawer Menu */}
+      {/* Mobile Drawer Menu & Backdrop */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-t border-slate-200 bg-white px-4 pt-3 pb-6 space-y-2">
-          {isAuthenticated ? (
-            <>
-              <div className="pb-3 border-b border-slate-100 mb-2">
-                <p className="font-semibold text-slate-900 text-sm">{user?.name}</p>
-                <p className="text-xs text-indigo-600 font-medium">{isAdmin ? 'Administrator' : 'Student Account'}</p>
-              </div>
+        <>
+          {/* Backdrop overlay */}
+          <div
+            onClick={() => setMobileMenuOpen(false)}
+            className="fixed inset-0 top-16 bg-slate-900/40 backdrop-blur-xs z-40 md:hidden animate-fade-in-up"
+          />
 
-              {isStudent && (
-                <>
-                  <Link
-                    to="/dashboard"
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-lg text-slate-700 hover:bg-slate-100"
-                  >
-                    <LayoutDashboard className="w-4 h-4" /> Dashboard
-                  </Link>
-                  <Link
-                    to="/mock/new"
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-lg text-slate-700 hover:bg-slate-100"
-                  >
-                    <BookOpen className="w-4 h-4" /> Take Mock Test
-                  </Link>
-                  <Link
-                    to="/history"
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-lg text-slate-700 hover:bg-slate-100"
-                  >
-                    <History className="w-4 h-4" /> Past Tests
-                  </Link>
-                  <Link
-                    to="/bookmarks"
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-lg text-slate-700 hover:bg-slate-100"
-                  >
-                    <Bookmark className="w-4 h-4" /> Bookmarks
-                  </Link>
-                  <Link
-                    to="/daily-challenge"
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-lg text-slate-700 hover:bg-slate-100"
-                  >
-                    <Calendar className="w-4 h-4" /> Daily Challenge
-                  </Link>
-                </>
-              )}
+          {/* Drawer content */}
+          <div className="relative z-50 md:hidden border-t border-slate-200 bg-white/98 backdrop-blur-xl px-4 pt-3.5 pb-6 space-y-2 shadow-2xl max-h-[calc(100vh-4rem)] overflow-y-auto touch-scroll animate-scale-in">
+            {isAuthenticated ? (
+              <>
+                {/* User Info & Streak Badge */}
+                <div className="p-3 rounded-2xl bg-gradient-to-r from-slate-50 to-indigo-50/50 border border-slate-200/80 mb-3 flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-indigo-600 to-violet-600 text-white flex items-center justify-center font-bold text-sm shrink-0 shadow-xs">
+                      {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
+                    </div>
+                    <div className="min-w-0">
+                      <p className="font-bold text-slate-900 text-sm truncate">{user?.name || 'Candidate'}</p>
+                      <p className="text-[11px] text-indigo-600 font-semibold truncate">
+                        {isAdmin ? 'Administrator' : user?.college || 'Student Candidate'}
+                      </p>
+                    </div>
+                  </div>
 
-              {isAdmin && (
+                  {isStudent && (
+                    <div className="flex items-center gap-1 px-2.5 py-1 bg-amber-50 border border-amber-200 rounded-full text-amber-800 text-[11px] font-bold shrink-0">
+                      <Flame className="w-3.5 h-3.5 text-amber-500 fill-amber-500 animate-pulse" />
+                      <span>Streak</span>
+                    </div>
+                  )}
+                </div>
+
+                {isStudent && (
+                  <div className="space-y-1">
+                    <Link
+                      to="/dashboard"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className={`flex items-center gap-3 px-3.5 py-2.5 text-sm font-semibold rounded-xl transition-all ${
+                        isActive('/dashboard')
+                          ? 'bg-indigo-50 text-indigo-700 shadow-xs'
+                          : 'text-slate-700 hover:bg-slate-100'
+                      }`}
+                    >
+                      <LayoutDashboard className="w-4 h-4 text-indigo-600" /> Dashboard
+                    </Link>
+                    <Link
+                      to="/mock/new"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className={`flex items-center gap-3 px-3.5 py-2.5 text-sm font-semibold rounded-xl transition-all ${
+                        isActive('/mock/new')
+                          ? 'bg-indigo-50 text-indigo-700 shadow-xs'
+                          : 'text-slate-700 hover:bg-slate-100'
+                      }`}
+                    >
+                      <BookOpen className="w-4 h-4 text-indigo-600" /> Take Mock Test
+                    </Link>
+                    <Link
+                      to="/history"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className={`flex items-center gap-3 px-3.5 py-2.5 text-sm font-semibold rounded-xl transition-all ${
+                        isActive('/history')
+                          ? 'bg-indigo-50 text-indigo-700 shadow-xs'
+                          : 'text-slate-700 hover:bg-slate-100'
+                      }`}
+                    >
+                      <History className="w-4 h-4 text-indigo-600" /> Past Tests
+                    </Link>
+                    <Link
+                      to="/bookmarks"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className={`flex items-center gap-3 px-3.5 py-2.5 text-sm font-semibold rounded-xl transition-all ${
+                        isActive('/bookmarks')
+                          ? 'bg-indigo-50 text-indigo-700 shadow-xs'
+                          : 'text-slate-700 hover:bg-slate-100'
+                      }`}
+                    >
+                      <Bookmark className="w-4 h-4 text-indigo-600" /> Bookmarks
+                    </Link>
+                    <Link
+                      to="/daily-challenge"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className={`flex items-center gap-3 px-3.5 py-2.5 text-sm font-semibold rounded-xl transition-all ${
+                        isActive('/daily-challenge')
+                          ? 'bg-indigo-50 text-indigo-700 shadow-xs'
+                          : 'text-slate-700 hover:bg-slate-100'
+                      }`}
+                    >
+                      <Calendar className="w-4 h-4 text-emerald-600" /> Daily Challenge
+                    </Link>
+                  </div>
+                )}
+
+                {isAdmin && (
+                  <div className="space-y-1">
+                    <Link
+                      to="/admin"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="flex items-center gap-3 px-3.5 py-2.5 text-sm font-semibold rounded-xl text-indigo-700 bg-indigo-50 shadow-xs"
+                    >
+                      <ShieldAlert className="w-4 h-4 text-indigo-600" /> Admin Portal
+                    </Link>
+                  </div>
+                )}
+
+                <div className="pt-2 border-t border-slate-100 space-y-1">
+                  <button
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      setChangePasswordOpen(true);
+                    }}
+                    className="w-full flex items-center gap-3 px-3.5 py-2.5 text-sm font-semibold text-slate-700 rounded-xl hover:bg-slate-50 text-left cursor-pointer transition-colors"
+                  >
+                    <KeyRound className="w-4 h-4 text-slate-500" /> Change Password
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      handleLogout();
+                      setMobileMenuOpen(false);
+                    }}
+                    className="w-full flex items-center gap-3 px-3.5 py-2.5 text-sm font-semibold text-red-600 rounded-xl hover:bg-red-50 text-left cursor-pointer transition-colors"
+                  >
+                    <LogOut className="w-4 h-4" /> Sign Out
+                  </button>
+                </div>
+              </>
+            ) : (
+              <div className="space-y-2.5 pt-2">
                 <Link
-                  to="/admin"
+                  to="/login"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-lg text-indigo-700 bg-indigo-50"
+                  className="block text-center w-full py-3 border border-slate-300 rounded-xl text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors"
                 >
-                  <ShieldAlert className="w-4 h-4" /> Admin Portal
+                  Log In
                 </Link>
-              )}
-
-              <button
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  setChangePasswordOpen(true);
-                }}
-                className="w-full flex items-center gap-2 px-3 py-2 text-sm font-medium text-slate-700 rounded-lg hover:bg-slate-50 text-left cursor-pointer"
-              >
-                <KeyRound className="w-4 h-4 text-slate-500" /> Change Password
-              </button>
-
-              <button
-                onClick={() => {
-                  handleLogout();
-                  setMobileMenuOpen(false);
-                }}
-                className="w-full flex items-center gap-2 px-3 py-2 text-sm font-medium text-red-600 rounded-lg hover:bg-red-50 text-left cursor-pointer"
-              >
-                <LogOut className="w-4 h-4" /> Sign Out
-              </button>
-            </>
-          ) : (
-            <div className="space-y-2 pt-2">
-              <Link
-                to="/login"
-                onClick={() => setMobileMenuOpen(false)}
-                className="block text-center w-full py-2.5 border border-slate-300 rounded-lg text-sm font-semibold text-slate-700"
-              >
-                Log In
-              </Link>
-              <Link
-                to="/register"
-                onClick={() => setMobileMenuOpen(false)}
-                className="block text-center w-full py-2.5 bg-indigo-600 text-white rounded-lg text-sm font-semibold shadow-sm"
-              >
-                Create Account
-              </Link>
-            </div>
-          )}
-        </div>
+                <Link
+                  to="/register"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block text-center w-full py-3 bg-gradient-to-r from-indigo-600 to-violet-600 text-white rounded-xl text-sm font-bold shadow-md shadow-indigo-200 transition-all"
+                >
+                  Create Account
+                </Link>
+              </div>
+            )}
+          </div>
+        </>
       )}
 
       {/* Change Password Modal */}

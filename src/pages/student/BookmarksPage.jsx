@@ -39,8 +39,8 @@ const BookmarksPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50/60 py-10">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+    <div className="min-h-screen bg-slate-50/60 py-8 sm:py-10">
+      <div className="max-w-5xl mx-auto px-3.5 sm:px-6 lg:px-8 space-y-6 sm:space-y-8">
         <div>
           <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-800 text-xs font-semibold mb-1 border border-amber-200">
             <Bookmark className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
@@ -55,7 +55,7 @@ const BookmarksPage = () => {
         </div>
 
         {bookmarks.length === 0 ? (
-          <div className="bg-white rounded-3xl border border-slate-200 p-12 text-center space-y-4">
+          <div className="bg-white rounded-2xl sm:rounded-3xl border border-slate-200 p-8 sm:p-12 text-center space-y-4">
             <Bookmark className="w-12 h-12 text-slate-300 mx-auto" />
             <h3 className="text-base font-bold text-slate-800">No Bookmarks Saved Yet</h3>
             <p className="text-xs text-slate-500 max-w-sm mx-auto">
@@ -83,7 +83,7 @@ const BookmarksPage = () => {
               return (
                 <div
                   key={b.id}
-                  className="bg-white rounded-3xl border border-slate-200/80 shadow-xs p-6 space-y-4 transition-all"
+                  className="bg-white rounded-2xl sm:rounded-3xl border border-slate-200/80 shadow-xs p-4 sm:p-6 space-y-4 transition-all"
                 >
                   <div className="flex items-center justify-between gap-3">
                     <div className="flex items-center gap-2">

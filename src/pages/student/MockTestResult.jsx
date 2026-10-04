@@ -138,21 +138,21 @@ const MockTestResult = () => {
             </p>
           </div>
 
-          <div className="flex items-center gap-2.5">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-2.5 w-full md:w-auto">
             <button
               onClick={() => setAiCoachOpen(true)}
-              className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 text-white text-xs font-semibold shadow-md shadow-indigo-200 flex items-center gap-2 transition-all hover:scale-[1.02]"
+              className="flex-1 sm:flex-none justify-center px-4 py-2.5 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 text-white text-xs font-semibold shadow-md shadow-indigo-200 flex items-center gap-2 transition-all hover:scale-[1.02] cursor-pointer text-center"
             >
               <Sparkles className="w-4 h-4 text-amber-300" />
-              Ask AI Coach
+              <span>Ask AI Coach</span>
             </button>
 
             <Link
               to="/mock/new"
-              className="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold shadow-md shadow-indigo-200 flex items-center gap-2 transition-all"
+              className="flex-1 sm:flex-none justify-center px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold shadow-md shadow-indigo-200 flex items-center gap-2 transition-all cursor-pointer text-center"
             >
               <RotateCcw className="w-4 h-4" />
-              Retake / New Test
+              <span>Retake Test</span>
             </Link>
           </div>
         </div>
@@ -294,10 +294,10 @@ const MockTestResult = () => {
             </div>
 
             {/* Filter Buttons */}
-            <div className="flex items-center gap-1.5 p-1 rounded-xl bg-slate-200/60 text-xs font-semibold">
+            <div className="flex items-center gap-1.5 p-1 rounded-xl bg-slate-200/60 text-xs font-semibold overflow-x-auto no-scrollbar touch-scroll max-w-full">
               <button
                 onClick={() => setFilterMode('ALL')}
-                className={`px-3 py-1.5 rounded-lg transition-colors ${
+                className={`px-3 py-1.5 rounded-lg whitespace-nowrap shrink-0 transition-colors cursor-pointer ${
                   filterMode === 'ALL' ? 'bg-white text-slate-900 shadow-xs' : 'text-slate-600 hover:text-slate-900'
                 }`}
               >
@@ -305,7 +305,7 @@ const MockTestResult = () => {
               </button>
               <button
                 onClick={() => setFilterMode('INCORRECT')}
-                className={`px-3 py-1.5 rounded-lg transition-colors ${
+                className={`px-3 py-1.5 rounded-lg whitespace-nowrap shrink-0 transition-colors cursor-pointer ${
                   filterMode === 'INCORRECT' ? 'bg-white text-rose-700 shadow-xs' : 'text-slate-600 hover:text-slate-900'
                 }`}
               >
@@ -313,7 +313,7 @@ const MockTestResult = () => {
               </button>
               <button
                 onClick={() => setFilterMode('CORRECT')}
-                className={`px-3 py-1.5 rounded-lg transition-colors ${
+                className={`px-3 py-1.5 rounded-lg whitespace-nowrap shrink-0 transition-colors cursor-pointer ${
                   filterMode === 'CORRECT' ? 'bg-white text-emerald-700 shadow-xs' : 'text-slate-600 hover:text-slate-900'
                 }`}
               >
@@ -321,7 +321,7 @@ const MockTestResult = () => {
               </button>
               <button
                 onClick={() => setFilterMode('SKIPPED')}
-                className={`px-3 py-1.5 rounded-lg transition-colors ${
+                className={`px-3 py-1.5 rounded-lg whitespace-nowrap shrink-0 transition-colors cursor-pointer ${
                   filterMode === 'SKIPPED' ? 'bg-white text-slate-800 shadow-xs' : 'text-slate-600 hover:text-slate-900'
                 }`}
               >
@@ -420,7 +420,7 @@ const MockTestResult = () => {
                       return (
                         <div
                           key={letter}
-                          className={`p-3.5 rounded-2xl border flex items-center justify-between gap-3 text-xs sm:text-sm ${rowStyle}`}
+                          className={`p-3.5 rounded-2xl border flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 text-xs sm:text-sm ${rowStyle}`}
                         >
                           <div className="flex items-center gap-3">
                             <span className={`w-7 h-7 rounded-xl flex items-center justify-center font-bold text-xs shrink-0 ${badgeStyle}`}>

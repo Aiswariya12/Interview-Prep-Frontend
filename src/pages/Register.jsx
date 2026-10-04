@@ -41,15 +41,15 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-[90vh] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-slate-50 via-indigo-50/40 to-slate-100 relative overflow-hidden">
+    <div className="min-h-[90vh] flex items-center justify-center py-6 sm:py-12 px-3.5 sm:px-6 lg:px-8 bg-gradient-to-br from-slate-50 via-indigo-50/40 to-slate-100 relative overflow-hidden">
       {/* Background Animated Ambient Lights */}
       <div className="absolute -top-28 -left-28 w-96 h-96 bg-indigo-500/15 rounded-full blur-3xl pointer-events-none animate-pulse-glow" />
       <div className="absolute -bottom-28 -right-28 w-96 h-96 bg-violet-500/15 rounded-full blur-3xl pointer-events-none animate-pulse-glow" style={{ animationDelay: '1.5s' }} />
 
-      <div className="relative max-w-xl w-full space-y-7 bg-white/95 backdrop-blur-md p-8 sm:p-10 rounded-3xl shadow-xl shadow-indigo-950/5 border border-slate-200/90 animate-fade-in-up">
+      <div className="relative max-w-xl w-full space-y-6 sm:space-y-7 bg-white/95 backdrop-blur-md p-5 sm:p-10 rounded-2xl sm:rounded-3xl shadow-xl shadow-indigo-950/5 border border-slate-200/90 animate-fade-in-up">
         <div className="text-center space-y-2">
-          <div className="inline-flex p-3.5 rounded-2xl bg-gradient-to-tr from-indigo-600 to-violet-600 text-white shadow-lg shadow-indigo-500/25 animate-float mb-2">
-            <GraduationCap className="w-8 h-8" />
+          <div className="inline-flex p-3 rounded-2xl bg-gradient-to-tr from-indigo-600 to-violet-600 text-white shadow-lg shadow-indigo-500/25 animate-float mb-1 sm:mb-2">
+            <GraduationCap className="w-7 h-7 sm:w-8 sm:h-8" />
           </div>
           <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
             Create Student Profile

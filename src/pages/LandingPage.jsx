@@ -45,7 +45,7 @@ const LandingPage = () => {
           HERO SECTION — Scaled to Fit 100% in One Screen (Zero Scrolling Needed)
       ═══════════════════════════════════════════════ */}
       <section
-        className="relative h-[calc(100vh-4rem)] min-h-[560px] max-h-[900px] flex items-center overflow-hidden border-b border-slate-200 bg-[#edf4fe]"
+        className="relative min-h-[calc(100vh-4rem)] lg:h-[calc(100vh-4rem)] lg:max-h-[900px] flex items-center overflow-hidden border-b border-slate-200 bg-[#edf4fe] py-8 sm:py-12 lg:py-0"
         style={{
           backgroundImage: `url("${heroBg}")`,
           backgroundPosition: 'right center',
@@ -54,10 +54,10 @@ const LandingPage = () => {
         }}
       >
         {/* Soft responsive overlay for mobile/tablets so text is always 100% legible */}
-        <div className="absolute inset-0 bg-gradient-to-r from-white/95 via-white/80 to-transparent lg:from-white/40 lg:via-transparent lg:to-transparent pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-b from-white/95 via-white/85 to-white/70 lg:bg-gradient-to-r lg:from-white/40 lg:via-transparent lg:to-transparent pointer-events-none" />
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 lg:py-6 w-full z-10">
-          <div className="w-full lg:w-[48%] max-w-lg lg:max-w-[500px] space-y-3.5 lg:space-y-4 text-left">
+          <div className="w-full lg:w-[50%] max-w-lg lg:max-w-[520px] space-y-3.5 lg:space-y-4 text-left">
 
             {/* Pill Badge */}
             <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/95 backdrop-blur-sm border border-indigo-100 text-indigo-700 text-[11px] font-semibold shadow-xs">
@@ -66,7 +66,7 @@ const LandingPage = () => {
             </div>
 
             {/* Main Heading */}
-            <h1 className="text-3xl sm:text-4xl lg:text-[2.65rem] xl:text-[2.85rem] font-extrabold text-slate-900 tracking-tight leading-[1.14]">
+            <h1 className="text-2xl sm:text-4xl lg:text-[2.65rem] xl:text-[2.85rem] font-extrabold text-slate-900 tracking-tight leading-[1.16]">
               Master Technical
               <br />
               Interviews with{' '}
@@ -76,7 +76,7 @@ const LandingPage = () => {
             </h1>
 
             {/* Subtitle */}
-            <p className="text-sm sm:text-[15px] lg:text-base text-slate-600 leading-relaxed max-w-md">
+            <p className="text-xs sm:text-[15px] lg:text-base text-slate-600 leading-relaxed max-w-md">
               Simulated exam environments for Java, Spring Boot, React, MySQL, DSA &amp; CS Fundamentals.
               Randomized question generation, instant grading, in-depth explanations, and AI-driven weak
               topic detection.
@@ -113,20 +113,20 @@ const LandingPage = () => {
 
             {/* Metric Stat Cards */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1 max-w-lg">
-              <div className="p-2.5 rounded-xl bg-white/90 backdrop-blur-md border border-white/80 shadow-xs text-left">
-                <p className="text-xl lg:text-2xl font-black text-slate-900">10+</p>
+              <div className="p-2 sm:p-2.5 rounded-xl bg-white/90 backdrop-blur-md border border-white/80 shadow-xs text-left">
+                <p className="text-lg sm:text-xl lg:text-2xl font-black text-slate-900">10+</p>
                 <p className="text-[10px] text-slate-500 font-medium mt-0.5">Core Tech Subjects</p>
               </div>
-              <div className="p-2.5 rounded-xl bg-white/90 backdrop-blur-md border border-white/80 shadow-xs text-left">
-                <p className="text-xl lg:text-2xl font-black text-indigo-600">1,000+</p>
+              <div className="p-2 sm:p-2.5 rounded-xl bg-white/90 backdrop-blur-md border border-white/80 shadow-xs text-left">
+                <p className="text-lg sm:text-xl lg:text-2xl font-black text-indigo-600">1,000+</p>
                 <p className="text-[10px] text-slate-500 font-medium mt-0.5">Vetted Questions</p>
               </div>
-              <div className="p-2.5 rounded-xl bg-white/90 backdrop-blur-md border border-white/80 shadow-xs text-left">
-                <p className="text-xl lg:text-2xl font-black text-emerald-600">100%</p>
+              <div className="p-2 sm:p-2.5 rounded-xl bg-white/90 backdrop-blur-md border border-white/80 shadow-xs text-left">
+                <p className="text-lg sm:text-xl lg:text-2xl font-black text-emerald-600">100%</p>
                 <p className="text-[10px] text-slate-500 font-medium mt-0.5">Detailed Solutions</p>
               </div>
-              <div className="p-2.5 rounded-xl bg-white/90 backdrop-blur-md border border-white/80 shadow-xs text-left">
-                <p className="text-xl lg:text-2xl font-black text-violet-600">AI Coach</p>
+              <div className="p-2 sm:p-2.5 rounded-xl bg-white/90 backdrop-blur-md border border-white/80 shadow-xs text-left">
+                <p className="text-lg sm:text-xl lg:text-2xl font-black text-violet-600">AI Coach</p>
                 <p className="text-[10px] text-slate-500 font-medium mt-0.5">Weak Area Radar</p>
               </div>
             </div>
@@ -254,24 +254,24 @@ const LandingPage = () => {
           PRODUCTION ARCHITECTURE BANNER
       ═══════════════════════════════════════════════ */}
       <section className="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="rounded-3xl bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 p-8 sm:p-12 text-white border border-slate-800 shadow-xl">
+        <div className="rounded-3xl bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 p-6 sm:p-12 text-white border border-slate-800 shadow-xl">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
             <div className="space-y-4">
               <span className="text-xs font-bold uppercase tracking-wider text-indigo-400 bg-indigo-950/80 px-3 py-1 rounded-full border border-indigo-800">
                 Enterprise Full-Stack Architecture
               </span>
-              <h2 className="text-3xl font-extrabold tracking-tight">
+              <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
                 Built to Impress Technical Recruiters
               </h2>
-              <p className="text-sm text-slate-300 leading-relaxed">
+              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
                 Featuring decoupled Vite+React frontend, Spring Boot 3 layered REST APIs, BCrypt &amp;
                 JWT stateless security, Spring Data JPA / Hibernate ORM, and MySQL schema design.
               </p>
-              <div className="grid grid-cols-2 gap-3 pt-2 text-xs">
-                <div className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-emerald-400" /> Controller-Service-Repo Layers</div>
-                <div className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-emerald-400" /> Stateless JWT Filter Chains</div>
-                <div className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-emerald-400" /> OpenAPI / Swagger UI Ready</div>
-                <div className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-emerald-400" /> Cloud Deploy Ready</div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-2 text-xs">
+                <div className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" /> Controller-Service-Repo Layers</div>
+                <div className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" /> Stateless JWT Filter Chains</div>
+                <div className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" /> OpenAPI / Swagger UI Ready</div>
+                <div className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" /> Cloud Deploy Ready</div>
               </div>
             </div>
 

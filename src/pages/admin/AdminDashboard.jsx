@@ -439,20 +439,20 @@ const AdminDashboard = () => {
             </p>
           </div>
 
-          <div className="flex items-center gap-2.5 self-start md:self-auto">
+          <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
             <button
               onClick={() => setChangePasswordOpen(true)}
-              className="px-3.5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold border border-slate-700 flex items-center gap-1.5 transition-all cursor-pointer shadow-xs"
+              className="flex-1 sm:flex-none justify-center px-3 sm:px-3.5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold border border-slate-700 flex items-center gap-1.5 transition-all cursor-pointer shadow-xs text-center"
             >
               <KeyRound className="w-4 h-4 text-indigo-400" />
-              Change Password
+              <span>Password</span>
             </button>
             <button
               onClick={openAddQuestionModal}
-              className="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold shadow-lg shadow-indigo-950/50 flex items-center gap-2 transition-all cursor-pointer"
+              className="flex-1 sm:flex-none justify-center px-3.5 sm:px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold shadow-lg shadow-indigo-950/50 flex items-center gap-1.5 sm:gap-2 transition-all cursor-pointer text-center"
             >
               <Plus className="w-4 h-4" />
-              Add New Question
+              <span>Add Question</span>
             </button>
           </div>
         </div>
@@ -468,10 +468,10 @@ const AdminDashboard = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 space-y-8">
         {/* Platform Overview Stats */}
-        <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 sm:gap-4">
           <div
             onClick={() => setActiveTab('students')}
-            className="p-4 rounded-2xl bg-white border border-slate-200/90 shadow-xs cursor-pointer hover:border-indigo-400 hover:shadow-md card-hover transition-all group"
+            className="p-3.5 sm:p-4 rounded-2xl bg-white border border-slate-200/90 shadow-xs cursor-pointer hover:border-indigo-400 hover:shadow-md card-hover transition-all group"
           >
             <div className="flex items-center justify-between text-slate-400 mb-1.5">
               <span className="text-xs font-semibold text-slate-500 group-hover:text-indigo-600 transition-colors">Total Students</span>
@@ -482,7 +482,7 @@ const AdminDashboard = () => {
 
           <div
             onClick={() => setActiveTab('questions')}
-            className="p-4 rounded-2xl bg-white border border-slate-200/90 shadow-xs cursor-pointer hover:border-emerald-400 hover:shadow-md card-hover transition-all group"
+            className="p-3.5 sm:p-4 rounded-2xl bg-white border border-slate-200/90 shadow-xs cursor-pointer hover:border-emerald-400 hover:shadow-md card-hover transition-all group"
           >
             <div className="flex items-center justify-between text-slate-400 mb-1.5">
               <span className="text-xs font-semibold text-slate-500 group-hover:text-emerald-600 transition-colors">Total Questions</span>
@@ -493,7 +493,7 @@ const AdminDashboard = () => {
 
           <div
             onClick={() => { setActiveTab('interviews'); setInterviewStudentFilter(''); }}
-            className="p-4 rounded-2xl bg-white border border-slate-200/90 shadow-xs cursor-pointer hover:border-violet-400 hover:shadow-md card-hover transition-all group"
+            className="p-3.5 sm:p-4 rounded-2xl bg-white border border-slate-200/90 shadow-xs cursor-pointer hover:border-violet-400 hover:shadow-md card-hover transition-all group"
           >
             <div className="flex items-center justify-between text-slate-400 mb-1.5">
               <span className="text-xs font-semibold text-slate-500 group-hover:text-violet-600 transition-colors">Completed Interviews</span>
@@ -504,7 +504,7 @@ const AdminDashboard = () => {
 
           <div
             onClick={() => setActiveTab('subjects')}
-            className="p-4 rounded-2xl bg-white border border-slate-200/90 shadow-xs cursor-pointer hover:border-sky-400 hover:shadow-md card-hover transition-all group"
+            className="p-3.5 sm:p-4 rounded-2xl bg-white border border-slate-200/90 shadow-xs cursor-pointer hover:border-sky-400 hover:shadow-md card-hover transition-all group"
           >
             <div className="flex items-center justify-between text-slate-400 mb-1.5">
               <span className="text-xs font-semibold text-slate-500 group-hover:text-sky-600 transition-colors">Active Tracks</span>
@@ -515,7 +515,7 @@ const AdminDashboard = () => {
 
           <div
             onClick={() => setActiveTab('analytics')}
-            className="p-4 rounded-2xl bg-white border border-slate-200/90 shadow-xs col-span-2 sm:col-span-1 cursor-pointer hover:border-amber-400 hover:shadow-md card-hover transition-all group"
+            className="p-3.5 sm:p-4 rounded-2xl bg-white border border-slate-200/90 shadow-xs col-span-2 sm:col-span-1 cursor-pointer hover:border-amber-400 hover:shadow-md card-hover transition-all group"
           >
             <div className="flex items-center justify-between text-slate-400 mb-1.5">
               <span className="text-xs font-semibold text-slate-500 group-hover:text-amber-600 transition-colors">Platform Avg</span>
@@ -528,11 +528,11 @@ const AdminDashboard = () => {
           </div>
         </div>
 
-        {/* Navigation Tabs */}
-        <div className="flex flex-wrap items-center gap-2 border-b border-slate-200 pb-3">
+        {/* Navigation Tabs (Smooth Swipe on Mobile) */}
+        <div className="flex items-center gap-2 overflow-x-auto no-scrollbar touch-scroll pb-3 border-b border-slate-200 -mx-4 px-4 sm:mx-0 sm:px-0">
           <button
             onClick={() => setActiveTab('analytics')}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap shrink-0 ${
               activeTab === 'analytics'
                 ? 'bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-sm shadow-indigo-300 scale-[1.02]'
                 : 'text-slate-600 hover:bg-slate-200/70'
@@ -543,7 +543,7 @@ const AdminDashboard = () => {
           </button>
           <button
             onClick={() => { setActiveTab('interviews'); setInterviewStudentFilter(''); }}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap shrink-0 ${
               activeTab === 'interviews'
                 ? 'bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-sm shadow-indigo-300 scale-[1.02]'
                 : 'text-slate-600 hover:bg-slate-200/70'
@@ -554,7 +554,7 @@ const AdminDashboard = () => {
           </button>
           <button
             onClick={() => setActiveTab('students')}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap shrink-0 ${
               activeTab === 'students'
                 ? 'bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-sm shadow-indigo-300 scale-[1.02]'
                 : 'text-slate-600 hover:bg-slate-200/70'
@@ -565,7 +565,7 @@ const AdminDashboard = () => {
           </button>
           <button
             onClick={() => setActiveTab('questions')}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap shrink-0 ${
               activeTab === 'questions'
                 ? 'bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-sm shadow-indigo-300 scale-[1.02]'
                 : 'text-slate-600 hover:bg-slate-200/70'
@@ -576,7 +576,7 @@ const AdminDashboard = () => {
           </button>
           <button
             onClick={() => setActiveTab('subjects')}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap shrink-0 ${
               activeTab === 'subjects'
                 ? 'bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-sm shadow-indigo-300 scale-[1.02]'
                 : 'text-slate-600 hover:bg-slate-200/70'

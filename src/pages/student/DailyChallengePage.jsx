@@ -60,17 +60,17 @@ const DailyChallengePage = () => {
     <div className="min-h-screen bg-slate-50/60 py-10">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         {/* Banner */}
-        <div className="p-8 rounded-3xl bg-gradient-to-r from-emerald-600 to-teal-700 text-white shadow-xl space-y-3">
+        <div className="p-5 sm:p-8 rounded-2xl sm:rounded-3xl bg-gradient-to-r from-emerald-600 to-teal-700 text-white shadow-xl space-y-3">
           <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-emerald-100">
             <Calendar className="w-4 h-4" />
             <span>Daily Sprint • {new Date().toLocaleDateString(undefined, { weekday: 'long', month: 'short', day: 'numeric' })}</span>
           </div>
-          <h1 className="text-3xl font-extrabold">{challenge?.title || 'Daily Technical Challenge'}</h1>
+          <h1 className="text-2xl sm:text-3xl font-extrabold">{challenge?.title || 'Daily Technical Challenge'}</h1>
           <p className="text-xs sm:text-sm text-emerald-100 leading-relaxed max-w-2xl">
             {challenge?.description || 'Sharpen technical memory with 5 curated questions. Maintain your daily streak.'}
           </p>
 
-          <div className="flex items-center gap-3 pt-2">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3 pt-2">
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/20 text-white text-xs font-bold backdrop-blur-xs">
               <Flame className="w-4 h-4 text-amber-300 fill-amber-300" />
               +50 Streak Bonus Points
@@ -81,9 +81,9 @@ const DailyChallengePage = () => {
 
         {/* Score banner after submission */}
         {submitted && (
-          <div className="p-6 rounded-3xl bg-white border border-emerald-200 shadow-md flex items-center justify-between gap-4 animate-in fade-in">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-xl">
+          <div className="p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-white border border-emerald-200 shadow-md flex flex-col sm:flex-row sm:items-center justify-between gap-4 animate-in fade-in">
+            <div className="flex items-center gap-3 sm:gap-4">
+              <div className="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-xl shrink-0">
                 {score}/5
               </div>
               <div>
@@ -98,7 +98,7 @@ const DailyChallengePage = () => {
 
             <Link
               to="/dashboard"
-              className="px-4 py-2 rounded-xl bg-slate-900 text-white text-xs font-semibold hover:bg-slate-800 transition-colors shrink-0"
+              className="w-full sm:w-auto text-center px-4 py-2.5 rounded-xl bg-slate-900 text-white text-xs font-semibold hover:bg-slate-800 transition-colors shrink-0"
             >
               Back to Dashboard
             </Link>

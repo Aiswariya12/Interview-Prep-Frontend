@@ -126,29 +126,29 @@ const StudentDashboard = () => {
               </p>
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3 w-full md:w-auto">
               <button
                 onClick={() => setChangePasswordOpen(true)}
-                className="px-3.5 py-2.5 rounded-xl bg-white border border-slate-200 hover:border-indigo-300 hover:bg-indigo-50/50 text-slate-700 text-xs font-semibold shadow-xs flex items-center gap-1.5 transition-all cursor-pointer"
+                className="flex-1 sm:flex-none justify-center px-3 sm:px-3.5 py-2.5 rounded-xl bg-white border border-slate-200 hover:border-indigo-300 hover:bg-indigo-50/50 text-slate-700 text-xs font-semibold shadow-xs flex items-center gap-1.5 transition-all cursor-pointer text-center"
               >
                 <KeyRound className="w-4 h-4 text-indigo-600" />
-                Change Password
+                <span>Password</span>
               </button>
 
               <button
                 onClick={() => setAiCoachOpen(true)}
-                className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white text-xs font-bold shadow-md shadow-indigo-200 hover:shadow-indigo-300 flex items-center gap-2 transition-all hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
+                className="flex-1 sm:flex-none justify-center px-3.5 sm:px-4 py-2.5 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white text-xs font-bold shadow-md shadow-indigo-200 hover:shadow-indigo-300 flex items-center gap-2 transition-all hover:-translate-y-0.5 active:translate-y-0 cursor-pointer text-center"
               >
                 <Sparkles className="w-4 h-4 text-amber-300 animate-spin" style={{ animationDuration: '6s' }} />
-                AI Interview Coach
+                <span>AI Coach</span>
               </button>
 
               <Link
                 to="/mock/new"
-                className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white text-xs font-bold shadow-md shadow-indigo-200 hover:shadow-indigo-300 flex items-center gap-2 transition-all hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
+                className="w-full sm:w-auto justify-center px-4 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white text-xs font-bold shadow-md shadow-indigo-200 hover:shadow-indigo-300 flex items-center gap-2 transition-all hover:-translate-y-0.5 active:translate-y-0 cursor-pointer text-center"
               >
                 <BookOpen className="w-4 h-4" />
-                Start Mock Test
+                <span>Start Mock Test</span>
               </Link>
             </div>
           </div>
@@ -157,7 +157,7 @@ const StudentDashboard = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 space-y-8 animate-fade-in-up">
         {/* Metric Cards Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
           <div className="p-4 rounded-2xl bg-white border border-slate-200/90 shadow-xs card-hover group hover:border-indigo-400">
             <div className="flex items-center justify-between text-slate-400 mb-2">
               <span className="text-xs font-semibold text-slate-500 group-hover:text-indigo-600 transition-colors">Total Tests</span>
@@ -309,11 +309,11 @@ const StudentDashboard = () => {
             </div>
 
             {/* Subject Filter Pills */}
-            <div className="flex items-center gap-1.5 overflow-x-auto pb-1 max-w-full">
+            <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar touch-scroll pb-1 max-w-full -mx-2 px-2 sm:mx-0 sm:px-0">
               <button
                 type="button"
                 onClick={() => setSelectedSubjectNoteFilter('ALL')}
-                className={`px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
+                className={`px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap shrink-0 transition-all cursor-pointer ${
                   selectedSubjectNoteFilter === 'ALL'
                     ? 'bg-indigo-600 text-white shadow-xs'
                     : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
@@ -326,7 +326,7 @@ const StudentDashboard = () => {
                   key={sub.id}
                   type="button"
                   onClick={() => setSelectedSubjectNoteFilter(String(sub.id))}
-                  className={`px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
+                  className={`px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap shrink-0 transition-all cursor-pointer ${
                     selectedSubjectNoteFilter === String(sub.id)
                       ? 'bg-indigo-600 text-white shadow-xs'
                       : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
@@ -473,11 +473,11 @@ const StudentDashboard = () => {
                 </Link>
               </div>
             ) : (
-              <div className="divide-y divide-slate-100 overflow-x-auto">
+              <div className="divide-y divide-slate-100">
                 {recentTests.map((t) => (
-                  <div key={t.id} className="py-3.5 flex items-center justify-between gap-4">
+                  <div key={t.id} className="py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <div className="space-y-0.5">
-                      <div className="flex items-center gap-2">
+                      <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
                         <span className="text-sm font-bold text-slate-900">{t.subjectName}</span>
                         <span className="text-[10px] px-2 py-0.5 rounded font-medium bg-slate-100 text-slate-600">
                           {t.topicName}
@@ -491,8 +491,8 @@ const StudentDashboard = () => {
                       </p>
                     </div>
 
-                    <div className="flex items-center gap-3">
-                      <div className="text-right">
+                    <div className="flex items-center justify-between sm:justify-end gap-3 w-full sm:w-auto pt-1 sm:pt-0">
+                      <div className="text-left sm:text-right">
                         <span
                           className={`text-sm font-extrabold ${
                             t.percentage >= 70
