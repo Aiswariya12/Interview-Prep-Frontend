@@ -18,6 +18,8 @@ import {
   Cpu,
   Network,
   Binary,
+  Users,
+  HelpCircle,
 } from 'lucide-react';
 import heroBg from '../assets/Modern Tech Dashboard Hero Illustration.png';
 
@@ -42,31 +44,38 @@ const LandingPage = () => {
     <div className="bg-slate-50 min-h-screen">
 
       {/* ═══════════════════════════════════════════════
-          HERO SECTION — Scaled to Fit 100% in One Screen (Zero Scrolling Needed)
+          HERO SECTION — Responsive Hero with Device-Adaptive Background
       ═══════════════════════════════════════════════ */}
       <section
-        className="relative min-h-[calc(100vh-4rem)] lg:h-[calc(100vh-4rem)] lg:max-h-[900px] flex items-center overflow-hidden border-b border-slate-200 bg-[#edf4fe] py-8 sm:py-12 lg:py-0"
-        style={{
-          backgroundImage: `url("${heroBg}")`,
-          backgroundPosition: 'right center',
-          backgroundSize: 'contain',
-          backgroundRepeat: 'no-repeat',
-        }}
+        className="relative hero-device-responsive border-b border-slate-200 bg-gradient-to-b from-[#eef5fe] via-[#f3f7fd] to-slate-50 py-7 sm:py-10 lg:py-0 lg:h-[calc(100vh-4rem)] lg:min-h-[580px] lg:max-h-[860px] flex items-center overflow-hidden"
+        style={{ '--hero-bg': `url("${heroBg}")` }}
       >
         {/* Soft responsive overlay for mobile/tablets so text is always 100% legible */}
-        <div className="absolute inset-0 bg-gradient-to-b from-white/95 via-white/85 to-white/70 lg:bg-gradient-to-r lg:from-white/40 lg:via-transparent lg:to-transparent pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-r from-white/95 via-white/85 to-transparent/40 sm:to-transparent lg:from-white/30 lg:via-transparent lg:to-transparent pointer-events-none" />
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 lg:py-6 w-full z-10">
-          <div className="w-full lg:w-[50%] max-w-lg lg:max-w-[520px] space-y-3.5 lg:space-y-4 text-left">
+        {/* Ambient Decorative Dot Matrix Elements matching the mockup */}
+        <div className="absolute bottom-4 left-4 grid grid-cols-4 gap-2 opacity-20 pointer-events-none">
+          {[...Array(24)].map((_, i) => (
+            <div key={i} className="w-1.5 h-1.5 rounded-full bg-indigo-500" />
+          ))}
+        </div>
+        <div className="absolute top-1/2 right-3 -translate-y-1/2 hidden sm:grid grid-cols-4 gap-2 opacity-25 pointer-events-none">
+          {[...Array(24)].map((_, i) => (
+            <div key={i} className="w-1.5 h-1.5 rounded-full bg-indigo-500" />
+          ))}
+        </div>
+
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 lg:py-6 w-full z-10">
+          <div className="w-full lg:w-[50%] max-w-lg lg:max-w-[540px] space-y-3 sm:space-y-4 text-left">
 
             {/* Pill Badge */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/95 backdrop-blur-sm border border-indigo-100 text-indigo-700 text-[11px] font-semibold shadow-xs">
-              <Sparkles className="w-3 h-3 text-indigo-600 shrink-0" />
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/95 backdrop-blur-sm border border-indigo-100 text-indigo-700 text-[11px] sm:text-xs font-semibold shadow-xs">
+              <Sparkles className="w-3.5 h-3.5 text-indigo-600 shrink-0" />
               <span>Full Stack Mock Assessment &amp; Interview Analytics</span>
             </div>
 
             {/* Main Heading */}
-            <h1 className="text-2xl sm:text-4xl lg:text-[2.65rem] xl:text-[2.85rem] font-extrabold text-slate-900 tracking-tight leading-[1.16]">
+            <h1 className="text-2xl sm:text-3xl lg:text-[2.65rem] xl:text-[2.85rem] font-extrabold text-slate-900 tracking-tight leading-[1.18] max-w-[270px] xs:max-w-[320px] sm:max-w-none">
               Master Technical
               <br />
               Interviews with{' '}
@@ -76,18 +85,18 @@ const LandingPage = () => {
             </h1>
 
             {/* Subtitle */}
-            <p className="text-xs sm:text-[15px] lg:text-base text-slate-600 leading-relaxed max-w-md">
+            <p className="text-xs sm:text-[14px] lg:text-base text-slate-600 leading-relaxed max-w-[280px] xs:max-w-[340px] sm:max-w-md">
               Simulated exam environments for Java, Spring Boot, React, MySQL, DSA &amp; CS Fundamentals.
               Randomized question generation, instant grading, in-depth explanations, and AI-driven weak
               topic detection.
             </p>
 
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-0.5">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-1">
               {isAuthenticated ? (
                 <Link
                   to={isAdmin ? '/admin' : '/dashboard'}
-                  className="w-full sm:w-auto px-6 py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white font-semibold shadow-lg shadow-indigo-200/50 flex items-center justify-center gap-2 transition-all text-sm group"
+                  className="w-full sm:w-auto px-6 py-3.5 sm:py-3 rounded-xl bg-gradient-to-r from-indigo-600 via-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white font-semibold shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/35 flex items-center justify-center gap-2 transition-all text-sm sm:text-base group"
                 >
                   Go to {isAdmin ? 'Admin Portal' : 'Student Dashboard'}
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -96,14 +105,14 @@ const LandingPage = () => {
                 <>
                   <Link
                     to="/register"
-                    className="w-full sm:w-auto px-6 py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white font-semibold shadow-lg shadow-indigo-200/50 flex items-center justify-center gap-2 transition-all text-sm group"
+                    className="w-full sm:w-auto px-6 py-3.5 sm:py-3 rounded-xl bg-gradient-to-r from-indigo-600 via-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white font-semibold shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/35 flex items-center justify-center gap-2 transition-all text-sm sm:text-base group"
                   >
                     Start Free Mock Practice
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </Link>
                   <Link
                     to="/login"
-                    className="w-full sm:w-auto px-6 py-3 rounded-xl bg-white/90 backdrop-blur-sm border border-slate-300 hover:bg-white text-slate-800 font-semibold shadow-xs flex items-center justify-center gap-2 transition-all text-sm"
+                    className="w-full sm:w-auto px-6 py-3.5 sm:py-3 rounded-xl bg-white/95 backdrop-blur-sm border border-slate-300 hover:bg-white text-slate-800 font-semibold shadow-xs flex items-center justify-center gap-2 transition-all text-sm sm:text-base"
                   >
                     Live Demo Login
                   </Link>
@@ -111,23 +120,50 @@ const LandingPage = () => {
               )}
             </div>
 
-            {/* Metric Stat Cards */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1 max-w-lg">
-              <div className="p-2 sm:p-2.5 rounded-xl bg-white/90 backdrop-blur-md border border-white/80 shadow-xs text-left">
-                <p className="text-lg sm:text-xl lg:text-2xl font-black text-slate-900">10+</p>
-                <p className="text-[10px] text-slate-500 font-medium mt-0.5">Core Tech Subjects</p>
+            {/* Metric Stat Cards — Matching the exact reference screenshot styling */}
+            <div className="grid grid-cols-2 gap-2.5 sm:gap-3.5 pt-2 max-w-lg">
+              {/* Card 1: 10+ Core Tech Subjects */}
+              <div className="bg-white/95 backdrop-blur-md rounded-2xl p-2.5 sm:p-3.5 shadow-sm border border-slate-100/90 flex items-center gap-2.5 sm:gap-3 transition-all hover:shadow-md hover:-translate-y-0.5">
+                <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0 shadow-xs">
+                  <Users className="w-4 h-4 sm:w-5 sm:h-5" />
+                </div>
+                <div className="min-w-0 flex-1 text-left">
+                  <p className="text-sm sm:text-lg font-black text-slate-900 leading-tight">10+</p>
+                  <p className="text-[10px] sm:text-xs text-slate-500 font-medium truncate mt-0.5">Core Tech Subjects</p>
+                </div>
               </div>
-              <div className="p-2 sm:p-2.5 rounded-xl bg-white/90 backdrop-blur-md border border-white/80 shadow-xs text-left">
-                <p className="text-lg sm:text-xl lg:text-2xl font-black text-indigo-600">1,000+</p>
-                <p className="text-[10px] text-slate-500 font-medium mt-0.5">Vetted Questions</p>
+
+              {/* Card 2: 1,000+ Vetted Questions */}
+              <div className="bg-white/95 backdrop-blur-md rounded-2xl p-2.5 sm:p-3.5 shadow-sm border border-slate-100/90 flex items-center gap-2.5 sm:gap-3 transition-all hover:shadow-md hover:-translate-y-0.5">
+                <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center shrink-0 shadow-xs">
+                  <HelpCircle className="w-4 h-4 sm:w-5 sm:h-5" />
+                </div>
+                <div className="min-w-0 flex-1 text-left">
+                  <p className="text-sm sm:text-lg font-black text-slate-900 leading-tight">1,000+</p>
+                  <p className="text-[10px] sm:text-xs text-slate-500 font-medium truncate mt-0.5">Vetted Questions</p>
+                </div>
               </div>
-              <div className="p-2 sm:p-2.5 rounded-xl bg-white/90 backdrop-blur-md border border-white/80 shadow-xs text-left">
-                <p className="text-lg sm:text-xl lg:text-2xl font-black text-emerald-600">100%</p>
-                <p className="text-[10px] text-slate-500 font-medium mt-0.5">Detailed Solutions</p>
+
+              {/* Card 3: 100% Detailed Solutions */}
+              <div className="bg-white/95 backdrop-blur-md rounded-2xl p-2.5 sm:p-3.5 shadow-sm border border-slate-100/90 flex items-center gap-2.5 sm:gap-3 transition-all hover:shadow-md hover:-translate-y-0.5">
+                <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 shadow-xs">
+                  <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5" />
+                </div>
+                <div className="min-w-0 flex-1 text-left">
+                  <p className="text-sm sm:text-lg font-black text-emerald-600 leading-tight">100%</p>
+                  <p className="text-[10px] sm:text-xs text-slate-500 font-medium truncate mt-0.5">Detailed Solutions</p>
+                </div>
               </div>
-              <div className="p-2 sm:p-2.5 rounded-xl bg-white/90 backdrop-blur-md border border-white/80 shadow-xs text-left">
-                <p className="text-lg sm:text-xl lg:text-2xl font-black text-violet-600">AI Coach</p>
-                <p className="text-[10px] text-slate-500 font-medium mt-0.5">Weak Area Radar</p>
+
+              {/* Card 4: AI Coach Weak Area Radar */}
+              <div className="bg-white/95 backdrop-blur-md rounded-2xl p-2.5 sm:p-3.5 shadow-sm border border-slate-100/90 flex items-center gap-2.5 sm:gap-3 transition-all hover:shadow-md hover:-translate-y-0.5">
+                <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-violet-50 text-violet-600 flex items-center justify-center shrink-0 shadow-xs">
+                  <Cpu className="w-4 h-4 sm:w-5 sm:h-5" />
+                </div>
+                <div className="min-w-0 flex-1 text-left">
+                  <p className="text-sm sm:text-lg font-black text-violet-600 leading-tight">AI Coach</p>
+                  <p className="text-[10px] sm:text-xs text-slate-500 font-medium truncate mt-0.5">Weak Area Radar</p>
+                </div>
               </div>
             </div>
 
