@@ -47,26 +47,14 @@ const LandingPage = () => {
           HERO SECTION — Responsive Hero with Device-Adaptive Background
       ═══════════════════════════════════════════════ */}
       <section
-        className="relative hero-device-responsive border-b border-slate-200 bg-gradient-to-b from-[#eef5fe] via-[#f3f7fd] to-slate-50 py-7 sm:py-10 lg:py-0 lg:h-[calc(100vh-4rem)] lg:min-h-[580px] lg:max-h-[860px] flex items-center overflow-hidden"
+        className="relative hero-device-responsive border-b border-slate-200 bg-gradient-to-b from-[#eef5fe] via-[#f3f7fd] to-slate-50 py-8 sm:py-12 lg:py-14 min-h-[calc(100vh-4rem)] flex items-center overflow-hidden"
         style={{ '--hero-bg': `url("${heroBg}")` }}
       >
         {/* Soft responsive overlay for mobile/tablets so text is always 100% legible */}
         <div className="absolute inset-0 bg-gradient-to-r from-white/95 via-white/85 to-transparent/40 sm:to-transparent lg:from-white/30 lg:via-transparent lg:to-transparent pointer-events-none" />
 
-        {/* Ambient Decorative Dot Matrix Elements matching the mockup */}
-        <div className="absolute bottom-4 left-4 grid grid-cols-4 gap-2 opacity-20 pointer-events-none">
-          {[...Array(24)].map((_, i) => (
-            <div key={i} className="w-1.5 h-1.5 rounded-full bg-indigo-500" />
-          ))}
-        </div>
-        <div className="absolute top-1/2 right-3 -translate-y-1/2 hidden sm:grid grid-cols-4 gap-2 opacity-25 pointer-events-none">
-          {[...Array(24)].map((_, i) => (
-            <div key={i} className="w-1.5 h-1.5 rounded-full bg-indigo-500" />
-          ))}
-        </div>
-
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 lg:py-6 w-full z-10">
-          <div className="w-full lg:w-[50%] max-w-lg lg:max-w-[540px] space-y-3 sm:space-y-4 text-left">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8 w-full z-10">
+          <div className="w-full lg:w-[50%] max-w-lg lg:max-w-[540px] space-y-3.5 sm:space-y-4 text-left pt-3 sm:pt-5 lg:pt-6">
 
             {/* Pill Badge */}
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/95 backdrop-blur-sm border border-indigo-100 text-indigo-700 text-[11px] sm:text-xs font-semibold shadow-xs">

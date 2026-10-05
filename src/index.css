@@ -145,14 +145,14 @@
 
 @media (min-width: 1024px) {
   .hero-device-responsive {
-    background-position: right 2.5rem center;
+    background-position: right center;
     background-size: contain;
   }
 }
 
 @media (min-width: 1440px) {
   .hero-device-responsive {
-    background-position: right 4.5rem center;
+    background-position: right center;
     background-size: contain;
   }
 }
