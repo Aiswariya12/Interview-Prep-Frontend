@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { bookmarkApi } from '../../services/api';
 import { Bookmark, Sparkles, Trash2, CheckCircle2, ChevronDown, ChevronUp, Code, BookOpen } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import BookmarksSkeleton from '../../components/skeletons/BookmarksSkeleton';
 
 const BookmarksPage = () => {
   const [bookmarks, setBookmarks] = useState([]);
@@ -31,11 +32,7 @@ const BookmarksPage = () => {
   };
 
   if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50">
-        <div className="w-8 h-8 border-2 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
-      </div>
-    );
+    return <BookmarksSkeleton />;
   }
 
   return (

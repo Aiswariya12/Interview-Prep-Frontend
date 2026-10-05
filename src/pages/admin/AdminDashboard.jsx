@@ -32,6 +32,7 @@ import {
   Link2
 } from 'lucide-react';
 import ChangePasswordModal from '../../components/ChangePasswordModal';
+import AdminDashboardSkeleton from '../../components/skeletons/AdminDashboardSkeleton';
 import {
   ResponsiveContainer,
   BarChart,
@@ -420,6 +421,10 @@ const AdminDashboard = () => {
     setFeedback(msg);
     setTimeout(() => setFeedback(''), 3500);
   };
+
+  if (loading) {
+    return <AdminDashboardSkeleton />;
+  }
 
   return (
     <div className="min-h-screen bg-slate-50/70 pb-20">

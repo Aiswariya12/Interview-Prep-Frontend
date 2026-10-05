@@ -3,6 +3,7 @@ import { dailyChallengeApi } from '../../services/api';
 import confetti from 'canvas-confetti';
 import { Calendar, Flame, CheckCircle2, XCircle, Sparkles, Code, ArrowRight, RotateCcw } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import DailyChallengeSkeleton from '../../components/skeletons/DailyChallengeSkeleton';
 
 const DailyChallengePage = () => {
   const [challenge, setChallenge] = useState(null);
@@ -47,11 +48,7 @@ const DailyChallengePage = () => {
   };
 
   if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50">
-        <div className="w-8 h-8 border-2 border-emerald-600 border-t-transparent rounded-full animate-spin"></div>
-      </div>
-    );
+    return <DailyChallengeSkeleton />;
   }
 
   const questions = challenge?.questions || [];

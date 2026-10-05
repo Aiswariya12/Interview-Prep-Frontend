@@ -24,6 +24,7 @@ import {
   Link2
 } from 'lucide-react';
 import ChangePasswordModal from '../../components/ChangePasswordModal';
+import StudentDashboardSkeleton from '../../components/skeletons/StudentDashboardSkeleton';
 
 const StudentDashboard = () => {
   const { user } = useAuth();
@@ -67,14 +68,7 @@ const StudentDashboard = () => {
   };
 
   if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50">
-        <div className="flex flex-col items-center gap-3">
-          <div className="w-10 h-10 border-3 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
-          <p className="text-xs font-semibold text-slate-500">Loading your performance analytics...</p>
-        </div>
-      </div>
-    );
+    return <StudentDashboardSkeleton />;
   }
 
   const weakTopics = dashboard?.weakTopics || [];
