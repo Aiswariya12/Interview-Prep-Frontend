@@ -47,7 +47,7 @@ const LandingPage = () => {
           HERO SECTION — Full-Screen Video Background with Responsive Experience
       ═══════════════════════════════════════════════ */}
       <section
-        className="relative border-b border-slate-200 bg-slate-50 min-h-[calc(100vh-4rem)] min-h-[calc(100dvh-4rem)] flex items-center overflow-hidden py-6 sm:py-10 lg:py-0"
+        className="relative border-b border-slate-200 bg-slate-50 min-h-[calc(100vh-4rem)] min-h-[calc(100dvh-4rem)] flex flex-col justify-start lg:justify-center overflow-hidden pt-3 pb-8 sm:pt-6 sm:pb-10 lg:py-0"
       >
         {/* Full-Screen Responsive Background Video */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -76,8 +76,8 @@ const LandingPage = () => {
           </video>
         </div>
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8 w-full z-10">
-          <div className="w-full lg:w-[50%] xl:w-[48%] max-w-lg lg:max-w-[540px] space-y-3 sm:space-y-4 text-left">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 sm:py-6 lg:py-8 w-full z-10">
+          <div className="w-full lg:w-[50%] xl:w-[48%] max-w-lg lg:max-w-[540px] space-y-2.5 sm:space-y-4 text-left">
 
             {/* Pill Badge */}
             <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-white/95 backdrop-blur-sm border border-indigo-100/90 text-indigo-700 text-[10.5px] sm:text-xs font-semibold shadow-2xs max-w-full">
@@ -85,22 +85,25 @@ const LandingPage = () => {
               <span className="truncate">Full Stack Mock Assessment &amp; Interview Analytics</span>
             </div>
 
-            {/* Main Heading */}
-            <h1 className="text-2xl sm:text-3xl lg:text-[2.65rem] xl:text-[3.15rem] font-black text-slate-900 tracking-tight leading-[1.15] w-full">
-              Master Technical
-              <br />
-              Interviews with{' '}
-              <span className="bg-gradient-to-r from-indigo-600 via-indigo-600 to-violet-600 bg-clip-text text-transparent">
-                Data-Driven Precision
-              </span>
-            </h1>
+            {/* Heading & Subtitle Container with High-Contrast Readability on Mobile */}
+            <div className="bg-white/85 sm:bg-white/75 lg:bg-transparent backdrop-blur-sm sm:backdrop-blur-md lg:backdrop-blur-none rounded-2xl p-3 sm:p-4 lg:p-0 border border-white/80 sm:border-white/60 lg:border-transparent shadow-xs lg:shadow-none space-y-2">
+              {/* Main Heading */}
+              <h1 className="text-2xl sm:text-3xl lg:text-[2.65rem] xl:text-[3.15rem] font-black text-slate-900 tracking-tight leading-[1.15] w-full">
+                Master Technical
+                <br />
+                Interviews with{' '}
+                <span className="text-indigo-600">
+                  Data-Driven Precision
+                </span>
+              </h1>
 
-            {/* Subtitle */}
-            <p className="text-xs sm:text-[14px] lg:text-[15px] xl:text-base text-slate-600 leading-relaxed w-full max-w-md lg:max-w-xl">
-              Simulated exam environments for Java, Spring Boot, React, MySQL, DSA &amp; CS Fundamentals.
-              Randomized question generation, instant grading, in-depth explanations, and AI-driven weak
-              topic detection.
-            </p>
+              {/* Subtitle */}
+              <p className="text-xs sm:text-[14px] lg:text-[15px] xl:text-base text-slate-800 font-medium leading-relaxed w-full max-w-md lg:max-w-xl">
+                Simulated exam environments for Java, Spring Boot, React, MySQL, DSA &amp; CS Fundamentals.
+                Randomized question generation, instant grading, in-depth explanations, and AI-driven weak
+                topic detection.
+              </p>
+            </div>
 
             {/* Trust Checkmarks on Desktop */}
             <div className="hidden sm:flex items-center gap-4 text-xs font-semibold text-slate-600 pt-0.5">
