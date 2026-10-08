@@ -21,6 +21,7 @@ import {
   Users,
   HelpCircle,
 } from 'lucide-react';
+import bgVideo from '../assets/background video.mp4';
 
 const iconMap = {
   Coffee, Leaf, Atom, Code2, Database, Binary, Server, Cpu, Network, Brain,
@@ -43,11 +44,28 @@ const LandingPage = () => {
     <div className="bg-slate-50 min-h-screen">
 
       {/* ═══════════════════════════════════════════════
-          HERO SECTION — Responsive Hero with Device-Adaptive Background on Mobile & Interactive Visual on Desktop
+          HERO SECTION — Full-Screen Video Background with Responsive Experience
       ═══════════════════════════════════════════════ */}
       <section
-        className="relative border-b border-slate-200 bg-gradient-to-b from-[#eef5fe] via-[#f3f7fd] to-slate-50 py-7 sm:py-10 lg:py-0 lg:h-[calc(100vh-4rem)] lg:min-h-[580px] lg:max-h-[780px] flex items-center overflow-hidden"
+        className="relative border-b border-slate-200 bg-slate-50 min-h-[calc(100vh-4rem)] flex items-center overflow-hidden py-8 sm:py-12 lg:py-0"
       >
+        {/* Full-Screen Responsive Background Video */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <video
+            ref={(el) => { if (el) el.muted = true; }}
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="auto"
+            className="w-full h-full object-cover object-center sm:object-right"
+          >
+            <source src={bgVideo} type="video/mp4" />
+          </video>
+          {/* Responsive Soft Backdrop Overlay for Crystal-Clear Readability */}
+          <div className="absolute inset-0 bg-gradient-to-r from-white/95 via-white/80 to-white/30 sm:from-white/90 sm:via-white/70 sm:to-transparent lg:from-white/85 lg:via-white/60 lg:to-transparent pointer-events-none" />
+        </div>
+
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-8 lg:py-8 w-full z-10">
           <div className="w-full lg:w-[50%] xl:w-[48%] max-w-lg lg:max-w-[540px] space-y-3.5 sm:space-y-4 text-left">
 
