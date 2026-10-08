@@ -145,15 +145,22 @@
 
 @media (min-width: 1024px) {
   .hero-device-responsive {
-    background-position: right center;
-    background-size: cover;
+    background-position: right 1rem center;
+    background-size: contain;
   }
 }
 
-@media (min-width: 1440px) {
+@media (min-width: 1280px) {
   .hero-device-responsive {
-    background-position: right center;
-    background-size: cover;
+    background-position: right 2rem center;
+    background-size: auto 86%;
+  }
+}
+
+@media (min-width: 1536px) {
+  .hero-device-responsive {
+    background-position: right 3rem center;
+    background-size: auto 85%;
   }
 }
 
