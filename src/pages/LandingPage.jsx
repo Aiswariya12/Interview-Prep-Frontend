@@ -66,186 +66,125 @@ const LandingPage = () => {
         </div>
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 lg:py-6 w-full z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 xl:gap-12 items-center">
+          <div className="w-full lg:w-[52%] xl:w-[48%] max-w-lg lg:max-w-[560px] space-y-3 sm:space-y-4 text-left">
 
-            {/* Left Column (Mobile: 100%, Desktop: 7 cols) */}
-            <div className="lg:col-span-7 xl:col-span-7 space-y-3 sm:space-y-4 text-left">
-
-              {/* Pill Badge with live pulsing indicator */}
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/95 backdrop-blur-sm border border-indigo-100 text-indigo-700 text-[11px] sm:text-xs font-semibold shadow-xs">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-indigo-600"></span>
-                </span>
-                <Sparkles className="w-3.5 h-3.5 text-indigo-600 shrink-0" />
-                <span>Full Stack Mock Assessment &amp; Interview Analytics</span>
-              </div>
-
-              {/* Main Heading */}
-              <h1 className="text-2xl sm:text-3xl lg:text-[2.65rem] xl:text-[3.15rem] font-black text-slate-900 tracking-tight leading-[1.14] max-w-[270px] xs:max-w-[320px] sm:max-w-none">
-                Master Technical
-                <br />
-                Interviews with{' '}
-                <span className="bg-gradient-to-r from-indigo-600 via-indigo-600 to-violet-600 bg-clip-text text-transparent">
-                  Data-Driven Precision
-                </span>
-              </h1>
-
-              {/* Subtitle */}
-              <p className="text-xs sm:text-[14px] lg:text-[15px] xl:text-base text-slate-600 leading-relaxed max-w-[280px] xs:max-w-[340px] sm:max-w-md lg:max-w-xl">
-                Simulated exam environments for Java, Spring Boot, React, MySQL, DSA &amp; CS Fundamentals.
-                Randomized question generation, instant grading, in-depth explanations, and AI-driven weak
-                topic detection.
-              </p>
-
-              {/* Trust Checkmarks on Desktop */}
-              <div className="hidden sm:flex items-center gap-4 text-xs font-semibold text-slate-600 pt-0.5">
-                <span className="flex items-center gap-1.5">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
-                  Dynamic 30m Countdown
-                </span>
-                <span className="flex items-center gap-1.5">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
-                  AI Weakness Radar
-                </span>
-                <span className="flex items-center gap-1.5">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
-                  100% Free Practice
-                </span>
-              </div>
-
-              {/* CTA Buttons */}
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-1">
-                {isAuthenticated ? (
-                  <Link
-                    to={isAdmin ? '/admin' : '/dashboard'}
-                    className="w-full sm:w-auto px-6 py-3.5 sm:py-3.5 rounded-xl bg-gradient-to-r from-indigo-600 via-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white font-semibold shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/35 hover:-translate-y-0.5 flex items-center justify-center gap-2 transition-all text-sm sm:text-base group"
-                  >
-                    Go to {isAdmin ? 'Admin Portal' : 'Student Dashboard'}
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                  </Link>
-                ) : (
-                  <>
-                    <Link
-                      to="/register"
-                      className="w-full sm:w-auto px-6 py-3.5 sm:py-3.5 rounded-xl bg-gradient-to-r from-indigo-600 via-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white font-semibold shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/35 hover:-translate-y-0.5 flex items-center justify-center gap-2 transition-all text-sm sm:text-base group"
-                    >
-                      Start Free Mock Practice
-                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                    </Link>
-                    <Link
-                      to="/login"
-                      className="w-full sm:w-auto px-6 py-3.5 sm:py-3.5 rounded-xl bg-white/95 backdrop-blur-sm border border-slate-300 hover:border-indigo-300 hover:bg-white text-slate-800 font-semibold shadow-xs hover:shadow-md hover:-translate-y-0.5 flex items-center justify-center gap-2 transition-all text-sm sm:text-base"
-                    >
-                      Live Demo Login
-                    </Link>
-                  </>
-                )}
-              </div>
-
-              {/* Metric Stat Cards — Matching the exact reference screenshot styling & enhanced on desktop */}
-              <div className="grid grid-cols-2 gap-2.5 sm:gap-3.5 pt-2 max-w-lg lg:max-w-xl">
-                {/* Card 1: 10+ Core Tech Subjects */}
-                <div className="bg-white/95 backdrop-blur-md rounded-2xl p-2.5 sm:p-3.5 shadow-sm border border-slate-100/90 hover:border-indigo-200 flex items-center gap-2.5 sm:gap-3 transition-all hover:shadow-md hover:-translate-y-0.5 group">
-                  <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-indigo-50 text-indigo-600 group-hover:scale-105 flex items-center justify-center shrink-0 shadow-xs transition-transform">
-                    <Users className="w-4 h-4 sm:w-5 sm:h-5" />
-                  </div>
-                  <div className="min-w-0 flex-1 text-left">
-                    <p className="text-sm sm:text-lg font-black text-slate-900 leading-tight">10+</p>
-                    <p className="text-[10px] sm:text-xs text-slate-500 font-medium truncate mt-0.5">Core Tech Subjects</p>
-                  </div>
-                </div>
-
-                {/* Card 2: 1,000+ Vetted Questions */}
-                <div className="bg-white/95 backdrop-blur-md rounded-2xl p-2.5 sm:p-3.5 shadow-sm border border-slate-100/90 hover:border-sky-200 flex items-center gap-2.5 sm:gap-3 transition-all hover:shadow-md hover:-translate-y-0.5 group">
-                  <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-sky-50 text-sky-600 group-hover:scale-105 flex items-center justify-center shrink-0 shadow-xs transition-transform">
-                    <HelpCircle className="w-4 h-4 sm:w-5 sm:h-5" />
-                  </div>
-                  <div className="min-w-0 flex-1 text-left">
-                    <p className="text-sm sm:text-lg font-black text-slate-900 leading-tight">1,000+</p>
-                    <p className="text-[10px] sm:text-xs text-slate-500 font-medium truncate mt-0.5">Vetted Questions</p>
-                  </div>
-                </div>
-
-                {/* Card 3: 100% Detailed Solutions */}
-                <div className="bg-white/95 backdrop-blur-md rounded-2xl p-2.5 sm:p-3.5 shadow-sm border border-slate-100/90 hover:border-emerald-200 flex items-center gap-2.5 sm:gap-3 transition-all hover:shadow-md hover:-translate-y-0.5 group">
-                  <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-emerald-50 text-emerald-600 group-hover:scale-105 flex items-center justify-center shrink-0 shadow-xs transition-transform">
-                    <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5" />
-                  </div>
-                  <div className="min-w-0 flex-1 text-left">
-                    <p className="text-sm sm:text-lg font-black text-emerald-600 leading-tight">100%</p>
-                    <p className="text-[10px] sm:text-xs text-slate-500 font-medium truncate mt-0.5">Detailed Solutions</p>
-                  </div>
-                </div>
-
-                {/* Card 4: AI Coach Weak Area Radar */}
-                <div className="bg-white/95 backdrop-blur-md rounded-2xl p-2.5 sm:p-3.5 shadow-sm border border-slate-100/90 hover:border-violet-200 flex items-center gap-2.5 sm:gap-3 transition-all hover:shadow-md hover:-translate-y-0.5 group">
-                  <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-violet-50 text-violet-600 group-hover:scale-105 flex items-center justify-center shrink-0 shadow-xs transition-transform">
-                    <Cpu className="w-4 h-4 sm:w-5 sm:h-5" />
-                  </div>
-                  <div className="min-w-0 flex-1 text-left">
-                    <p className="text-sm sm:text-lg font-black text-violet-600 leading-tight">AI Coach</p>
-                    <p className="text-[10px] sm:text-xs text-slate-500 font-medium truncate mt-0.5">Weak Area Radar</p>
-                  </div>
-                </div>
-              </div>
-
+            {/* Pill Badge with live pulsing indicator */}
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/95 backdrop-blur-sm border border-indigo-100 text-indigo-700 text-[11px] sm:text-xs font-semibold shadow-xs">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-indigo-600"></span>
+              </span>
+              <Sparkles className="w-3.5 h-3.5 text-indigo-600 shrink-0" />
+              <span>Full Stack Mock Assessment &amp; Interview Analytics</span>
             </div>
 
-            {/* Right Column (Mobile: hidden, Desktop: 5 cols interactive composition) */}
-            <div className="hidden lg:flex lg:col-span-5 xl:col-span-5 relative items-center justify-center select-none">
-              
-              {/* Ambient Radial Backlight Glow */}
-              <div className="absolute -inset-4 bg-gradient-to-tr from-indigo-500/20 via-violet-500/15 to-sky-400/20 blur-3xl rounded-full pointer-events-none" />
+            {/* Main Heading */}
+            <h1 className="text-2xl sm:text-3xl lg:text-[2.65rem] xl:text-[3.15rem] font-black text-slate-900 tracking-tight leading-[1.14] max-w-[270px] xs:max-w-[320px] sm:max-w-none">
+              Master Technical
+              <br />
+              Interviews with{' '}
+              <span className="bg-gradient-to-r from-indigo-600 via-indigo-600 to-violet-600 bg-clip-text text-transparent">
+                Data-Driven Precision
+              </span>
+            </h1>
 
-              {/* Floating Pill: Tech Stack Chips (Top Right) */}
-              <div className="absolute -top-3 right-2 xl:-right-2 z-20 inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/95 backdrop-blur-md border border-slate-200/90 shadow-md text-xs font-bold text-slate-700 animate-float">
-                <span className="text-indigo-600">☕ Java</span>
-                <span className="text-slate-300">•</span>
-                <span className="text-emerald-600">🍃 Spring</span>
-                <span className="text-slate-300">•</span>
-                <span className="text-sky-600">⚛️ React</span>
-                <span className="text-slate-300">•</span>
-                <span className="text-amber-600">🗄️ MySQL</span>
+            {/* Subtitle */}
+            <p className="text-xs sm:text-[14px] lg:text-[15px] xl:text-base text-slate-600 leading-relaxed max-w-[280px] xs:max-w-[340px] sm:max-w-md lg:max-w-xl">
+              Simulated exam environments for Java, Spring Boot, React, MySQL, DSA &amp; CS Fundamentals.
+              Randomized question generation, instant grading, in-depth explanations, and AI-driven weak
+              topic detection.
+            </p>
+
+            {/* Trust Checkmarks on Desktop */}
+            <div className="hidden sm:flex items-center gap-4 text-xs font-semibold text-slate-600 pt-0.5">
+              <span className="flex items-center gap-1.5">
+                <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
+                Dynamic 30m Countdown
+              </span>
+              <span className="flex items-center gap-1.5">
+                <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
+                AI Weakness Radar
+              </span>
+              <span className="flex items-center gap-1.5">
+                <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
+                100% Free Practice
+              </span>
+            </div>
+
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-1">
+              {isAuthenticated ? (
+                <Link
+                  to={isAdmin ? '/admin' : '/dashboard'}
+                  className="w-full sm:w-auto px-6 py-3.5 sm:py-3.5 rounded-xl bg-gradient-to-r from-indigo-600 via-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white font-semibold shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/35 hover:-translate-y-0.5 flex items-center justify-center gap-2 transition-all text-sm sm:text-base group"
+                >
+                  Go to {isAdmin ? 'Admin Portal' : 'Student Dashboard'}
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </Link>
+              ) : (
+                <>
+                  <Link
+                    to="/register"
+                    className="w-full sm:w-auto px-6 py-3.5 sm:py-3.5 rounded-xl bg-gradient-to-r from-indigo-600 via-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white font-semibold shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/35 hover:-translate-y-0.5 flex items-center justify-center gap-2 transition-all text-sm sm:text-base group"
+                  >
+                    Start Free Mock Practice
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                  <Link
+                    to="/login"
+                    className="w-full sm:w-auto px-6 py-3.5 sm:py-3.5 rounded-xl bg-white/95 backdrop-blur-sm border border-slate-300 hover:border-indigo-300 hover:bg-white text-slate-800 font-semibold shadow-xs hover:shadow-md hover:-translate-y-0.5 flex items-center justify-center gap-2 transition-all text-sm sm:text-base"
+                  >
+                    Live Demo Login
+                  </Link>
+                </>
+              )}
+            </div>
+
+            {/* Metric Stat Cards — Matching the exact reference screenshot styling */}
+            <div className="grid grid-cols-2 gap-2.5 sm:gap-3.5 pt-2 max-w-lg lg:max-w-xl">
+              {/* Card 1: 10+ Core Tech Subjects */}
+              <div className="bg-white/95 backdrop-blur-md rounded-2xl p-2.5 sm:p-3.5 shadow-sm border border-slate-100/90 hover:border-indigo-200 flex items-center gap-2.5 sm:gap-3 transition-all hover:shadow-md hover:-translate-y-0.5 group">
+                <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-indigo-50 text-indigo-600 group-hover:scale-105 flex items-center justify-center shrink-0 shadow-xs transition-transform">
+                  <Users className="w-4 h-4 sm:w-5 sm:h-5" />
+                </div>
+                <div className="min-w-0 flex-1 text-left">
+                  <p className="text-sm sm:text-lg font-black text-slate-900 leading-tight">10+</p>
+                  <p className="text-[10px] sm:text-xs text-slate-500 font-medium truncate mt-0.5">Core Tech Subjects</p>
+                </div>
               </div>
 
-              {/* 3D Laptop Visual Wrapper */}
-              <div className="relative z-10 w-full group">
-                <img
-                  src={heroBg}
-                  alt="Technical Interview Assessment Illustration"
-                  className="w-full h-auto object-contain drop-shadow-[0_20px_35px_rgba(79,70,229,0.18)] transition-transform duration-500 group-hover:scale-[1.02]"
-                />
-
-                {/* Floating Glass Card: 82% Diagnostic Accuracy (Top Left) */}
-                <div className="absolute top-10 -left-6 xl:-left-8 z-20 bg-white/95 backdrop-blur-md rounded-2xl p-3 shadow-xl border border-indigo-100 flex items-center gap-3 animate-float [animation-delay:0.5s]">
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-400 text-white flex items-center justify-center font-black shadow-xs">
-                    <CheckCircle2 className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-1.5">
-                      <span className="text-sm font-black text-slate-900">82%</span>
-                      <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-md">↑ 12%</span>
-                    </div>
-                    <p className="text-[10px] text-slate-500 font-medium">Diagnostic Accuracy</p>
-                  </div>
+              {/* Card 2: 1,000+ Vetted Questions */}
+              <div className="bg-white/95 backdrop-blur-md rounded-2xl p-2.5 sm:p-3.5 shadow-sm border border-slate-100/90 hover:border-sky-200 flex items-center gap-2.5 sm:gap-3 transition-all hover:shadow-md hover:-translate-y-0.5 group">
+                <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-sky-50 text-sky-600 group-hover:scale-105 flex items-center justify-center shrink-0 shadow-xs transition-transform">
+                  <HelpCircle className="w-4 h-4 sm:w-5 sm:h-5" />
                 </div>
-
-                {/* Floating Glass Card: AI Weakness Radar (Bottom Right) */}
-                <div className="absolute -bottom-4 right-2 xl:-right-2 z-20 bg-white/95 backdrop-blur-md rounded-2xl p-3 shadow-xl border border-violet-100 flex items-center gap-3 animate-float [animation-delay:1.8s]">
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-violet-600 to-indigo-600 text-white flex items-center justify-center shadow-xs">
-                    <Cpu className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-1.5">
-                      <span className="text-xs font-black text-slate-900">AI Coach Radar</span>
-                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                    </div>
-                    <p className="text-[10px] text-slate-500 font-medium">Targeted Concept Drills</p>
-                  </div>
+                <div className="min-w-0 flex-1 text-left">
+                  <p className="text-sm sm:text-lg font-black text-slate-900 leading-tight">1,000+</p>
+                  <p className="text-[10px] sm:text-xs text-slate-500 font-medium truncate mt-0.5">Vetted Questions</p>
                 </div>
               </div>
 
+              {/* Card 3: 100% Detailed Solutions */}
+              <div className="bg-white/95 backdrop-blur-md rounded-2xl p-2.5 sm:p-3.5 shadow-sm border border-slate-100/90 hover:border-emerald-200 flex items-center gap-2.5 sm:gap-3 transition-all hover:shadow-md hover:-translate-y-0.5 group">
+                <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-emerald-50 text-emerald-600 group-hover:scale-105 flex items-center justify-center shrink-0 shadow-xs transition-transform">
+                  <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5" />
+                </div>
+                <div className="min-w-0 flex-1 text-left">
+                  <p className="text-sm sm:text-lg font-black text-emerald-600 leading-tight">100%</p>
+                  <p className="text-[10px] sm:text-xs text-slate-500 font-medium truncate mt-0.5">Detailed Solutions</p>
+                </div>
+              </div>
+
+              {/* Card 4: AI Coach Weak Area Radar */}
+              <div className="bg-white/95 backdrop-blur-md rounded-2xl p-2.5 sm:p-3.5 shadow-sm border border-slate-100/90 hover:border-violet-200 flex items-center gap-2.5 sm:gap-3 transition-all hover:shadow-md hover:-translate-y-0.5 group">
+                <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-violet-50 text-violet-600 group-hover:scale-105 flex items-center justify-center shrink-0 shadow-xs transition-transform">
+                  <Cpu className="w-4 h-4 sm:w-5 sm:h-5" />
+                </div>
+                <div className="min-w-0 flex-1 text-left">
+                  <p className="text-sm sm:text-lg font-black text-violet-600 leading-tight">AI Coach</p>
+                  <p className="text-[10px] sm:text-xs text-slate-500 font-medium truncate mt-0.5">Weak Area Radar</p>
+                </div>
+              </div>
             </div>
 
           </div>
