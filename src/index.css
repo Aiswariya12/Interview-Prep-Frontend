@@ -114,56 +114,6 @@
   }
 }
 
-/* Responsive Hero Background that dynamically adjusts per device */
-.hero-device-responsive {
-  background-image: var(--hero-bg);
-  background-repeat: no-repeat;
-  background-position: right -1.25rem top 1rem;
-  background-size: 200px auto;
-}
-
-@media (min-width: 480px) {
-  .hero-device-responsive {
-    background-position: right -1rem top 1rem;
-    background-size: 250px auto;
-  }
-}
-
-@media (min-width: 640px) {
-  .hero-device-responsive {
-    background-position: right 0 center;
-    background-size: 340px auto;
-  }
-}
-
-@media (min-width: 768px) {
-  .hero-device-responsive {
-    background-position: right 1rem center;
-    background-size: 45% auto;
-  }
-}
-
-@media (min-width: 1024px) {
-  .hero-device-responsive {
-    background-position: right 1rem center;
-    background-size: contain;
-  }
-}
-
-@media (min-width: 1280px) {
-  .hero-device-responsive {
-    background-position: right 2rem center;
-    background-size: auto 86%;
-  }
-}
-
-@media (min-width: 1536px) {
-  .hero-device-responsive {
-    background-position: right 3rem center;
-    background-size: auto 85%;
-  }
-}
-
 /* Shimmer Skeleton Loading Animation */
 @keyframes skeletonShimmer {
   0% {
