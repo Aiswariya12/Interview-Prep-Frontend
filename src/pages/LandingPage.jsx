@@ -21,7 +21,7 @@ import {
   Users,
   HelpCircle,
 } from 'lucide-react';
-import bgVideo from '../assets/background video.mp4';
+import bgVideo from '../assets/background video1.mp4';
 
 const iconMap = {
   Coffee, Leaf, Atom, Code2, Database, Binary, Server, Cpu, Network, Brain,
@@ -47,7 +47,7 @@ const LandingPage = () => {
           HERO SECTION — Full-Screen Video Background with Responsive Experience
       ═══════════════════════════════════════════════ */}
       <section
-        className="relative border-b border-slate-200 bg-slate-50 min-h-[calc(100vh-4rem)] flex items-center overflow-hidden py-8 sm:py-12 lg:py-0"
+        className="relative border-b border-slate-800 bg-slate-900 min-h-[calc(100vh-4rem)] flex items-center overflow-hidden py-8 sm:py-12 lg:py-0"
       >
         {/* Full-Screen Responsive Background Video */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -58,7 +58,7 @@ const LandingPage = () => {
             muted
             playsInline
             preload="auto"
-            className="w-full h-full object-cover object-center sm:object-right"
+            className="w-full h-full object-cover object-center"
           >
             <source src={bgVideo} type="video/mp4" />
           </video>
@@ -74,24 +74,24 @@ const LandingPage = () => {
             </div>
 
             {/* Main Heading */}
-            <h1 className="text-2xl sm:text-3xl lg:text-[2.65rem] xl:text-[3.15rem] font-black text-slate-900 tracking-tight leading-[1.14] max-w-[270px] xs:max-w-[320px] sm:max-w-none">
+            <h1 className="text-2xl sm:text-3xl lg:text-[2.65rem] xl:text-[3.15rem] font-black text-white tracking-tight leading-[1.14] max-w-[270px] xs:max-w-[320px] sm:max-w-none drop-shadow-sm">
               Master Technical
               <br />
               Interviews with{' '}
-              <span className="bg-gradient-to-r from-indigo-600 via-indigo-600 to-violet-600 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-indigo-400 via-sky-300 to-violet-300 bg-clip-text text-transparent">
                 Data-Driven Precision
               </span>
             </h1>
 
             {/* Subtitle */}
-            <p className="text-xs sm:text-[14px] lg:text-[15px] xl:text-base text-slate-600 leading-relaxed max-w-[280px] xs:max-w-[340px] sm:max-w-md lg:max-w-xl">
+            <p className="text-xs sm:text-[14px] lg:text-[15px] xl:text-base text-slate-200 leading-relaxed max-w-[280px] xs:max-w-[340px] sm:max-w-md lg:max-w-xl">
               Simulated exam environments for Java, Spring Boot, React, MySQL, DSA &amp; CS Fundamentals.
               Randomized question generation, instant grading, in-depth explanations, and AI-driven weak
               topic detection.
             </p>
 
             {/* Trust Checkmarks on Desktop */}
-            <div className="hidden sm:flex items-center gap-4 text-xs font-semibold text-slate-600 pt-0.5">
+            <div className="hidden sm:flex items-center gap-4 text-xs font-semibold text-slate-200 pt-0.5">
               <span className="flex items-center gap-1.5">
                 <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
                 Dynamic 30m Countdown
