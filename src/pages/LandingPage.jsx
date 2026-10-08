@@ -21,7 +21,7 @@ import {
   Users,
   HelpCircle,
 } from 'lucide-react';
-import bgVideo from '../assets/background video1.mp4';
+import bgVideo from '../assets/background video.mp4';
 
 const iconMap = {
   Coffee, Leaf, Atom, Code2, Database, Binary, Server, Cpu, Network, Brain,
@@ -47,52 +47,63 @@ const LandingPage = () => {
           HERO SECTION — Full-Screen Video Background with Responsive Experience
       ═══════════════════════════════════════════════ */}
       <section
-        className="relative border-b border-slate-800 bg-slate-900 min-h-[calc(100vh-4rem)] flex items-center overflow-hidden py-8 sm:py-12 lg:py-0"
+        className="relative border-b border-slate-200 bg-slate-50 min-h-[calc(100vh-4rem)] min-h-[calc(100dvh-4rem)] flex items-center overflow-hidden py-6 sm:py-10 lg:py-0"
       >
         {/* Full-Screen Responsive Background Video */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <video
-            ref={(el) => { if (el) el.muted = true; }}
+            ref={(el) => {
+              if (el) {
+                el.muted = true;
+                el.defaultMuted = true;
+                el.setAttribute('muted', '');
+                el.setAttribute('playsinline', '');
+                el.setAttribute('webkit-playsinline', '');
+                const playPromise = el.play();
+                if (playPromise !== undefined) {
+                  playPromise.catch(() => {});
+                }
+              }
+            }}
             autoPlay
             loop
             muted
             playsInline
             preload="auto"
-            style={{ transform: 'scaleX(-1)' }}
-            className="w-full h-full object-cover object-center -scale-x-100"
+            className="w-full h-full object-cover object-center sm:object-right"
           >
             <source src={bgVideo} type="video/mp4" />
           </video>
         </div>
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-8 lg:py-8 w-full z-10">
-          <div className="w-full lg:w-[50%] xl:w-[48%] max-w-lg lg:max-w-[540px] space-y-3.5 sm:space-y-4 text-left">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8 w-full z-10">
+          <div className="w-full lg:w-[50%] xl:w-[48%] max-w-lg lg:max-w-[540px] space-y-3 sm:space-y-4 text-left">
 
             {/* Pill Badge */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/95 backdrop-blur-sm border border-indigo-100/90 text-indigo-700 text-[11px] sm:text-xs font-semibold shadow-2xs">
+            <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-white/95 backdrop-blur-sm border border-indigo-100/90 text-indigo-700 text-[10.5px] sm:text-xs font-semibold shadow-2xs max-w-full">
               <Sparkles className="w-3.5 h-3.5 text-indigo-600 shrink-0" />
-              <span>Full Stack Mock Assessment &amp; Interview Analytics</span>
+              <span className="truncate">Full Stack Mock Assessment &amp; Interview Analytics</span>
             </div>
 
             {/* Main Heading */}
-            <h1 className="text-2xl sm:text-3xl lg:text-[2.65rem] xl:text-[3.15rem] font-black text-white tracking-tight leading-[1.14] max-w-[270px] xs:max-w-[320px] sm:max-w-none drop-shadow-sm">
+            <h1 className="text-2xl sm:text-3xl lg:text-[2.65rem] xl:text-[3.15rem] font-black text-slate-900 tracking-tight leading-[1.15] w-full">
               Master Technical
               <br />
               Interviews with{' '}
-              <span className="bg-gradient-to-r from-indigo-400 via-sky-300 to-violet-300 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-indigo-600 via-indigo-600 to-violet-600 bg-clip-text text-transparent">
                 Data-Driven Precision
               </span>
             </h1>
 
             {/* Subtitle */}
-            <p className="text-xs sm:text-[14px] lg:text-[15px] xl:text-base text-slate-200 leading-relaxed max-w-[280px] xs:max-w-[340px] sm:max-w-md lg:max-w-xl">
+            <p className="text-xs sm:text-[14px] lg:text-[15px] xl:text-base text-slate-600 leading-relaxed w-full max-w-md lg:max-w-xl">
               Simulated exam environments for Java, Spring Boot, React, MySQL, DSA &amp; CS Fundamentals.
               Randomized question generation, instant grading, in-depth explanations, and AI-driven weak
               topic detection.
             </p>
 
             {/* Trust Checkmarks on Desktop */}
-            <div className="hidden sm:flex items-center gap-4 text-xs font-semibold text-slate-200 pt-0.5">
+            <div className="hidden sm:flex items-center gap-4 text-xs font-semibold text-slate-600 pt-0.5">
               <span className="flex items-center gap-1.5">
                 <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
                 Dynamic 30m Countdown
@@ -108,11 +119,11 @@ const LandingPage = () => {
             </div>
 
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-1">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3 pt-1">
               {isAuthenticated ? (
                 <Link
                   to={isAdmin ? '/admin' : '/dashboard'}
-                  className="w-full sm:w-auto px-6 py-3.5 sm:py-3.5 rounded-xl bg-gradient-to-r from-indigo-600 via-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white font-semibold shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/35 hover:-translate-y-0.5 flex items-center justify-center gap-2 transition-all text-sm sm:text-base group"
+                  className="w-full sm:w-auto px-5 py-3 sm:px-6 sm:py-3.5 rounded-xl bg-gradient-to-r from-indigo-600 via-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white font-semibold shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/35 hover:-translate-y-0.5 flex items-center justify-center gap-2 transition-all text-sm sm:text-base group"
                 >
                   Go to {isAdmin ? 'Admin Portal' : 'Student Dashboard'}
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -121,14 +132,14 @@ const LandingPage = () => {
                 <>
                   <Link
                     to="/register"
-                    className="w-full sm:w-auto px-6 py-3.5 sm:py-3.5 rounded-xl bg-gradient-to-r from-indigo-600 via-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white font-semibold shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/35 hover:-translate-y-0.5 flex items-center justify-center gap-2 transition-all text-sm sm:text-base group"
+                    className="w-full sm:w-auto px-5 py-3 sm:px-6 sm:py-3.5 rounded-xl bg-gradient-to-r from-indigo-600 via-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white font-semibold shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/35 hover:-translate-y-0.5 flex items-center justify-center gap-2 transition-all text-sm sm:text-base group"
                   >
                     Start Free Mock Practice
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </Link>
                   <Link
                     to="/login"
-                    className="w-full sm:w-auto px-6 py-3.5 sm:py-3.5 rounded-xl bg-white/95 backdrop-blur-sm border border-slate-300 hover:border-indigo-300 hover:bg-white text-slate-800 font-semibold shadow-xs hover:shadow-md hover:-translate-y-0.5 flex items-center justify-center gap-2 transition-all text-sm sm:text-base"
+                    className="w-full sm:w-auto px-5 py-3 sm:px-6 sm:py-3.5 rounded-xl bg-white/95 backdrop-blur-sm border border-slate-300 hover:border-indigo-300 hover:bg-white text-slate-800 font-semibold shadow-xs hover:shadow-md hover:-translate-y-0.5 flex items-center justify-center gap-2 transition-all text-sm sm:text-base"
                   >
                     Live Demo Login
                   </Link>
@@ -137,48 +148,48 @@ const LandingPage = () => {
             </div>
 
             {/* Metric Stat Cards — Matching the exact reference screenshot styling */}
-            <div className="grid grid-cols-2 gap-2.5 sm:gap-3.5 pt-2 max-w-lg lg:max-w-xl">
+            <div className="grid grid-cols-2 gap-2 sm:gap-3.5 pt-1.5 sm:pt-2 w-full max-w-lg lg:max-w-xl">
               {/* Card 1: 10+ Core Tech Subjects */}
-              <div className="bg-white/95 backdrop-blur-md rounded-2xl p-2.5 sm:p-3.5 shadow-sm border border-slate-100/90 hover:border-indigo-200 flex items-center gap-2.5 sm:gap-3 transition-all hover:shadow-md hover:-translate-y-0.5 group">
-                <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-indigo-50 text-indigo-600 group-hover:scale-105 flex items-center justify-center shrink-0 shadow-xs transition-transform">
+              <div className="bg-white/95 backdrop-blur-md rounded-xl sm:rounded-2xl p-2.5 sm:p-3.5 shadow-2xs border border-slate-100/90 hover:border-indigo-200 flex items-center gap-2 sm:gap-3 transition-all hover:shadow-md hover:-translate-y-0.5 group">
+                <div className="w-8 h-8 sm:w-11 sm:h-11 rounded-lg sm:rounded-xl bg-indigo-50 text-indigo-600 group-hover:scale-105 flex items-center justify-center shrink-0 shadow-2xs transition-transform">
                   <Users className="w-4 h-4 sm:w-5 sm:h-5" />
                 </div>
                 <div className="min-w-0 flex-1 text-left">
-                  <p className="text-sm sm:text-lg font-black text-slate-900 leading-tight">10+</p>
-                  <p className="text-[10px] sm:text-xs text-slate-500 font-medium truncate mt-0.5">Core Tech Subjects</p>
+                  <p className="text-xs sm:text-base lg:text-lg font-black text-slate-900 leading-tight">10+</p>
+                  <p className="text-[9.5px] sm:text-xs text-slate-500 font-medium truncate mt-0.5">Core Tech Subjects</p>
                 </div>
               </div>
 
               {/* Card 2: 1,000+ Vetted Questions */}
-              <div className="bg-white/95 backdrop-blur-md rounded-2xl p-2.5 sm:p-3.5 shadow-sm border border-slate-100/90 hover:border-sky-200 flex items-center gap-2.5 sm:gap-3 transition-all hover:shadow-md hover:-translate-y-0.5 group">
-                <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-sky-50 text-sky-600 group-hover:scale-105 flex items-center justify-center shrink-0 shadow-xs transition-transform">
+              <div className="bg-white/95 backdrop-blur-md rounded-xl sm:rounded-2xl p-2.5 sm:p-3.5 shadow-2xs border border-slate-100/90 hover:border-sky-200 flex items-center gap-2 sm:gap-3 transition-all hover:shadow-md hover:-translate-y-0.5 group">
+                <div className="w-8 h-8 sm:w-11 sm:h-11 rounded-lg sm:rounded-xl bg-sky-50 text-sky-600 group-hover:scale-105 flex items-center justify-center shrink-0 shadow-2xs transition-transform">
                   <HelpCircle className="w-4 h-4 sm:w-5 sm:h-5" />
                 </div>
                 <div className="min-w-0 flex-1 text-left">
-                  <p className="text-sm sm:text-lg font-black text-slate-900 leading-tight">1,000+</p>
-                  <p className="text-[10px] sm:text-xs text-slate-500 font-medium truncate mt-0.5">Vetted Questions</p>
+                  <p className="text-xs sm:text-base lg:text-lg font-black text-slate-900 leading-tight">1,000+</p>
+                  <p className="text-[9.5px] sm:text-xs text-slate-500 font-medium truncate mt-0.5">Vetted Questions</p>
                 </div>
               </div>
 
               {/* Card 3: 100% Detailed Solutions */}
-              <div className="bg-white/95 backdrop-blur-md rounded-2xl p-2.5 sm:p-3.5 shadow-sm border border-slate-100/90 hover:border-emerald-200 flex items-center gap-2.5 sm:gap-3 transition-all hover:shadow-md hover:-translate-y-0.5 group">
-                <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-emerald-50 text-emerald-600 group-hover:scale-105 flex items-center justify-center shrink-0 shadow-xs transition-transform">
+              <div className="bg-white/95 backdrop-blur-md rounded-xl sm:rounded-2xl p-2.5 sm:p-3.5 shadow-2xs border border-slate-100/90 hover:border-emerald-200 flex items-center gap-2 sm:gap-3 transition-all hover:shadow-md hover:-translate-y-0.5 group">
+                <div className="w-8 h-8 sm:w-11 sm:h-11 rounded-lg sm:rounded-xl bg-emerald-50 text-emerald-600 group-hover:scale-105 flex items-center justify-center shrink-0 shadow-2xs transition-transform">
                   <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5" />
                 </div>
                 <div className="min-w-0 flex-1 text-left">
-                  <p className="text-sm sm:text-lg font-black text-emerald-600 leading-tight">100%</p>
-                  <p className="text-[10px] sm:text-xs text-slate-500 font-medium truncate mt-0.5">Detailed Solutions</p>
+                  <p className="text-xs sm:text-base lg:text-lg font-black text-emerald-600 leading-tight">100%</p>
+                  <p className="text-[9.5px] sm:text-xs text-slate-500 font-medium truncate mt-0.5">Detailed Solutions</p>
                 </div>
               </div>
 
               {/* Card 4: AI Coach Weak Area Radar */}
-              <div className="bg-white/95 backdrop-blur-md rounded-2xl p-2.5 sm:p-3.5 shadow-sm border border-slate-100/90 hover:border-violet-200 flex items-center gap-2.5 sm:gap-3 transition-all hover:shadow-md hover:-translate-y-0.5 group">
-                <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-violet-50 text-violet-600 group-hover:scale-105 flex items-center justify-center shrink-0 shadow-xs transition-transform">
+              <div className="bg-white/95 backdrop-blur-md rounded-xl sm:rounded-2xl p-2.5 sm:p-3.5 shadow-2xs border border-slate-100/90 hover:border-violet-200 flex items-center gap-2 sm:gap-3 transition-all hover:shadow-md hover:-translate-y-0.5 group">
+                <div className="w-8 h-8 sm:w-11 sm:h-11 rounded-lg sm:rounded-xl bg-violet-50 text-violet-600 group-hover:scale-105 flex items-center justify-center shrink-0 shadow-2xs transition-transform">
                   <Cpu className="w-4 h-4 sm:w-5 sm:h-5" />
                 </div>
                 <div className="min-w-0 flex-1 text-left">
-                  <p className="text-sm sm:text-lg font-black text-violet-600 leading-tight">AI Coach</p>
-                  <p className="text-[10px] sm:text-xs text-slate-500 font-medium truncate mt-0.5">Weak Area Radar</p>
+                  <p className="text-xs sm:text-base lg:text-lg font-black text-violet-600 leading-tight">AI Coach</p>
+                  <p className="text-[9.5px] sm:text-xs text-slate-500 font-medium truncate mt-0.5">Weak Area Radar</p>
                 </div>
               </div>
             </div>
