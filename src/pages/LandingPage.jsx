@@ -58,7 +58,8 @@ const LandingPage = () => {
             muted
             playsInline
             preload="auto"
-            className="w-full h-full object-cover object-center"
+            style={{ transform: 'scaleX(-1)' }}
+            className="w-full h-full object-cover object-center -scale-x-100"
           >
             <source src={bgVideo} type="video/mp4" />
           </video>
