@@ -62,8 +62,6 @@ const LandingPage = () => {
           >
             <source src={bgVideo} type="video/mp4" />
           </video>
-          {/* Responsive Soft Backdrop Overlay for Crystal-Clear Readability */}
-          <div className="absolute inset-0 bg-gradient-to-r from-white/95 via-white/80 to-white/30 sm:from-white/90 sm:via-white/70 sm:to-transparent lg:from-white/85 lg:via-white/60 lg:to-transparent pointer-events-none" />
         </div>
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-8 lg:py-8 w-full z-10">
