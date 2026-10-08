@@ -145,16 +145,15 @@
 
 @media (min-width: 1024px) {
   .hero-device-responsive {
-    background-position: right center;
-    background-size: contain;
+    /* On desktop (>=1024px), the flat CSS background image is disabled in favor of the interactive, layered desktop illustration grid */
+    background-image: none !important;
   }
 }
 
-@media (min-width: 1440px) {
-  .hero-device-responsive {
-    background-position: right center;
-    background-size: contain;
-  }
+/* Subtle developer grid pattern for desktop hero and showcase sections */
+.desktop-grid-bg {
+  background-image: radial-gradient(#e0e7ff 1.2px, transparent 1.2px);
+  background-size: 24px 24px;
 }
 
 /* Shimmer Skeleton Loading Animation */
