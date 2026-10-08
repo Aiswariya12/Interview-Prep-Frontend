@@ -47,23 +47,11 @@ const LandingPage = () => {
           HERO SECTION — Responsive Hero with Device-Adaptive Background on Mobile & Interactive Visual on Desktop
       ═══════════════════════════════════════════════ */}
       <section
-        className="relative hero-device-responsive border-b border-slate-200 bg-gradient-to-b from-[#eef5fe] via-[#f3f7fd] to-slate-50 py-7 sm:py-10 lg:py-0 lg:h-[calc(100vh-4rem)] lg:min-h-[600px] lg:max-h-[860px] flex items-center overflow-hidden desktop-grid-bg"
+        className="relative hero-device-responsive border-b border-slate-200 bg-gradient-to-b from-[#eef5fe] via-[#f3f7fd] to-slate-50 py-7 sm:py-10 lg:py-0 lg:h-[calc(100vh-4rem)] lg:min-h-[600px] lg:max-h-[860px] flex items-center overflow-hidden"
         style={{ '--hero-bg': `url("${heroBg}")` }}
       >
         {/* Soft responsive overlay for mobile/tablets so text is always 100% legible */}
         <div className="absolute inset-0 bg-gradient-to-r from-white/95 via-white/85 to-transparent/40 sm:to-transparent lg:from-white/30 lg:via-transparent lg:to-transparent pointer-events-none" />
-
-        {/* Ambient Decorative Dot Matrix Elements matching the mockup */}
-        <div className="absolute bottom-4 left-4 grid grid-cols-4 gap-2 opacity-20 pointer-events-none">
-          {[...Array(24)].map((_, i) => (
-            <div key={i} className="w-1.5 h-1.5 rounded-full bg-indigo-500" />
-          ))}
-        </div>
-        <div className="absolute top-1/2 right-3 -translate-y-1/2 hidden sm:grid grid-cols-4 gap-2 opacity-25 pointer-events-none">
-          {[...Array(24)].map((_, i) => (
-            <div key={i} className="w-1.5 h-1.5 rounded-full bg-indigo-500" />
-          ))}
-        </div>
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 lg:py-6 w-full z-10">
           <div className="w-full lg:w-[52%] xl:w-[48%] max-w-lg lg:max-w-[560px] space-y-3 sm:space-y-4 text-left">
